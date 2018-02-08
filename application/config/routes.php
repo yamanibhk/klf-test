@@ -46,15 +46,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | When you set this option to TRUE, it will replace ALL dashes in the
 | controller and method URI segments.
 |
-| Examples:	
+| Examples:
 |		my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 |
 */
-$route['default_controller'] = 'welcome';
+$route['default_controller'] = 'atterrissage';
 
-$route['films'] = 'films/index';//The default route for the movie controller
-$route['films/create'] = 'films/create';//The route for the movie insertion
+$route['atterrissage'] = 'atterrissage/index';//The default route for the landing controller
 //The (:any) must be at the end
 // $route['films/(:any)'] = 'films/view/$1';//The route for the movie description
 
