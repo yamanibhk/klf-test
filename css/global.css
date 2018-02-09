@@ -1,0 +1,6 @@
+h1, h2, h3, h4, h5 {
+	font-family: 'Nunito thin', Sans-serif;
+}
+p, span, a, button, div, section {
+	font-family: 'Roboto', Sans-serif;
+}
