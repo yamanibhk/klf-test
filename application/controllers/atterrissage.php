@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 	class atterrissage extends CI_Controller{
 
 		public function __construct(){
@@ -9,11 +8,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 
 		public function index(){
-			$data["titre"] = "RENTAHOUSE";//the page title
-			//Load the views
+            //vérifier si la page existe
+            if ( ! file_exists ( APPPATH . 'views/atterrissage/index.php' )) { show_404 (); } 
+			$data["titre"] = "RENTAHOUSE";//titre de la page d'atterissage
+			//charger les vues
 			$this->load->view("templates/header.php", $data);
 			$this->load->view("atterrissage/index",$data);
 			$this->load->view("templates/footer.php", $data);
 		}
-	}
+        
+    }
 ?>
