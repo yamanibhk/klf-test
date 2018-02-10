@@ -26,18 +26,50 @@ session_start();
                 if($_POST["nomUsager"]!="" && $_POST["motdepasse"]!="")
                 {
                      //vérifier les données usager dans le model usager
-                    $resultat = $this->model_usager->verifier_usager($_POST["nomUsager"],$_POST["motdepasse"]);
-                    if($resultat)
+                    $data["usagers"] = $this->model_usager->verifier_usager($_POST["nomUsager"],$_POST["motdepasse"]);
+                    
+                    if ($data["usagers"]!=[])//user existe
                     {
-                        echo "Connexion réussi";
-                        $_SESSION["nomUsager"] = $_POST["nomUsager"];
-                        //charger les vues
-                        $this->load->view("templates/header.php");
-                        $this->load->view("accueil/index");
-                        $this->load->view("templates/footer.php");
-                    }
-                    else
+                        foreach($data["usagers"] as $usager=> $value)
+                        {
+                        
+                            if ($value['estBanni']==0)
+                            {
+
+
+                                $_SESSION["nomUsager"]=$value['nomUsager'];
+                                $_SESSION["motDePasse"]=$value['motDePasse'];
+                                $_SESSION["estBanni"]=$value['estBanni'];
+                                $_SESSION["role"]=$value['Role'];
+
+                                //charger les vues
+                                $this->load->view("templates/header.php");
+                                $this->load->view("accueil/index");
+                                $this->load->view("templates/footer.php");
+                            }
+                            else
+                            {
+                                //charger les vues
+                                $this->load->view("templates/header.php");
+                                $this->load->view("atterrissage/connexion-form");
+                                $this->load->view("templates/footer.php");
+                                echo "D&eacute;sol&eacute; vous n'êtes pas autorisé, conntactez L'administrateur, ou utilisez un autre compte.";
+                            }
+                        }
+                        else 
+                        {
+                            echo "D&eacute;sol&eacute; votre mot de passe est erron&eacute;.";
+                            //charger les vues
+                            $this->load->view("templates/header.php");
+                            $this->load->view("atterrissage/connexion-form");
+                            $this->load->view("templates/footer.php");
+                        }
+                        
+                    } 
+                    else 
                     {
+                        echo "D&eacute;sol&eacute; votre username est erron&eacute;e.";
+                        
                         //charger les vues
                         $this->load->view("templates/header.php");
                         $this->load->view("atterrissage/connexion-form");
