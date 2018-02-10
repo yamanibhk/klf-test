@@ -32,37 +32,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 * Charge le contenu a afficher dans <div id="content"> lors d'une connexion
 		 */
 		public function connexion() {
-            if(isset($_SESSION["nomUsager"]) && isset($_SESSION["motDePasse"] ) && isset($_SESSION["estBanni"] ) && isset($_SESSION["Role"]) )
-            {
-                $usagerBanni =$_SESSION["estBanni"];
-
-                if ($usagerBanni==0) //non banni
-                {
-                    //charger les vues
-                    $this->load->view("templates/header.php");
-                    $this->load->view("accueil/index");
-                    $this->load->view("templates/footer.php");
-
-                }
-                else //usager banni
-                {
-                    echo "D&eacute;sol&eacute;vous n'êtes pas autorisé, conntactez L'administrateur, ou utilisez un autre compte.";
-                    //charger les vues
-                    $this->load->view("templates/header.php");
-                    $this->load->view("atterrissage/connexion-form");
-                    $this->load->view("templates/footer.php");
-                }
-
-            }
-
-            else 
-            {
-                //charger les vues
-                $this->load->view("templates/header.php");
-                $this->load->view("atterrissage/connexion-form");
-                $this->load->view("templates/footer.php");
-
-             }
 			$this->load->view("atterrissage/connexion-form.php");
 		}
 
