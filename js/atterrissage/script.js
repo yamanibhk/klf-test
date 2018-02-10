@@ -63,38 +63,26 @@ function validerInscription(formulaire) {
       currentInput.removeClass("is-invalid");
     	switch (currentInput.attr("id")) {
     		case "username":
-    			// $.ajax({
-	      //     url: "index.php/usager/obtenir",
-	      //     method: "POST",
-	      //     success: function(reponse) {
-	      //     	if(reponse.existe == false) {
-	      //     		currentInput.addClass("is-valid");
-      	// 				$(this).find(".valid-feedback").text("Ce username est parfait !");
-      	// 				$(this).find(".invalid-feedback").text("");
-	      //     	} else {
-	      //     		currentInput.addClass("is-invalid");
-      	// 				$(this).find(".invalid-feedback").text("Désolé, ce username est déjà utilisé");
-      	// 				$(this).find(".valid-feedback").text("");
-      	// 				formulaireEstValide = false;
-	      //     	}
-	      //     }
-	      //   });
-
-    			// Cette partie doit etre retiree lorsque le controleur usager sera fonctionnel
-    			//On decommentera alors la partie en haut
-    			if (currentInput.val() != "mathieu") {
-    				currentInput.addClass("is-valid");
-  					$(this).find(".valid-feedback").text("Ce username est parfait !");
-  					$(this).find(".invalid-feedback").text("");
-    			} else {
-    				currentInput.addClass("is-invalid");
-  					$(this).find(".invalid-feedback").text("Désolé, ce username est déjà utilisé");
-  					$(this).find(".valid-feedback").text("");
-  					formulaireEstValide = false;
-    			}
-    			// Cette partie (en haut) doit etre retiree lorsque le controleur usager sera fonctionnel
-    			//On decommentera alors la partie en haut
-
+    		inputUsername = currentInput;
+    			$.ajax({
+	          url: "index.php/usagers/obtenir",
+	          method: "POST",
+	          data : {
+	          	"nomUsager" : currentInput.val()
+	          },
+	          success: function(reponse) {
+	          	if(reponse.existe == false) {
+	          		inputUsername.addClass("is-valid");
+      					inputUsername.parent().find(".valid-feedback").text("Ce username est parfait !");
+      					inputUsername.parent().find(".invalid-feedback").text("");
+	          	} else {
+	          		inputUsername.addClass("is-invalid");
+      					inputUsername.parent().find(".invalid-feedback").text("Désolé, ce username est déjà utilisé");
+      					inputUsername.parent().find(".valid-feedback").text("");
+      					formulaireEstValide = false;
+	          	}
+	          }
+	        });
     			break;
 
   	   	case "password":
@@ -140,8 +128,19 @@ function validerInscription(formulaire) {
   });
   if(formulaireEstValide) {
   	setTimeout(function () {
-  		console.log("formulaire valide");
-  		console.log("Redirection via Ajax a faire");
+  		$.ajax({
+        url: "index.php/usagers/inscription",
+        method: "POST",
+        data : {
+        	"nomUsager" : $("#username").val(),
+        	"motDePasse" : $("#password").val(),
+        	"courriel" : $("#courriel").val()
+        },
+        success: function(reponse) {
+        	$("#content").empty();
+          $("#content").append(reponse);
+        }
+      });
   	}, 1500);
   }
 }
