@@ -1,7 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class atterrissage extends CI_Controller {
-
 	public function __construct() {
 		parent::__construct();
 		$this->load->helper("url_helper");//Load a helper
@@ -21,13 +20,13 @@ class atterrissage extends CI_Controller {
 			$this->load->view("templates/footer.php", $data);
     }
 	}
-
-	/**
-	 * Charge le contenu a afficher dans <div id="content"> a la page d'accueil
-	 */
-	public function backToIndex() {
-		$this->load->view("atterrissage/index-content");
-	}
+  
+  /**
+  * Charge le contenu a afficher dans <div id="content"> a la page d'accueil
+  */
+  public function backToIndex() {
+    $this->load->view("atterrissage/index-content");
+  }
 
 	/**
 	 * Charge le contenu a afficher dans <div id="content"> lors d'une connexion
