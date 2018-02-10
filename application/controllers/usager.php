@@ -29,6 +29,7 @@ session_start();
                     $resultat = $this->model_usager->verifier_usager($_POST["nomUsager"],$_POST["motdepasse"]);
                     if($resultat)
                     {
+                        echo "Connexion réussi";
                         $_SESSION["nomUsager"] = $_POST["nomUsager"];
                         //charger les vues
                         $this->load->view("templates/header.php");
