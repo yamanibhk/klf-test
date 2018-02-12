@@ -53,7 +53,7 @@ class Usagers_model extends CI_Model {
 	 */
     public function verifier_usager($nomUsager, $motDePasse){
         $query = $this->db->get_where("usager", array("nomUsager" => $nomUsager,"motDePasse" => $motDePasse));
-        if($query->row_data!=""){
+        if($query->num_rows()>0){
             return true;
         }
         else{
