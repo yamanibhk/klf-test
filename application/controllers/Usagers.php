@@ -19,13 +19,10 @@ class Usagers extends CI_Controller {
   public function connexion() {
   	$nomUsager = $this->input->post("nomUsager");
   	$motDePasse = $this->input->post("motDePasse");
-      var_dump($nomUsager);
-      var_dump($motDePasse);
   	if(isset($nomUsager) && isset($motDePasse)) {
   		if($nomUsager != "" && $motDePasse != "") {
         //vérifier les données usager dans le model usager
   			$resultat = $this->Usagers_model->verifier_usager($nomUsager, $motDePasse);
-  			var_dump($resultat);
             if($resultat) {
   				$utilisateur = array(
 		        'username'  => $nomUsager
