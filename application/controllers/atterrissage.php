@@ -4,6 +4,9 @@ class atterrissage extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		$this->load->helper("url_helper");//Load a helper
+        //chargement de la librairie pour la validation du formulaire
+        $this->load->library('form_validation');   
+        $this->load->helper('form');
 	}
 
 	/**
