@@ -7,10 +7,20 @@ class Usagers extends CI_Controller {
 		$this->load->model("Usagers_model");
 		$this->load->helper("url_helper");
 		$this->load->library('session');
-        //chargement de la librairie pour la validation du formulaire
-        $this->load->library('form_validation');   
-        $this->load->helper('form');
-        $this->load->helper('date');
+    //chargement de la librairie pour la validation du formulaire
+		$this->load->library('form_validation');
+		$this->load->helper('form');
+		$this->load->helper('date');
+	}
+
+	/**
+	 * Affiche la page d'accueil
+	 */
+	public function accueil() {
+    // charger les vues
+		$this->load->view("templates/header.php");
+		$this->load->view("accueil/index");
+		$this->load->view("templates/footer.php");
 	}
 
   /*
@@ -23,21 +33,17 @@ class Usagers extends CI_Controller {
   		if($nomUsager != "" && $motDePasse != "") {
         //vérifier les données usager dans le model usager
   			$resultat = $this->Usagers_model->verifier_usager($nomUsager, $motDePasse);
-            if($resultat) {
+  			if($resultat) {
   				$utilisateur = array(
-		        'username'  => $nomUsager
-					);
-                $this->session->set_userdata($utilisateur);
-                echo "succes";
-                    
-                // charger les vues
-  				$this->load->view("templates/header.php");
-  				$this->load->view("accueil/index");
-  				$this->load->view("templates/footer.php");
+  					'username'  => $nomUsager
+  				);
+  				//Cree la session avec un username
+  				$this->session->set_userdata($utilisateur);
+  				$this->accueil();
   			}
   			else {
-                echo "echec";
-                $this->load->view("atterrissage/connexion-confirmation.php");
+  				echo "echec";
+  				$this->load->view("atterrissage/connexion-confirmation.php");
   			}
   		}
   	}
@@ -46,19 +52,39 @@ class Usagers extends CI_Controller {
   /*
    * Obtient un usager dans la base de donnees
   */
-  public function obtenir() {
+  public function obtenir_usager() {
   	$nomUsager = $this->input->post("nomUsager");
   	if(isset($nomUsager)) {
-  		if($nomUsager != "")	{
+  		if($nomUsager != "") {
         // vérifier l'existance d'un usager dans le model usager
-  			$usager = $this->Usagers_model->get_usager($nomUsager);
+  			$usager = $this->Usagers_model->obtenir_usager($nomUsager);
   			if($usager)	{
-  				$reponse = ["usager" => $usager, "existe" => true];
+  				$reponse = ["existe" => true];
   			} else {
-  				$reponse = ["usager" => NULL, "existe" => false];
+  				$reponse = ["existe" => false];
   			}
-		    header('Content-Type: application/json');
-		    echo json_encode($reponse);
+  			header('Content-Type: application/json');
+  			echo json_encode($reponse);
+  		}
+  	}
+  }
+
+  /*
+   * Obtient un courriel dans la base de donnees
+  */
+  public function obtenir_courriel() {
+  	$courriel = $this->input->post("courriel");
+  	if(isset($courriel)) {
+  		if($courriel != "")	{
+        // vérifier l'existance d'un courriel dans la bd
+  			$reponseCourriel = $this->Usagers_model->obtenir_courriel($courriel);
+  			if($reponseCourriel) {
+  				$reponse = ["existe" => true];
+  			} else {
+  				$reponse = ["existe" => false];
+  			}
+  			header('Content-Type: application/json');
+  			echo json_encode($reponse);
   		}
   	}
   }
@@ -71,35 +97,37 @@ class Usagers extends CI_Controller {
   	$motDePasse = $this->input->post("motDePasse");
   	$courriel = $this->input->post("courriel");
   	$succes = true;
-  	//S'il y a des donnees ne sont pas recues
 
-    if(!isset($nomUsager) || !isset($motDePasse) || !isset($courriel))	{
-        $succes = false;
-    } else {
-        //S'il y a des donnees qui sont vides
-        if($nomUsager == "" || $motDePasse == "" || $courriel == "") {
-            $succes = false;
-        }	else {
-                // ajout d'un usager dans le model usager
-            $resultat = $this->Usagers_model->ajouter_usager($nomUsager, $motDePasse, $courriel);
-            if(!$resultat) {
-                $succes = false;
-            }
-        }
-    }
-    
+  	//S'il y a des donnees ne sont pas recues
+  	if(!isset($nomUsager) || !isset($motDePasse) || !isset($courriel))	{
+  		$succes = false;
+  	} else {
+      //S'il y a des donnees qui sont vides
+  		if($nomUsager == "" || $motDePasse == "" || $courriel == "") {
+  			$succes = false;
+  		}	else {
+        // ajout d'un usager dans le model usager
+  			$resultat = $this->Usagers_model->ajouter_usager($nomUsager, $motDePasse, $courriel);
+  			if(!$resultat) {
+  				$succes = false;
+  			}
+  		}
+  	}
+
   	if($succes) {
-      $data["erreur"] = false;
-      /*$this->load->library('email');
+  		$data["erreur"] = false;
+  		/*
+      $this->load->library('email');
       $this->email->from('s.leila94@gmail.com', 'Leila');
       $this->email->to($courriel);
       $this->email->subject("Email de validation");
-      $this->email->message("Merci pour votre inscription, votre compte sera bientôt validé par l'administrateur.");                        
-      $this->email->send();*/
-  	} else {
-      $data["erreur"] = true;
-  	}
-		$this->load->view("atterrissage/inscription-confirmation.php", $data);
+      $this->email->message("Merci pour votre inscription, votre compte sera bientôt validé par l'administrateur.");
+      $this->email->send();
+      */
+    } else {
+    	$data["erreur"] = true;
+    }
+    $this->load->view("atterrissage/inscription-confirmation.php", $data);
   }
 
 }//Fin de la classe

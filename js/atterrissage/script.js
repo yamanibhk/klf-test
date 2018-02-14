@@ -51,9 +51,9 @@ window.addEventListener("load", function() {
 });
 
 function validerInscription(formulaire) {
-	var formulaireEstValide = true;
+  var formulaireEstValide = true;
   formulaire.children(".form-group").each(function() {
-  	var currentInput = $(this).find("input");
+    var currentInput = $(this).find("input");
     if (currentInput.val() == "") {
       currentInput.addClass("is-invalid");
       $(this).find(".invalid-feedback").text("ne peut pas être vide");
@@ -61,87 +61,104 @@ function validerInscription(formulaire) {
       formulaireEstValide = false;
     } else {
       currentInput.removeClass("is-invalid");
-    	switch (currentInput.attr("id")) {
-    		case "username":
-    		inputUsername = currentInput;
-    			$.ajax({
-	          url: "index.php/usagers/obtenir",
-	          method: "POST",
-	          data : {
-	          	"nomUsager" : currentInput.val()
-	          },
-	          success: function(reponse) {
-	          	if(reponse.existe == false) {
-	          		inputUsername.addClass("is-valid");
-      					inputUsername.parent().find(".valid-feedback").text("Ce username est parfait !");
-      					inputUsername.parent().find(".invalid-feedback").text("");
-	          	} else {
-	          		inputUsername.addClass("is-invalid");
-      					inputUsername.parent().find(".invalid-feedback").text("Désolé, ce username est déjà utilisé");
-      					inputUsername.parent().find(".valid-feedback").text("");
-      					formulaireEstValide = false;
-	          	}
-	          }
-	        });
-    			break;
+      switch (currentInput.attr("id")) {
+        case "username":
+          inputUsername = currentInput;
+          $.ajax({
+            url: "index.php/usagers/obtenir_usager",
+            method: "POST",
+            data: {
+              "nomUsager": currentInput.val()
+            },
+            success: function(reponse) {
+              if (reponse.existe == false) {
+                inputUsername.addClass("is-valid");
+                inputUsername.parent().find(".valid-feedback").text("Ce username est parfait !");
+                inputUsername.parent().find(".invalid-feedback").text("");
+              } else {
+                inputUsername.addClass("is-invalid");
+                inputUsername.parent().find(".invalid-feedback").text("Désolé, ce username est déjà utilisé");
+                inputUsername.parent().find(".valid-feedback").text("");
+                formulaireEstValide = false;
+              }
+            }
+          });
+          break;
 
-  	   	case "password":
-  	   		if($("#password").val() == $("#password_confirm").val()){
-  	   			currentInput.addClass("is-valid");
-  					$(this).find(".valid-feedback").text("Bon choix de mot de passe");
-  					$(this).find(".invalid-feedback").text("");
-  	   		} else {
-  	   			currentInput.addClass("is-invalid");
-  					$(this).find(".invalid-feedback").text("Les mots de passe ne correspondent pas");
-  					$(this).find(".valid-feedback").text("");
-  					formulaireEstValide = false;
-  	   		}
-  				break;
+        case "password":
+          if ($("#password").val() == $("#password_confirm").val()) {
+            currentInput.addClass("is-valid");
+            $(this).find(".valid-feedback").text("Bon choix de mot de passe");
+            $(this).find(".invalid-feedback").text("");
+          } else {
+            currentInput.addClass("is-invalid");
+            $(this).find(".invalid-feedback").text("Les mots de passe ne correspondent pas");
+            $(this).find(".valid-feedback").text("");
+            formulaireEstValide = false;
+          }
+          break;
 
-  	   	case "password_confirm":
-  	   		if($("#password").val() == $("#password_confirm").val()){
-  	   			currentInput.addClass("is-valid");
-  					$(this).find(".valid-feedback").text("Bon choix de mot de passe");
-  					$(this).find(".invalid-feedback").text("");
-  	   		} else {
-  	   			currentInput.addClass("is-invalid");
-  					$(this).find(".invalid-feedback").text("Les mots de passe ne correspondent pas");
-  					$(this).find(".valid-feedback").text("");
-  					formulaireEstValide = false;
-  	   		}
-  				break;
+        case "password_confirm":
+          if ($("#password").val() == $("#password_confirm").val()) {
+            currentInput.addClass("is-valid");
+            $(this).find(".valid-feedback").text("Bon choix de mot de passe");
+            $(this).find(".invalid-feedback").text("");
+          } else {
+            currentInput.addClass("is-invalid");
+            $(this).find(".invalid-feedback").text("Les mots de passe ne correspondent pas");
+            $(this).find(".valid-feedback").text("");
+            formulaireEstValide = false;
+          }
+          break;
 
-  			case "courriel":
-  				if(validateEmail(currentInput.val())) {
-  					currentInput.addClass("is-valid");
-  					$(this).find(".valid-feedback").text("Votre e-mail est bon !");
-  					$(this).find(".invalid-feedback").text("");
-  				} else {
-  					currentInput.addClass("is-invalid");
-  					$(this).find(".invalid-feedback").text("Désolé, ce e-mail n'est pas valide");
-  					$(this).find(".valid-feedback").text("");
-  					formulaireEstValide = false;
-  				}
-  				break;
-    	}
+        case "courriel":
+          inputCourriel = currentInput;
+          if (validateEmail(inputCourriel.val())) {
+            $.ajax({
+              url: "index.php/usagers/obtenir_courriel",
+              method: "POST",
+              data: {
+                "courriel": inputCourriel.val()
+              },
+              success: function(reponse) {
+                if (reponse.existe == false) {
+                  inputCourriel.addClass("is-valid");
+                  inputCourriel.parent().find(".valid-feedback").text("Votre e-mail est bon !");
+                  inputCourriel.parent().find(".invalid-feedback").text("");
+                } else {
+                  inputCourriel.addClass("is-invalid");
+                  inputCourriel.parent().find(".invalid-feedback").text("Oups, ce e-mail est déjà utilisé");
+                  inputCourriel.parent().find(".valid-feedback").text("");
+                  formulaireEstValide = false;
+                }
+              }
+            });
+          } else {
+            inputCourriel.addClass("is-invalid");
+            $(this).find(".invalid-feedback").text("Désolé, ce e-mail n'est pas valide");
+            $(this).find(".valid-feedback").text("");
+            formulaireEstValide = false;
+          }
+          break;
+      }
     }
   });
-  if(formulaireEstValide) {
-  	setTimeout(function () {
-  		$.ajax({
+  if (formulaireEstValide) {
+    setTimeout(function() {
+      $.ajax({
         url: "index.php/usagers/inscription",
         method: "POST",
-        data : {
-        	"nomUsager" : $("#username").val(),
-        	"motDePasse" : $("#password").val(),
-        	"courriel" : $("#courriel").val()
+        data: {
+          "nomUsager": $("#username").val(),
+          "motDePasse": $("#password").val(),
+          "courriel": $("#courriel").val()
         },
         success: function(reponse) {
-        	$("#content").empty();
+          $("#content").empty();
           $("#content").append(reponse);
         }
       });
-  	}, 1500);
+    }, 500);
   }
 }
 
