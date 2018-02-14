@@ -27,17 +27,17 @@ class Usagers extends CI_Controller {
   				$utilisateur = array(
 		        'username'  => $nomUsager
 					);
-					$this->session->set_userdata($utilisateur);
-          // charger les vues
+                $this->session->set_userdata($utilisateur);
+                echo "succes";
+                    
+                // charger les vues
   				$this->load->view("templates/header.php");
   				$this->load->view("accueil/index");
   				$this->load->view("templates/footer.php");
   			}
   			else {
-          //charger les vues
-  				$this->load->view("templates/header.php");
-  				$this->load->view("atterrissage/connexion-form");
-  				$this->load->view("templates/footer.php");
+                echo "echec";
+                $this->load->view("atterrissage/connexion-confirmation.php");
   			}
   		}
   	}
@@ -90,6 +90,12 @@ class Usagers extends CI_Controller {
     
   	if($succes) {
       $data["erreur"] = false;
+      /*$this->load->library('email');
+      $this->email->from('s.leila94@gmail.com', 'Leila');
+      $this->email->to($courriel);
+      $this->email->subject("Email de validation");
+      $this->email->message("Merci pour votre inscription, votre compte sera bientôt validé par l'administrateur.");                        
+      $this->email->send();*/
   	} else {
       $data["erreur"] = true;
   	}

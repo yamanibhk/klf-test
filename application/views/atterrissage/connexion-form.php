@@ -1,7 +1,3 @@
-<?php
-    echo form_open('Usagers/connexion');
-?>
-
 <section id="connexion-form">
 	<div class="form-group">
 
@@ -19,6 +15,3 @@
 
 	</div>
 </section>
-<?php
-    echo form_close();
-?>

@@ -1,6 +1,3 @@
-<?php
-    echo form_open('Usagers/inscription');
-?>
 <section id="inscription-form">
 	<div class="form-group">
         
@@ -36,6 +33,3 @@
         
 	</div>
 </section>
-<?php
-    echo form_close();
-?>
