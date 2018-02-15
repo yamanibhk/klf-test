@@ -5,7 +5,7 @@ if ($erreur) {
   $message = "<h3>Bienvenu parmis nous !</h3><p>Nos membres doivent êtres validés avant de pouvoir utiliser la plateforme, vous recevrez un courriel lorsque ce sera fait</p>";
 }
 ?>
-<div>
+<div class="d-flex- justify-content-end">
   <?=$message?>
-  <a href="#" id="cancel" class="d-block py-2 px-3 text-white">Retourner à l'accueil</a>
+  <a href="#" id="cancel" class="btn btn-secondary text-white">Retourner à l'accueil</a>
 </div>

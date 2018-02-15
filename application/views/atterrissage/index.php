@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="<?=base_url();?>css/atterrissage/stylesheet.css">
 <script type='text/javascript' src="<?=base_url();?>js/atterrissage/script.js"></script>
+
 <h1 id="page-title"><span><img class="logo" src="<?=base_url();?>images/atterrissage/logo.svg" alt="logo"></span>RENTAHOUSE</h1>
 <div id="wrapper">
   <div id="content">
