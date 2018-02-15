@@ -32,7 +32,7 @@ window.addEventListener("load", function() {
 
         //Ceci est lorsqu'on soumet nos informations de connexion au controlleur
       case "connexion-submit":
-        console.log('connexion en cours');
+        validerConnexion($(this).parents("#connexion-form"));
         break;
 
         //Ceci est lorsque on clique sur annuler (remet l'accueil)
@@ -50,6 +50,47 @@ window.addEventListener("load", function() {
   });
 });
 
+function validerConnexion(formulaire) {
+  var formulaireEstValide = true;
+  formulaire.children(".form-group").each(function() {
+    var currentInput = $(this).find("input");
+    if (currentInput.val() == "") {
+      currentInput.addClass("is-invalid");
+      $(this).find(".invalid-feedback").text("ne peut pas être vide");
+      $(this).find(".valid-feedback").text("");
+      formulaireEstValide = false;
+    } else {
+      currentInput.removeClass("is-invalid");
+    }
+  });
+
+  if (formulaireEstValide) {
+    console.log('connexion en cours');
+
+    setTimeout(function() {
+      $.ajax({
+        url: "index.php/usagers/connexion",
+        method: "POST",
+        data: {
+          "nomUsager": $("#username").val(),
+          "motDePasse": $("#password").val()
+        },
+        success: function(reponse) {
+          $("#content").empty();
+          $("#content").append(reponse);
+        }
+      });
+    }, 500);
+  }
+} //Fin de la fonction valierConnexion
+
+
+
+/**
+ * Fait la validation des inputs du formulaire d'inscription et affiche les messages appropries
+ *
+ * @param      {DOM Element}  formulaire  le formulaire d'inscription
+ */
 function validerInscription(formulaire) {
   var formulaireEstValide = true;
   formulaire.children(".form-group").each(function() {
