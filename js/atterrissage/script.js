@@ -52,6 +52,8 @@ window.addEventListener("load", function() {
 
 function validerConnexion(formulaire) {
   var formulaireEstValide = true;
+
+  //Ajoute le message d'erreur si un champ est vide
   formulaire.children(".form-group").each(function() {
     var currentInput = $(this).find("input");
     if (currentInput.val() == "") {
@@ -65,22 +67,55 @@ function validerConnexion(formulaire) {
   });
 
   if (formulaireEstValide) {
-    console.log('connexion en cours');
-
-    setTimeout(function() {
-      $.ajax({
-        url: "index.php/usagers/connexion",
-        method: "POST",
-        data: {
-          "nomUsager": $("#username").val(),
-          "motDePasse": $("#password").val()
-        },
-        success: function(reponse) {
-          $("#content").empty();
-          $("#content").append(reponse);
+    $("#username").val();
+    $("#password").val();
+    $.ajax({
+      url: "index.php/usagers/connexion",
+      method: "POST",
+      data: {
+        "nomUsager": $("#username").val(),
+        "motDePasse": $("#password").val()
+      },
+      success: function(reponse) {
+        console.log(reponse);
+        if (reponse.statut == "valide") {
+          window.location.replace("index.php/accueil/index");
+        } else if (reponse.statut == "nonexistant") {
+          formulaire.children(".form-group").each(function() {
+            var currentInput = $(this).find("input");
+            currentInput.addClass("is-invalid");
+            $(this).find(".invalid-feedback").text("Combinaison invalide");
+            $(this).find(".valid-feedback").text("");
+          });
+        } else if (reponse.statut == "nonValide") {
+          let message = ("<p>Bonjour " + $("#username").val() + ", vous n'êtes pas encore validé, revenez plus tard.</p>");
+          $.ajax({
+            url: "index.php/usagers/connexion_message",
+            method: "POST",
+            data: {
+              "message": message,
+            },
+            success: function(reponse) {
+              $("#content").empty();
+              $("#content").append(reponse);
+            }
+          });
+        } else if (reponse.statut == "banni") {
+          let message = ("<p>Bonjour " + $("#username").val() + ", vous ne pouvez vous connecter car vous êtes bani. Contactez un administrateur</p>");
+          $.ajax({
+            url: "index.php/usagers/connexion_message",
+            method: "POST",
+            data: {
+              "message": message,
+            },
+            success: function(reponse) {
+              $("#content").empty();
+              $("#content").append(reponse);
+            }
+          });
         }
-      });
-    }, 500);
+      }
+    });
   }
 } //Fin de la fonction valierConnexion
 

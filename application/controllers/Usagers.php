@@ -24,32 +24,6 @@ class Usagers extends CI_Controller {
   }
 
   /*
-   * connexion a la plateforme du site
-  */
-  public function connexion() {
-    $nomUsager = $this->input->post("nomUsager");
-    $motDePasse = $this->input->post("motDePasse");
-    if(isset($nomUsager) && isset($motDePasse)) {
-      if($nomUsager != "" && $motDePasse != "") {
-        //vérifier les données usager dans le model usager
-        $resultat = $this->Usagers_model->verifier_usager($nomUsager, $motDePasse);
-        if($resultat) {
-          $utilisateur = array(
-            'username'  => $nomUsager
-          );
-          //Cree la session avec un username
-          $this->session->set_userdata($utilisateur);
-          $this->accueil();
-        }
-        else {
-          echo "echec";
-          $this->load->view("atterrissage/connexion-confirmation.php");
-        }
-      }
-    }
-  }
-
-  /*
    * Obtient un usager dans la base de donnees
   */
   public function obtenir_usager() {
@@ -86,6 +60,61 @@ class Usagers extends CI_Controller {
         header('Content-Type: application/json');
         echo json_encode($reponse);
       }
+    }
+  }
+
+  /*
+   * connexion a la plateforme du site
+  */
+  public function connexion() {
+    $nomUsager = $this->input->post("nomUsager");
+    $motDePasse = $this->input->post("motDePasse");
+    $succes = true;
+    if(!isset($nomUsager) || !isset($motDePasse)) {
+      $succes = false;
+    } else {
+      if($nomUsager == "" || $motDePasse == "") {
+        $succes = false;
+      } else {
+        //vérifier les données usager dans le model usager
+        $resultat = $this->Usagers_model->verifier_connexion($nomUsager, $motDePasse);
+        //Si l'usager existe
+        if($resultat['existe']) {
+          //On verifi s'il est bani
+          if ($resultat['estBanni'] == true) {
+            $reponse = ["statut" => "banni"];
+            //S'il existe, mais qu'ill est n'est pas valide, on retourne false en indiquant pourquoi
+          } elseif ($resultat['estValide'] == false) {
+            $reponse = ["statut" => "nonValide"];
+            //S'il existe, mais qu'ill est n'est pas valide, on retourne false en indiquant pourquoi
+          } else {
+            $utilisateur = $this->Usagers_model->obtenir_usager($nomUsager);
+            //Cree la session avec un username
+            $this->session->set_userdata($utilisateur);
+            $reponse = ["statut" => "valide"];
+          }
+          //S'il existe, mais qu'il est bani, on retourne false en indiquant pourquoi
+        } else {
+          $reponse = ["statut" => "nonexistant"];
+        }
+      }
+    }
+    header('Content-Type: application/json');
+    if($succes){
+      echo json_encode($reponse);
+    } else {
+      echo false;
+    }
+  }
+
+  /**
+   * Affiche un message personnalise si un usager n'est pas valide ou s'il est banni
+   */
+  public function connexion_message () {
+    $message = $this->input->post("message");
+    if(isset($message) && strlen($message) > 0) {
+      $data["message"] = $message;
+      $this->load->view("atterrissage/connexion-error.php", $data);
     }
   }
 
