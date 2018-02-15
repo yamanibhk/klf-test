@@ -1,5 +1,5 @@
 html {
-  background: url(http://localhost/rentahouse/images/atterrissage/dakota-timber-bg-flou.png) no-repeat center center fixed;
+  background: url(http://localhost:8888/rentahouse/images/atterrissage/dakota-timber-bg-flou.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -24,7 +24,6 @@ html {
   top:30%;
   left:1rem;
 }
-
 /* Ceci permets de center horizontalement et verticalement le contenu sur les ecrans de plus de 475px */
 #wrapper{
   position: fixed;
