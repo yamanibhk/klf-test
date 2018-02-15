@@ -1,10 +1,10 @@
 window.addEventListener("load", function() {
   $(document.body).on("click", "button, a", function(evt) {
     switch (evt.currentTarget.id) {
-      //Ceci va charger le formulaire de l'inscription
-      case "inscription":
+      //Ceci va charger le formulaire d'ajout d'appartement
+      case "ajoutAppartement":
         $.ajax({
-          url: "index.php/atterrissage/inscription",
+          url: "index.php/appartement/ajouter_appartement",
           method: "POST",
           success: function(data) {
             $("#content").empty();
@@ -13,38 +13,9 @@ window.addEventListener("load", function() {
         });
         break;
 
-        //Ceci charge le formulaire de connexion
-      case "connexion":
-        $.ajax({
-          url: "index.php/atterrissage/connexion",
-          method: "POST",
-          success: function(data) {
-            $("#content").empty();
-            $("#content").append(data);
-          }
-        });
-        break;
-
-        //Ceci est lorsqu'on soumet nos informations d'inscription au controlleur
-      case "inscription-submit":
-        validerInscription($(this).parents("#inscription-form"));
-        break;
-
-        //Ceci est lorsqu'on soumet nos informations de connexion au controlleur
-      case "connexion-submit":
-        console.log('connexion en cours');
-        break;
-
-        //Ceci est lorsque on clique sur annuler (remet l'accueil)
-      case "cancel":
-        $.ajax({
-          url: "index.php/atterrissage/backToIndex",
-          method: "POST",
-          success: function(data) {
-            $("#content").empty();
-            $("#content").append(data);
-          }
-        });
+        //Ceci est lorsqu'on soumet nos informations d'ajout d'appartement au controlleur
+      case "enregistrerAppartement-submit":
+        validerInscription($(this).parents("#inscrireAppartement-form"));
         break;
     }
   });
