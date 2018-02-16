@@ -118,6 +118,13 @@ class Usagers extends CI_Controller {
     }
   }
 
+  /**
+   * Detruit la session et renvoie a l'atterrissage
+   */
+  public function deconnexion () {
+    die("on deconnecte");
+  }
+
   /*
    * insertion d'un nouveau utilisateur dans la base de donnée
   */
