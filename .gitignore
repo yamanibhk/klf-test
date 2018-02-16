@@ -44,3 +44,13 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+xampp/
+*.*
+
+README.md
+
+dashboard/
+webalizer/
+rentahouse/
+img/

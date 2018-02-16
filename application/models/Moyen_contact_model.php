@@ -95,8 +95,8 @@ class Moyen_contact_model extends CI_Model{
           
     );
     
-     query= $this->db->insert("Moyen_contact", $data);
-     if (query) return true;
+     $query = $this->db->insert("Moyen_contact", $data);
+     if ($query) return true;
   }
   
 
@@ -122,3 +122,4 @@ class Moyen_contact_model extends CI_Model{
     $this->db->where('nomUsager', $nomUsager);
     $this->db->delete('Moyen_contact');
   }
+}
