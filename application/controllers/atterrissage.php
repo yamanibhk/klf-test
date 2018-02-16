@@ -4,23 +4,28 @@ class Atterrissage extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->helper("url_helper");//Load a helper
-        //chargement de la librairie pour la validation du formulaire
-        $this->load->library('form_validation');
-        $this->load->helper('form');
+    //chargement de la librairie pour la validation du formulaire
+    $this->load->library('form_validation');
+    $this->load->library('session');
+    $this->load->helper('form');
   }
 
   /**
    * Affiche la page d'atterrissage
    */
   public function index() {
-    if ( !file_exists(APPPATH.'views/atterrissage/index.php')) {
-      show_404 ();
-    } else {
-      $data["titre"] = "RENTAHOUSE";//the page title
-      //Load the views
-      $this->load->view("templates/header.php", $data);
-      $this->load->view("atterrissage/index",$data);
-      $this->load->view("templates/footer.php", $data);
+  	if($this->session->userdata("nomUsager")){
+  		header("Location: index.php/accueil/index");
+  	} else {
+	    if ( !file_exists(APPPATH.'views/atterrissage/index.php')) {
+	      show_404 ();
+	    } else {
+	      $data["titre"] = "RENTAHOUSE";//the page title
+	      //Load the views
+	      $this->load->view("templates/header.php", $data);
+	      $this->load->view("atterrissage/index",$data);
+	      $this->load->view("templates/footer.php", $data);
+	  	}
     }
   }
 
