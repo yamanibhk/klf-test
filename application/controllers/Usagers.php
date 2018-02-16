@@ -5,6 +5,7 @@ class Usagers extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->model("Usagers_model");
+    $this->load->model("Moyen_contact_model");
     $this->load->helper("url_helper");
     $this->load->library('session');
     //chargement de la librairie pour la validation du formulaire
@@ -13,15 +14,6 @@ class Usagers extends CI_Controller {
     $this->load->helper('date');
   }
 
-  /**
-   * Affiche la page d'accueil
-   */
-  public function accueil() {
-    // charger les vues
-    $this->load->view("templates/header.php");
-    $this->load->view("accueil/index");
-    $this->load->view("templates/footer.php");
-  }
 
   /*
    * Obtient un usager dans la base de donnees
@@ -51,7 +43,7 @@ class Usagers extends CI_Controller {
     if(isset($courriel)) {
       if($courriel != "") {
         // vérifier l'existance d'un courriel dans la bd
-        $reponseCourriel = $this->Usagers_model->obtenir_courriel($courriel);
+        $reponseCourriel = $this->Moyen_contact_model->obtenir_courriel($courriel);
         if($reponseCourriel) {
           $reponse = ["existe" => true];
         } else {
@@ -122,7 +114,8 @@ class Usagers extends CI_Controller {
    * Detruit la session et renvoie a l'atterrissage
    */
   public function deconnexion () {
-    die("on deconnecte");
+    $this->session->sess_destroy();
+    header("Location: ".base_url());
   }
 
   /*

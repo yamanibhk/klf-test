@@ -28,7 +28,7 @@ class Accueil extends CI_Controller {
         $this->load->view("templates/footer.php", $data);
       }
     } else {
-      header("Location: index.php/atterrissage/index");
+      header("Location: ".base_url());
     }
   }
 }
