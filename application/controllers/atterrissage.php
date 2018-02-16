@@ -15,7 +15,8 @@ class Atterrissage extends CI_Controller {
    */
   public function index() {
     if($this->session->userdata("nomUsager")){
-      header("Location: index.php/accueil/index");
+      header("Location: ".base_url()."index.php/accueil/index");
+      // header("Location: index.php/accueil/index");
     } else {
       if ( !file_exists(APPPATH.'views/atterrissage/index.php')) {
         show_404 ();

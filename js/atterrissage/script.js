@@ -77,7 +77,6 @@ function validerConnexion(formulaire) {
         "motDePasse": $("#password").val()
       },
       success: function(reponse) {
-        console.log(reponse);
         if (reponse.statut == "valide") {
           window.location.replace("index.php/accueil/index");
         } else if (reponse.statut == "nonexistant") {
