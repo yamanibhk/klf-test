@@ -13,15 +13,6 @@ class Usagers extends CI_Controller {
     $this->load->helper('date');
   }
 
-  /**
-   * Affiche la page d'accueil
-   */
-  public function accueil() {
-    // charger les vues
-    $this->load->view("templates/header.php");
-    $this->load->view("accueil/index");
-    $this->load->view("templates/footer.php");
-  }
 
   /*
    * Obtient un usager dans la base de donnees
@@ -122,7 +113,8 @@ class Usagers extends CI_Controller {
    * Detruit la session et renvoie a l'atterrissage
    */
   public function deconnexion () {
-    die("on deconnecte");
+    $this->session->sess_destroy();
+    header("Location: ".base_url());
   }
 
   /*
