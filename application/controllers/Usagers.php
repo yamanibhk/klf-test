@@ -7,9 +7,6 @@ class Usagers extends CI_Controller {
     $this->load->model("Usagers_model");
     $this->load->helper("url_helper");
     $this->load->library('session');
-    //chargement de la librairie pour la validation du formulaire
-    $this->load->library('form_validation');
-    $this->load->helper('form');
     $this->load->helper('date');
   }
 
@@ -158,6 +155,4 @@ class Usagers extends CI_Controller {
     }
     $this->load->view("atterrissage/inscription-confirmation.php", $data);
   }
-
->>>>>>> c8c9db59c60da89fddfb7dd3a7d1445234a9acd3
 }//Fin de la classe

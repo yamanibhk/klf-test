@@ -1,7 +1,8 @@
 <?php
-echo "Hello ceci est la pae accueil"
+defined('BASEPATH') OR exit('No direct script access allowed');
+echo "<p>Bienvenu a l'accueil</p>";
+var_dump($utilisateur);
 ?>
-<div class="d-flex flex-wrap justify-content-end">
-  <button id="ajouter-submit" class="btn btn-primary">Ajouter</button>
+<div id="ajouter-submit">
+<button class="btn btn-primary">Ajouter</button>
 </div>
-

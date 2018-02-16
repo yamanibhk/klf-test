@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="<?=base_url();?>css/atterrissage/stylesheet.css">
+<script type='text/javascript' src="<?=base_url();?>js/appartement/script.js"></script>
+
+<h1 id="page-title"><span><img class="logo" src="<?=base_url();?>images/atterrissage/logo.svg" alt="logo"></span><?=$titre;?></h1>
 <section id="inscrireAppartement-form">
   <div class="form-group">       
     <label for="arrondissement">Arrondissement</label>
