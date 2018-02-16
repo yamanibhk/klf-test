@@ -1,7 +1,7 @@
 <section id="inscription-form">
   <div class="form-group">
     <label for="username">Choisissez votre username</label>
-    <input type="text" class="form-control" name="nomUsager" id="username" aria-describedby="username" placeholder="Unique, il ne pourra être changé">
+    <input type="text" class="form-control" name="nomUsager" id="username" aria-describedby="username" placeholder="Unique, il ne pourra être changé" autofocus>
     <div class="valid-feedback"></div>
     <div class="invalid-feedback"></div>
   </div>

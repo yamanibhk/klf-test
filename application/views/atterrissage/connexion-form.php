@@ -1,7 +1,7 @@
 <section id="connexion-form">
   <div class="form-group">
     <label for="username">Votre username</label>
-    <input type="text" class="form-control" name="nomUsager" id="username" aria-describedby="username">
+    <input type="text" class="form-control" name="nomUsager" id="username" aria-describedby="username" autofocus>
     <div class="valid-feedback"></div>
     <div class="invalid-feedback"></div>
   </div>
