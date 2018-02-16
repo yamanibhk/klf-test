@@ -4,3 +4,23 @@ h1, h2, h3, h4, h5 {
 p, span, a, button, div, section {
   font-family: 'Roboto', Sans-serif;
 }
+
+/* Ceci est le titre en haut de la page */
+#page-title{
+  font-size: 2rem;
+  color: #ECF0F1;
+  background-color: #E74C3C;
+  text-align: center;
+  padding: 1.2rem 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.logo {
+  width: 2rem;
+  position: absolute;
+  top:30%;
+  left:1rem;
+}
