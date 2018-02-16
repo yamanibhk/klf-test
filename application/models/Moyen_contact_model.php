@@ -1,5 +1,3 @@
-
-
 <?php
 /**
  * @file      Moyen_contact_model.php
@@ -124,4 +122,3 @@ class Moyen_contact_model extends CI_Model{
     $this->db->where('nomUsager', $nomUsager);
     $this->db->delete('Moyen_contact');
   }
-?>
