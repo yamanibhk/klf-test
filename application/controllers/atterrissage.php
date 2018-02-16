@@ -14,18 +14,18 @@ class Atterrissage extends CI_Controller {
    * Affiche la page d'atterrissage
    */
   public function index() {
-  	if($this->session->userdata("nomUsager")){
-  		header("Location: index.php/accueil/index");
-  	} else {
-	    if ( !file_exists(APPPATH.'views/atterrissage/index.php')) {
-	      show_404 ();
-	    } else {
-	      $data["titre"] = "RENTAHOUSE";//the page title
-	      //Load the views
-	      $this->load->view("templates/header.php", $data);
-	      $this->load->view("atterrissage/index",$data);
-	      $this->load->view("templates/footer.php", $data);
-	  	}
+    if($this->session->userdata("nomUsager")){
+      header("Location: index.php/accueil/index");
+    } else {
+      if ( !file_exists(APPPATH.'views/atterrissage/index.php')) {
+        show_404 ();
+      } else {
+        $data["titre"] = "RENTAHOUSE";//the page title
+        //Load the views
+        $this->load->view("templates/header.php", $data);
+        $this->load->view("atterrissage/index",$data);
+        $this->load->view("templates/footer.php", $data);
+      }
     }
   }
 
