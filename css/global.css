@@ -19,8 +19,8 @@ p, span, a, button, div, section {
   z-index: 1000;
 }
 .logo {
-  width: 2rem;
+  width: 3rem;
   position: absolute;
-  top:30%;
+  top:20%;
   left:1rem;
 }
