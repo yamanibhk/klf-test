@@ -1,4 +1,14 @@
 <?php
+/**
+ * @file      Usagers_model.php
+ * @author    Yamani & Mathieu 
+ * @version   1.0
+ * @date      13 février 2018
+ * @brief     accées et vérification et CRUD sur les données des utilisateurs
+ *
+ * @details    Cette classe nous permet de vérifier l'existence des utilisateurs, accès aux données des utilisateurs selon des parametres choisis, opérations CRUD sur table utilisateur
+ */
+
 class Usagers_model extends CI_Model {
 
   /**
@@ -9,30 +19,28 @@ class Usagers_model extends CI_Model {
   }
 
   /**
-  * Retourne un usager.
-  *
-  * @return     array  l'usager.
-  */
+   * Retourne un usager.
+   *
+   * @param      string   $username  nom usager
+   *
+   * @return     tableau  d'usager.
+   */
   public function obtenir_usager($username){
     $query = $this->db->get_where("usager", array("nomUsager" => $username));
     return $query->row_array();
   }
 
-  /**
-  * Retourne un email.
-  *
-  * @return    array le email.
-  */
-  public function obtenir_courriel($courriel){
-    $query = $this->db->get_where("moyen_contact", array("Details" => $courriel));
-    return $query->row_array();
-  }
+  
 
   /**
-  * inscrire un nouveau utilisateur dans la base de donnée
-  *
-  * @return     boolean  ( description_of_the_return_value )
-  */
+   * inscrire un nouveau utilisateur dans la base de donnée
+   *
+   * @param      string   $nomUsager   le nom usager
+   * @param      string   $motDePasse  le mot de passe
+   * @param      string   $courriel    le courriel
+   *
+   * @return     boolean  signifiant que l'usager a été ajouté
+   */
   public function ajouter_usager($nomUsager, $motDePasse, $courriel){
     $data_username = array(
       'nomUsager' => $nomUsager,
@@ -61,10 +69,13 @@ class Usagers_model extends CI_Model {
   }
 
   /**
-  * vérifier si l'utilisateur est deja inscrit dans la base de donnée
-  *
-  * @return     array  l'usager
-  */
+   * vérifier si l'utilisateur est deja inscrit dans la base de donnée
+   *
+   * @param      string   $nomUsager   le nom usager
+   * @param      string   $motDePasse  le mot de passe
+   *
+   * @return     boolean  signifant que l'usager existe dans la table
+   */
   public function verifier_connexion($nomUsager, $motDePasse) {
     $query = $this->db->get_where("usager", array("nomUsager" => $nomUsager));
     $reponse = array();
@@ -85,11 +96,16 @@ class Usagers_model extends CI_Model {
   }
   
   /**
-  * inscrire un nouveau utilisateur dans la base de donnée
-  *
-  * @return     boolean  ( description_of_the_return_value )
-  */
-  public function modifier_usager($nomUsager, $Nom, $Prenom, $motDePasse, $Adresse, $typePaiem){//usager modifie ses données 
+   * modification données de l'utilisateur dans la base de donnée
+   *
+   * @param      string  $nomUsager   le nom usager
+   * @param      string  $Nom         le nom
+   * @param      string  $Prenom      le prenom
+   * @param      string  $motDePasse  le mot de passe
+   * @param      string  $Adresse     l'adresse
+   * @param      string  $typePaiem   le type de paiement
+   */
+  public function modifier_usager($nomUsager, $Nom, $Prenom, $motDePasse, $Adresse, $typePaiem){ 
       //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
     $data = array (
       "Nom" => $Nom,
@@ -104,22 +120,22 @@ class Usagers_model extends CI_Model {
   }
 
     /**
-     * { function_description }
+     * suppression d'un utilisateur
      *
-     * @param      <type>  $nomUsager  The nom usager
+     * @param     string  $nomUsager  le nom usager
      */
-    public function supprimer_usager($nomUsager){//suppression d'un usager
+    public function supprimer_usager($nomUsager){
     $this->db->where('nomUsager', $nomUsager);
     $this->db->delete('Usager');
   }
 
     /**
-     * { function_description }
+     * changer le status d'un utilisateur de valide a invalide et le contraire
      *
-     * @param      <type>  $nomUsager  The nom usager
-     * @param      <type>  $estValide  The est valide
+     * @param      string  $nomUsager  le nom usager
+     * @param      boolean  $estValide  si a true valide si a false invalide
      */
-    public function changeStatusValide_usager($nomUsager, $estValide){//valider invalider usager 
+    public function changeStatusValide_usager($nomUsager, $estValide){
       //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
       $data = array (
         "estValide" => $estValide,          
@@ -130,12 +146,12 @@ class Usagers_model extends CI_Model {
     }
     
     /**
-     * { function_description }
+     * bannir un usager ou ne pas le bannir
      *
-     * @param      <type>  $nomUsager  The nom usager
-     * @param      <type>  $estValide  The est valide
+     * @param      string  $nomUsager  le nom usager
+     * @param      boolean  $estBanni   si a true utilisateur banni si a false il est pas banni
      */
-    public function BannirInbannir_usager($nomUsager, $estValide){//bannir inbannir usager 
+    public function BannirInbannir_usager($nomUsager, $estBanni){
       //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
       $data = array (
         "estBanni" => $estBanni,          
@@ -146,13 +162,13 @@ class Usagers_model extends CI_Model {
     }
     
     /**
-     * { function_description }
+     * affichage des utilisateur ayant un roe précis
      *
-     * @param      <type>  $Role   The role
+     * @param      string  $Role   le role choisis
      *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     array  les données des utilisateurs ayant le role choisi
      */
-    public function obtenir_usagersParRole($Role){//affichage de tout les usagers ayant un role précis
+    public function obtenir_usagersParRole($Role){
       $this->db->select('*');
       $this->db->from('Usager');
       $this->db->join('Role', 'Usager.idRole = Role.idRole');
@@ -166,68 +182,67 @@ class Usagers_model extends CI_Model {
     }
     
     /**
-     * { function_description }
+     * affichage de tout les usagers banni ou pas banni
      *
-     * @param      <type>  $estBanni  The est banni
+     * @param      boolean  $estBanni  si a true utilisateur banni si a false il est pas banni
      *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     array  les données des utilisateurs bannis ou pas bannis selon le choix
      */
-    public function obtenir_usagersParBanniInbanni($estBanni){//affichage de tout les usagers banni ou pas banni
+    public function obtenir_usagersParBanniInbanni($estBanni){
       $query = $this->db->get_where("Usager", array("estBanni" => $estBanni));
       
-      //tableau de resultats
+      
       return $query->result_array();
     }
     
     
     /**
-     * { function_description }
+     * affichage de tout les usagers valides ou pas valides
      *
-     * @param      <type>  $estValide  The est valide
+     * @param      boolean  $estValide  si a true utilisateur valide si a false il est pas valide
      *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     array  les données des utilisateurs valides ou pas valides selon le choix
      */
-    public function obtenir_usagersParValideInvalide($estValide){//affichage de tout les usagers valide ou pas valide
+    public function obtenir_usagersParValideInvalide($estValide){
       $query = $this->db->get_where("Usager", array("estValide" => $estValide));
       
-      //tableau de resultats
+      
       return $query->result_array();
     }
     
     /**
-     * { function_description }
+     * affichage de tous les utilisateurs ayant un mode de paiement choisi
      *
-     * @param      <type>  $typePaiem  The type paiem
+     * @param      string  $typePaiem  le type de paiement
      *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     array  les données des utilisateurs
      */
-    public function obtenir_usagersParTypePaiement($typePaiem){//affichage de tout les usagers ayant un type de paiement précis
+    public function obtenir_usagersParTypePaiement($typePaiem){
       $query = $this->db->get_where("Usager", array("typePaiem" => $typePaiem));
       
-      //tableau de resultats
+      
       return $query->result_array();
     }
     
     /**
-     * { function_description }
+     * affichage de tout les usagers ayant été validés par un administrateur précis
+     * 
+     * @param      string  $Validateur  l'administrateur validateur
      *
-     * @param      <type>  $Validateur  The validateur
-     *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     array  les données des utilisateurs
      */
-    public function obtenir_usagersParValidateur($Validateur){//affichage de tout les usagers ayant été validés par un administrateur précis
+    public function obtenir_usagersParValidateur($Validateur){
       $query = $this->db->get_where("Usager", array("Validateur" => $Validateur));
       
-      //tableau de resultats
-      return $query->result_array();
+           return $query->result_array();
     }
 
     /**
-     * { function_description }
+     * affichage de toutes les données des utilisateurs pour l'administrateur ,ordre par defaut sur la clé primaire nomUsager 
      *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     array  toutes les données de tous les utilisateurs
      */
-    public function obtenir_usagers(){//affichage de tout les usagers pour l'admin ,ordre par defaut sur la clé primaire nomUsager
+    public function obtenir_usagers(){
     $this->db->select('*, count(Appartement.idAppart) as NbreAppart, count(Location.idLocation) as NbreLocat');
     $this->db->from('Usager');
     $this->db->join('Mode_paiement', 'Usager.typePaiem = Mode_paiement.typePaiem');
@@ -265,13 +280,13 @@ class Usagers_model extends CI_Model {
 
 
     /**
-     * { function_description }
+     * affichage de toute les informations d'un usager précis
      *
-     * @param      <type>  $nomUsager  The nom usager
+     * @param      string  $nomUsager  nom usager
      *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     array  toutes les données de l'utilisateur précisé
      */
-    public function obtenir_usagerParNomUsager($nomUsager){//affichage de toute les informations d'un usager précis
+    public function obtenir_usagerParNomUsager($nomUsager){
     $this->db->select('*');
     $this->db->from('Usager');
     $this->db->join('Mode_paiement', 'Usager.typePaiem = Mode_paiement.typePaiem');
