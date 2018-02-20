@@ -16,7 +16,7 @@ class appartement extends CI_Controller {
   /**
    * afficher les appartement d'un usager
    */
-    public function mesLogements() {
+    public function index() {
     if($this->session->userdata("nomUsager")) {
       if ( !file_exists(APPPATH.'views/accueil/index.php')) {
         show_404 ();
@@ -28,9 +28,9 @@ class appartement extends CI_Controller {
         //obtenir la liste des logements d'un usager
         $data['appartement'] = $this->Appartements_model->obtenir_appartement($data['utilisateur']['nomUsager']);
         $this->load->view("templates/header.php", $data);
-        $this->load->view("accueil/index.php", $data);
+        $this->load->view("templates/barre-rouge.php", $data);
+        $this->load->view("appartement/index.php", $data);
         $this->load->view("accueil/modal.php", $data);
-        $this->load->view("appartement/appartement_usager.php",$data);
         $this->load->view("templates/footer.php", $data);
       }
     } else {
@@ -44,17 +44,10 @@ class appartement extends CI_Controller {
   public function ajouter() {
     //obtenir les arrondissements
     $data['arrondissement'] = $this->Arrondissements_model->obtenir_arrondissement();
-    // $data['menus'] = $this->modalmenus->chargeMenus();
-    // $data["titre"] = "MES LOGEMENTS";//Le titre de la page
-    // $data['utilisateur'] = $this->session->get_userdata();
-    // $this->load->view("templates/header.php");
-    // $this->load->view("accueil/index.php", $data);
-    // $this->load->view("accueil/modal.php", $data);
     $this->load->view("appartement/appartement-form.php");
-    // $this->load->view("templates/footer.php");
   }
 
-     /**
+  /**
    * enregistrer les données saisies dans le formulaire d'ajout d'une nouvelle annonce
    */
   public function enregistrer() {

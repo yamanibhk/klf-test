@@ -16,4 +16,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <!-- default styles -->
   <link rel="stylesheet" href="<?=base_url()?>css/global.css">
 </head>
-<body class="container">
+<body>
