@@ -74,6 +74,7 @@ class Appartements_model extends CI_Model {
     $this->db->join('photo', 'appartement.idAppart = photo.idAppart');
     
     $this->db->where('Note >=', 4);
+    $this->db->where('disponibilite.dateFinDispo >=', NOW());
 
     $query = $this->db->get();
 
@@ -87,15 +88,38 @@ class Appartements_model extends CI_Model {
      *
      * @return     array  toutes les données de l'utilisateur précisé
      */
-    public function obtenir_appartementsVedette($nomUsager){
+    public function obtenir_appartements($data){
     $this->db->select('*');
     $this->db->from('appartement');
     $this->db->join('noter', 'appartement.idAppart = noter.idAppart');
     $this->db->join('arrondissement', 'appartement.idArrondissement = arrondissement.idArrondissement');
     $this->db->join('disponibilite', 'appartement.idAppart = disponibilite.idAppart');
     $this->db->join('photo', 'appartement.idAppart = photo.idAppart');
+    if (!empty($data['idArrondissement'])) $this->db->where('appartement.idArrondissement', $data['idArrondissement']);
+    if (!empty($data['codePostal'])) $this->db->where('codePostal', $data['codePostal']);
+    if (!empty($data['typeLogement'])) $this->db->where('typeLogement', $data['typeLogement']);
+    if (!empty($data['nbrePiece'])) $this->db->where('nbrePiece', $data['nbrePiece']);
+    if (!empty($data['numEtage'])) {
+      $signe=$data['numEtage'];
+      if ($signe[0]=='>') $this->db->where('numEtage >=', $data['numEtage'])
+      else  $this->db->where('numEtage <', $data['numEtage']);
+    }
+    if (!empty($data['Internet'])) $this->db->where('Internet', $data['Internet']);
+    if (!empty($data['Television'])) $this->db->where('Television', $data['Television']);
+    if (!empty($data['Climatiseur'])) $this->db->where('Climatiseur', $data['Climatiseur']);
+    if (!empty($data['Adapte'])) $this->db->where('Adapte', $data['Adapte']);
+    if (!empty($data['nbreStationnement'])) $this->db->where('nbreStationnement', $data['nbreStationnement']);
+    if (!empty($data['Meuble'])) $this->db->where('Meuble', $data['Meuble']);
+    if (!empty($data['LaveuseSecheuse'])) $this->db->where('LaveuseSecheuse', $data['LaveuseSecheuse']);
+    if (!empty($data['LaveVaisselle'])) $this->db->where('LaveVaisselle', $data['LaveVaisselle']);
+    if (!empty($data['Note'])) $this->db->where('Note', $data['Note']);
+    if (!empty($data['IntervallesAcceptee'])) {
+      $this->db->where('IntervallesAcceptee', $data['IntervallesAcceptee']);
+      if (!empty($data['IntervallesAcceptee']))
+
+    }
     
-    if (!empty(data['']))$this->db->where('nomUsager', $nomUsager);
+
 
     $query = $this->db->get();
 
