@@ -119,34 +119,29 @@ class Usagers extends CI_Controller {
    * Detruit la session et renvoie a l'atterrissage
    */
   public function deconnexion () {
-    die("on deconnecte");
+    $this->session->sess_destroy();
+    redirect();
   }
-
   /*
    * insertion d'un nouveau utilisateur dans la base de donnée
   */
   public function inscription() {
-    $nomUsager = $this->input->post("nomUsager");
-    $motDePasse = $this->input->post("motDePasse");
-    $courriel = $this->input->post("courriel");
     $succes = true;
-
     //S'il y a des donnees ne sont pas recues
-    if(!isset($nomUsager) || !isset($motDePasse) || !isset($courriel))  {
+    if(!isset($_POST['nomUsager']) || !isset($_POST['motDePasse']) || !isset($_POST['courriel']))  {
       $succes = false;
     } else {
       //S'il y a des donnees qui sont vides
-      if($nomUsager == "" || $motDePasse == "" || $courriel == "") {
+      if($_POST['nomUsager'] == "" || $_POST['motDePasse'] == "" || $_POST['courriel'] == "") {
         $succes = false;
       } else {
         // ajout d'un usager dans le model usager
-        $resultat = $this->Usagers_model->ajouter_usager($nomUsager, $motDePasse, $courriel);
+        $resultat = $this->Usagers_model->ajouter_usager($_POST['nomUsager'], $_POST['motDePasse'] , $_POST['courriel']);
         if(!$resultat) {
           $succes = false;
         }
       }
     }
-
     if($succes) {
       $data["erreur"] = false;
       /*

@@ -30,5 +30,6 @@ class Accueil extends CI_Controller {
       header("Location: index.php/atterrissage/index");
     }
   }
+		
 }
 

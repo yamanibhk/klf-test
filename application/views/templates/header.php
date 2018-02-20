@@ -15,5 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   <!-- default styles -->
   <link rel="stylesheet" href="<?=base_url()?>css/global.css">
+		<script type='text/javascript' src="<?=base_url();?>js/appartement/script.js"></script>
+
 </head>
 <body class="container">

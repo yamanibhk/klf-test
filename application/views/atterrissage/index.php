@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="<?=base_url();?>css/atterrissage/stylesheet.css">
 <script type='text/javascript' src="<?=base_url();?>js/atterrissage/script.js"></script>
+<script type='text/javascript' src="<?=base_url();?>js/appartement/script.js"></script>
 
 <h1 id="page-title"><span><img class="logo" src="<?=base_url();?>images/global/logo.svg" alt="logo"></span><?=$titre?></h1>
 <div id="wrapper">

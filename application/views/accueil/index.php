@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
 <h1 id="page-title" class="d-flex justify-content-between px-3">
   <span><img class="logo" src="<?=base_url();?>images/global/logo.svg" alt="logo"></span>
   <?=$titre?>
@@ -10,3 +11,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <i class="fas fa-bars ml-2"></i>
   </button>
 </h1>
+
