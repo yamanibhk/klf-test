@@ -9,7 +9,6 @@ class Accueil extends CI_Controller {
     $this->load->helper("url_helper");
     $this->load->library('session');
     $this->load->library('modalmenus');
-    //chargement de la librairie pour la validation du formulaire
     $this->load->helper('date');
   }
 
@@ -18,10 +17,12 @@ class Accueil extends CI_Controller {
       if ( !file_exists(APPPATH.'views/accueil/index.php')) {
         show_404 ();
       } else {
+        //Mets les infos de l'usager dans une variable
+        $data['utilisateur'] = $this->session->get_userdata();
         //Charge les menus
         $data['menus'] = $this->modalmenus->chargeMenus();
+
         $data["titre"] = "ACCUEIL";//Le titre de la page
-        $data['utilisateur'] = $this->session->get_userdata();
         $this->load->view("templates/header.php", $data);
         $this->load->view("accueil/index.php", $data);
         $this->load->view("accueil/modal.php", $data);
@@ -31,4 +32,6 @@ class Accueil extends CI_Controller {
       header("Location: ".base_url());
     }
   }
+		
 }
+
