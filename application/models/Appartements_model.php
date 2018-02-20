@@ -23,9 +23,9 @@ class Appartements_model extends CI_Model {
    * @return confirmation d'inscription
    */
   public function enregistrer_appartement($arrondissement,$adresse,$codePostal,$type,$piece,$etage,$internet,$tele,
-			 						$climatiseur,$meuble,$adapte,$laveuseSecheuse,$laveVaisselle,$stationnement,$description,$proprietaire){
+			 						$climatiseur,$meuble,$adapte,$laveuseSecheuse,$laveVaisselle,$stationnement,$description,$proprietaire,$image,$detail){
 		$data = array (
-     "adresse" => $adresse,
+      "adresse" => $adresse,
 			"description" => $description,
       "codePostal" => $codePostal,
       "typeLogement" => $type,
@@ -42,8 +42,11 @@ class Appartements_model extends CI_Model {
 			"idArrondissement" => $arrondissement,
 			"proprietaire" => $proprietaire
     );
-		$query = $this->db->insert('appartement', $data);
-		if ($query) return true;
+		$query1 = $this->db->insert('appartement', $data);
+    $id= $this->db->last_insert_id('appartement');//récuperer le dernier id appartement 
+    console.log($id);
+    $query2 = $this->db->insert('photo', array("detailPhoto" => $detail,"Chemin" => $image,"idAppart" => $id));
+		if ($query1 && $query2) return true;
   }
 	
 }//Fin de la classe

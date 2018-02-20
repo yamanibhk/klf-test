@@ -75,7 +75,9 @@ function validerFormulaireAjout(formulaire){
         "laveuseSecheuse": $(".laveuseSecheuse").val(),
         "laveVaisselle": $(".laveVaisselle").val(),
         "stationnement": $("#stationnement").val(),
-        "description": $("#description").val()
+        "description": $("#description").val(),
+        "image": $("#icone").val(),
+        "detail": $("#detail").val()
       },
       success: function(reponse) {
         $("#contentAppartement").empty();

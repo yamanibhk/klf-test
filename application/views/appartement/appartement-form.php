@@ -90,6 +90,9 @@
     <textarea class="form-control champ" rows="5" id="description"></textarea>
 		<div class="echec"></div>
   </div>
+     <label for="icone">Icône du fichier (JPG, PNG ou GIF | max. 15 Ko) :</label><br />
+     <input type="text" name="detail" placeholder="Titre du fichier" id="detail" />
+     <input type="file" name="icone" id="icone" /><br />
   <div class="d-flex flex-wrap justify-content-end">
     <button id="enregistrerAppartement" class="btn btn-primary">Enregistrer</button>      
   </div>

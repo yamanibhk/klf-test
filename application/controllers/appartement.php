@@ -44,7 +44,7 @@ class appartement extends CI_Controller {
   public function ajouter() {
     //obtenir les arrondissements
     $data['arrondissement'] = $this->Arrondissements_model->obtenir_arrondissement();
-    $this->load->view("appartement/appartement-form.php");
+    $this->load->view("appartement/appartement-form.php",$data);
   }
 
   /**
@@ -67,6 +67,8 @@ class appartement extends CI_Controller {
     $laveVaisselle = $this->input->post("laveVaisselle");
     $stationnement = $this->input->post("stationnement");
     $description = $this->input->post("description");
+    $image = $this->input->post("image");
+    $detail = $this->input->post("detail");
     $proprietaire = $this->session->get_userdata();
     //S'il y a des donnees ne sont pas recues
     if(!isset($arrondissement) ||
@@ -84,6 +86,8 @@ class appartement extends CI_Controller {
        !isset($laveVaisselle) ||
        !isset($stationnement) ||
        !isset($description) ||
+       !isset($image) ||
+       !isset($detail) ||
        !isset($proprietaire))  {
         $succes = false;
     } else {
@@ -103,8 +107,10 @@ class appartement extends CI_Controller {
          $laveVaisselle == "" ||
          $stationnement == "" ||
          $description == "" ||
+         $image == "" ||
+         $detail == "" ||
          $proprietaire == "") {
-          $succes = false;
+         $succes = false;
       } else {
         // ajout d'un appartement dans la base de donnée
         $resultat = $this->Appartements_model->enregistrer_appartement($arrondissement,
@@ -122,7 +128,9 @@ class appartement extends CI_Controller {
                                                                        $laveVaisselle,
                                                                        $stationnement,
                                                                        $description,
-                                                                       $proprietaire['nomUsager']);
+                                                                       $proprietaire['nomUsager'],
+                                                                       $image,
+                                                                       $detail);
         if(!$resultat) {
           $succes = false;
         }
