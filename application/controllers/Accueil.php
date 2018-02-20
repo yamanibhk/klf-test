@@ -6,6 +6,8 @@ class Accueil extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->model("Usagers_model");
+    $this->load->model("Appartements_model");
+    $this->load->model("Arrondissements_model");
     $this->load->helper("url_helper");
     $this->load->library('session');
     $this->load->library('modalmenus');
