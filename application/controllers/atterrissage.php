@@ -24,7 +24,7 @@ class atterrissage extends CI_Controller {
         $data["titre"] = "RENTAHOUSE";//the page title
         //Load the views
         $this->load->view("templates/header.php", $data);
-        $this->load->view("templates/barre-rouge-atterrissage.php", $data);
+        $this->load->view("templates/barre-rouge.php", $data);
         $this->load->view("atterrissage/index",$data);
         $this->load->view("templates/footer.php", $data);
       }
