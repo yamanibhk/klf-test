@@ -78,7 +78,11 @@ function validerConnexion(formulaire) {
       },
       success: function(reponse) {
         if (reponse.statut == "valide") {
-          window.location.replace("index.php/accueil/index");
+          if(reponse.idRole < 2) {
+            window.location.replace("index.php/gestion/index");
+          } else {
+            window.location.replace("index.php/accueil/index");
+          }
         } else if (reponse.statut == "nonexistant") {
           formulaire.children(".form-group").each(function() {
             var currentInput = $(this).find("input");

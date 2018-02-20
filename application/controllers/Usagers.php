@@ -82,7 +82,7 @@ class Usagers extends CI_Controller {
             $utilisateur = $this->Usagers_model->obtenir_usager($nomUsager);
             //Cree la session avec un username
             $this->session->set_userdata($utilisateur);
-            $reponse = ["statut" => "valide"];
+            $reponse = ["statut" => "valide", "idRole" => $utilisateur["idRole"]];
           }
           //S'il existe, mais qu'il est bani, on retourne false en indiquant pourquoi
         } else {
