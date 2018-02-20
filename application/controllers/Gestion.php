@@ -19,9 +19,10 @@ class Gestion extends CI_Controller {
       } else {
         //Charge les menus
         $data['menus'] = $this->modalmenus->chargeMenus();
-        $data["titre"] = "Gestion du site";//Le titre de la page
+        $data["titre"] = "GESTION DU SITE";//Le titre de la page
         $data['utilisateur'] = $this->session->get_userdata();
         $this->load->view("templates/header.php", $data);
+        $this->load->view("templates/barre-rouge.php", $data);
         $this->load->view("gestion/index.php", $data);
         $this->load->view("accueil/modal.php", $data);
         $this->load->view("templates/footer.php", $data);

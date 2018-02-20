@@ -26,6 +26,7 @@ class Accueil extends CI_Controller {
 
         $data["titre"] = "ACCUEIL";//Le titre de la page
         $this->load->view("templates/header.php", $data);
+        $this->load->view("templates/barre-rouge.php", $data);
         $this->load->view("accueil/index.php", $data);
         $this->load->view("accueil/modal.php", $data);
         $this->load->view("templates/footer.php", $data);
@@ -34,6 +35,6 @@ class Accueil extends CI_Controller {
       header("Location: ".base_url());
     }
   }
-		
+
 }
 

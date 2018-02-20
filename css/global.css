@@ -12,9 +12,7 @@ p, span, a, button, div, section {
   background-color: #E74C3C;
   text-align: center;
   padding: 1.2rem 0;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   z-index: 1000;
 }
@@ -34,16 +32,16 @@ p, span, a, button, div, section {
 .correct {
 	border-color: rgba(68, 191, 68, 0.75);
 }
-	
+
 .correct:focus {
 	border-color: rgba(68, 191, 68, 0.75);
 	box-shadow: 0 0 8px rgba(68, 191, 68, 0.5);
 }
-	
+
 .incorrect {
 	border-color: rgba(191, 68, 68, 0.75);
 }
-	
+
 .incorrect:focus {
 	border-color: rgba(191, 68, 68, 0.75);
 	box-shadow: 0 0 8px rgba(191, 68, 68, 0.5);
