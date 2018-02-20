@@ -7,9 +7,6 @@ class Usagers extends CI_Controller {
     $this->load->model("Usagers_model");
     $this->load->helper("url_helper");
     $this->load->library('session');
-    //chargement de la librairie pour la validation du formulaire
-    $this->load->library('form_validation');
-    $this->load->helper('form');
     $this->load->helper('date');
   }
 
@@ -114,20 +111,19 @@ class Usagers extends CI_Controller {
    */
   public function deconnexion () {
     $this->session->sess_destroy();
-    header("Location: ".base_url());
+    redirect();
   }
-
   /*
    * insertion d'un nouveau utilisateur dans la base de donnée
   */
   public function inscription() {
-    $nomUsager = $this->input->post("nomUsager");
-    $motDePasse = $this->input->post("motDePasse");
-    $courriel = $this->input->post("courriel");
     $succes = true;
+    $nomUsager = $this->input->post('nomUsager');
+    $motDePasse = $this->input->post('motDePasse');
+    $courriel = $this->input->post('courriel');
 
     //S'il y a des donnees ne sont pas recues
-    if(!isset($nomUsager) || !isset($motDePasse) || !isset($courriel))  {
+    if(!isset($nomUsager) || !isset($motDePasse) || !isset($courriel)) {
       $succes = false;
     } else {
       //S'il y a des donnees qui sont vides
@@ -141,7 +137,6 @@ class Usagers extends CI_Controller {
         }
       }
     }
-
     if($succes) {
       $data["erreur"] = false;
       /*
@@ -157,5 +152,4 @@ class Usagers extends CI_Controller {
     }
     $this->load->view("atterrissage/inscription-confirmation.php", $data);
   }
-
 }//Fin de la classe

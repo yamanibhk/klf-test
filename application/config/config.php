@@ -24,7 +24,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://localhost:8888/';
-// $config['base_url'] = 'http://localhost:8888/rentahouse/';
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +36,6 @@ $config['base_url'] = 'http://localhost:8888/';
 |
 */
 $config['index_page'] = '';
-// $config['index_page'] = 'index.php';
 
 /*
 |--------------------------------------------------------------------------

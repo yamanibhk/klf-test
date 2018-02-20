@@ -9,7 +9,6 @@ class Accueil extends CI_Controller {
     $this->load->helper("url_helper");
     $this->load->library('session');
     $this->load->library('modalmenus');
-    //chargement de la librairie pour la validation du formulaire
     $this->load->helper('date');
   }
 
@@ -33,4 +32,6 @@ class Accueil extends CI_Controller {
       header("Location: ".base_url());
     }
   }
+		
 }
+
