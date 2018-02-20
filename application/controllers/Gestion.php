@@ -12,6 +12,7 @@ class Gestion extends CI_Controller {
     $this->load->library('modalmenus');
   }
 
+
   public function index() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2){
       if ( !file_exists(APPPATH.'views/gestion/index.php')) {
@@ -31,4 +32,50 @@ class Gestion extends CI_Controller {
       header("Location: ".base_url());
     }
   }
-}
+
+
+  public function usagers() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger liste des usagers'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  public function annonces() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger liste des annonces'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  public function statistiques() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger statistiques'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  public function arrondissements() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger liste des arrondissements'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  public function moyensDePaiements() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger liste des moyensDePaiements'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+}//Fin de la classe gestion
