@@ -13,7 +13,9 @@ window.addEventListener("load", function() {
           url: "usagers",
           method: "POST",
           success: function(reponse) {
-            console.log(reponse);
+            $("#content_panel").empty();
+            $("#content_panel").append(reponse);
+            // console.log(reponse);
           }
         });
       break;
@@ -23,6 +25,7 @@ window.addEventListener("load", function() {
           url: "annonces",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
@@ -33,6 +36,7 @@ window.addEventListener("load", function() {
           url: "statistiques",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
@@ -43,6 +47,7 @@ window.addEventListener("load", function() {
           url: "arrondissements",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
@@ -53,6 +58,7 @@ window.addEventListener("load", function() {
           url: "moyensDePaiements",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
