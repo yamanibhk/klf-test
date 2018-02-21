@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <li class="nav-item"><a id="moyensDePaiements" class="nav-link" href="#">Moyens de paiements</a></li>
       </ul>
     </section>
-    <section id="content_panel" class="col-md-9 col-lg-10 px-0">
+    <section id="content_panel" class="container col-md-9 col-lg-10 px-0">
     </section>
   </div>
 </div>
