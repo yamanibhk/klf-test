@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<script type='text/javascript' src="<?=base_url();?>js/accueil/script.js"></script>
 <link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/stylesheet.css">
+<script type='text/javascript' src="<?=base_url();?>js/accueil/script.js"></script>
 <div class="container-fluid col-12 ml-0 mr-0 pl-0 pr-0">
     <div class="row col-12 ml-0 mr-0 pl-0 pr-0 bg-light">
         <div class="col-sm-3 col-md-3 col-lg-3 col-xs-3 col-centered formulaireRecherche ml-0 mr-0 mt-4 pl-2 pr-2  " style=" background-color: #2C3E50;">
@@ -35,4 +35,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <?php } ?></div>        
         </div>
     </div>
+</div>
+<link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/stylesheet.css">
+<script type="text/javascript" src="<?=base_url();?>js/accueil/script.js"></script>
+<div class="container">
+<!-- mettre contenu ici -->
 </div>

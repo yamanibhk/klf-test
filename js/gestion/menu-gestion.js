@@ -80,4 +80,59 @@ window.addEventListener("load", function() {
       }
     } //Fin de la condition du clic sur menu inactif
   });
+  $(document.body).on("click", ".dropdown-menu a:not(.disabled)", function(evt) {
+    let usagerConcerne = $(this).parent().data("usager");
+    switch($(this).attr("id")){
+      case "btn_bannir" :
+        $.ajax({
+          url: "../usagers/bannir",
+          method: "POST",
+          data : {
+            "nomUsager" : usagerConcerne
+          },
+          success: function() {
+            rafraichirUsagers();
+          }
+        });
+      break
+
+      case "btn_gracier" :
+        $.ajax({
+          url: "../usagers/gracier",
+          method: "POST",
+          data : {
+            "nomUsager" : usagerConcerne
+          },
+          success: function() {
+            rafraichirUsagers();
+          }
+        });
+      break
+
+      case "btn_valider" :
+        console.log(usagerConcerne, "sera valider");
+      break
+
+      case "btn_nouv_admin" :
+        console.log(usagerConcerne, "sera un admin");
+      break
+    }
+  });
+
+
+  /**
+   * Rafraichi la liste des usagers
+   */
+  function rafraichirUsagers() {
+    $.ajax({
+      url: "usagers",
+      method: "POST",
+      success: function(reponse) {
+        $("#content_panel").empty();
+        $("#content_panel").append(reponse);
+      }
+    });
+  }
+
+
 });

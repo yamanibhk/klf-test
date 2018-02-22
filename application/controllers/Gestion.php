@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Gestion extends CI_Controller {
 
+  /**
+   * Constructeur de la classe
+   */
   public function __construct() {
     parent::__construct();
     $this->load->model("Usagers_model");
@@ -13,6 +16,9 @@ class Gestion extends CI_Controller {
   }
 
 
+  /**
+   * Foncfion par defaut du controlleur, redirige vers le panneau d'administration
+   */
   public function index() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2){
       if ( !file_exists(APPPATH.'views/gestion/index.php')) {
@@ -34,6 +40,9 @@ class Gestion extends CI_Controller {
   }
 
 
+  /**
+   * Retournera la liste des usagers sous forme de vue partielle
+   */
   public function usagers() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
       //Usager actif (session)
@@ -47,6 +56,9 @@ class Gestion extends CI_Controller {
   }
 
 
+  /**
+   * Affiche la liste des annonces sous forme de vue partielle
+   */
   public function annonces() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
       echo "controlleur - 'charger liste des annonces'";
@@ -56,6 +68,9 @@ class Gestion extends CI_Controller {
   }
 
 
+  /**
+   * Affiche des statistique sur le site sous forme de vue partielle
+   */
   public function statistiques() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
       echo "controlleur - 'charger statistiques'";
@@ -65,6 +80,9 @@ class Gestion extends CI_Controller {
   }
 
 
+  /**
+   * Affiche les arrondissement de la BD sous forme de vue partielle
+   */
   public function arrondissements() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
       echo "controlleur - 'charger liste des arrondissements'";
@@ -74,6 +92,9 @@ class Gestion extends CI_Controller {
   }
 
 
+  /**
+   * Affiche les moyens de paiement de la bd sous forme de vue partielle
+   */
   public function moyensDePaiements() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
       echo "controlleur - 'charger liste des moyensDePaiements'";

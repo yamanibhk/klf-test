@@ -5,6 +5,12 @@
   height: calc(100vh - 4.78rem);
   background-color: #2C3E50;
 }
+@media screen and (max-width: 767px){
+  #admin_menu{
+    position: relative;
+    height: auto;
+  }
+}
 #admin_menu > ul > li a{
   color: #ECF0F1;
   padding: 1rem 0 1rem 1rem;
@@ -16,30 +22,19 @@
 #admin_menu > ul > li a:not(.active):hover{
   background-color: #243342;
 }
-@media screen and (min-width: 768px){
-  #admin_menu{
-    height: calc(100vh - 5.4rem);
-  }
-}
-@media screen and (max-width: 576px){
-  #admin_menu{
-    position: relative;
-    height: auto;
-  }
-}
 
 
 /* Contenu de droite */
 #content_panel {
-  margin-left: 25%;
+  margin: auto;
+}
+@media screen and (min-width: 768px){
+  #content_panel {
+    margin-left: 25%;
+  }
 }
 @media screen and (min-width: 992px){
   #content_panel {
     margin-left: 16.666667%;
-  }
-}
-@media screen and (max-width: 576px){
-  #content_panel {
-    margin: auto;
   }
 }
