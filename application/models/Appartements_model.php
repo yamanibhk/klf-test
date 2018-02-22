@@ -101,7 +101,7 @@ class Appartements_model extends CI_Model {
     if (!empty($data['nbrePiece'])) $this->db->where('nbrePiece', $data['nbrePiece']);
     if (!empty($data['numEtage'])) {
       $signe=$data['numEtage'];
-      if ($signe[0]=='>') $this->db->where('numEtage >=', $data['numEtage'])
+      if ($signe[0]=='>') $this->db->where('numEtage >=', $data['numEtage']);
       else  $this->db->where('numEtage <', $data['numEtage']);
     }
     if (!empty($data['Internet'])) $this->db->where('Internet', $data['Internet']);
@@ -113,12 +113,12 @@ class Appartements_model extends CI_Model {
     if (!empty($data['LaveuseSecheuse'])) $this->db->where('LaveuseSecheuse', $data['LaveuseSecheuse']);
     if (!empty($data['LaveVaisselle'])) $this->db->where('LaveVaisselle', $data['LaveVaisselle']);
     if (!empty($data['Note'])) $this->db->where('Note', $data['Note']);
-    if (!empty($data['IntervallesAcceptee'])) {
+    /*if (!empty($data['IntervallesAcceptee'])) {
       $this->db->where('IntervallesAcceptee', $data['IntervallesAcceptee']);
       if (!empty($data['IntervallesAcceptee']))
 
     }
-    
+    */
 
 
     $query = $this->db->get();

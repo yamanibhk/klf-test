@@ -243,40 +243,15 @@ class Usagers_model extends CI_Model {
      * @return     array  toutes les données de tous les utilisateurs
      */
     public function obtenir_usagers(){
-    $this->db->select('*, count(Appartement.idAppart) as NbreAppart, count(Location.idLocation) as NbreLocat');
-    $this->db->from('Usager');
-    $this->db->join('Mode_paiement', 'Usager.typePaiem = Mode_paiement.typePaiem');
-    $this->db->join('Role', 'Usager.idRole = Role.idRole');
-    $this->db->join('Moyen_contact', 'Usager.nomUsager = Moyen_contact.nomUsager', 'right');
-    $this->db->join('Location', 'Usager.nomUsager = Location.Locataire', 'right');
-    $this->db->join('Appartement', 'Usager.nomUsager = Appartement.Proprietaire', 'right');
-    $this->db->group_by("Usager.nomUsager");
-    switch ($this->input->post('var_Trie',true))
-    {
-      case "Role":
-          $this->db->order_by('Role', 'DESC');//trie par le role d'utilisateur admin,membre,super admin
-          break;
-          case "typePaiem":
-          $this->db->order_by('typePaiem', 'DESC');//trie par type de paiement choisi
-          break;
-          case "NbreAppart":
-          $this->db->order_by('NbreAppart', 'DESC');//trie par nombre d'appartements possédés
-          break;
-          case "NbreLocat":
-          $this->db->order_by('NbreLocat', 'DESC');//trie par nombre de locations effectuées
-          break;
-          case "dateCreationCompte":
-          $this->db->order_by('dateCreationCompte', 'ASC');//trie par date de creation de compte ordre croissant
-          break;
-          default:
-          $this->db->order_by('nomUsager', 'DESC');//par defaut trier sur nomUsager
-        }
-
-        $query = $this->db->get();
-
-      //tableau de resultats
-        return $query->result_array();
-      }
+    $query = $this->db->query("select * from (select Usager.nomUsager,Usager.Nom,Usager.Prenom,Usager.Adresse, Usager.estBanni, Usager.estValide, role.Role, Usager.typePaiem, Usager.Validateur, Usager.dateCreationCompte,moyen_contact.Details,moyen_contact.estMoyenPrefere from Usager
+    join Role on Usager.idRole = Role.idRole
+    right join Moyen_contact on Usager.nomUsager = Moyen_contact.nomUsager) as table1
+    left join (select count(idAppart) as 'Nombre appartement',Proprietaire from Appartement group by Proprietaire) as table2 on table1.nomUsager=table2.Proprietaire
+    left join (select count(idLocation) as 'Nombre location', Locataire from location group by Locataire) as table3 on table1.nomUsager=table3.Locataire
+    order by table1.nomUsager DESC");
+    //tableau de resultats
+    return $query->result_array();
+    }
 
 
     /**
@@ -287,18 +262,14 @@ class Usagers_model extends CI_Model {
      * @return     array  toutes les données de l'utilisateur précisé
      */
     public function obtenir_usagerParNomUsager($nomUsager){
-    $this->db->select('*');
-    $this->db->from('Usager');
-    $this->db->join('Mode_paiement', 'Usager.typePaiem = Mode_paiement.typePaiem');
-    $this->db->join('Role', 'Usager.idRole = Role.idRole');
-    $this->db->join('Moyen_contact', 'Usager.nomUsager = Moyen_contact.nomUsager', 'right');
-    $this->db->join('Location', 'Usager.nomUsager = Location.Locataire', 'right');
-    $this->db->join('Appartement', 'Usager.nomUsager = Appartement.Proprietaire', 'right');
-    $this->db->where('nomUsager', $nomUsager);
-
-    $query = $this->db->get();
-
-      //tableau de resultats
+     $query = $this->db->query("select * from (select Usager.nomUsager,Usager.Nom,Usager.Prenom,Usager.Adresse, Usager.estBanni, Usager.estValide, role.Role, Usager.typePaiem, Usager.Validateur, Usager.dateCreationCompte,moyen_contact.Details,moyen_contact.estMoyenPrefere from Usager
+    join Role on Usager.idRole = Role.idRole
+    right join Moyen_contact on Usager.nomUsager = Moyen_contact.nomUsager) as table1
+    left join (select count(idAppart) as 'Nombre appartement',Proprietaire from Appartement group by Proprietaire) as table2 on table1.nomUsager=table2.Proprietaire
+    left join (select count(idLocation) as 'Nombre location', Locataire from location group by Locataire) as table3 on table1.nomUsager=table3.Locataire
+    where table1.nomUsager='$nomUsager'
+    order by table1.nomUsager DESC");
+    //tableau de resultats
     return $query->result_array();
   }
 
