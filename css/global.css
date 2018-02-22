@@ -17,7 +17,12 @@ p, span, a, button, div, section {
   z-index: 1000;
 }
 #redbar_height_fix {
-  height: 4.78rem;
+  height: 7.15rem;
+}
+@media screen and (min-width: 321px){
+  #redbar_height_fix{
+    height: 4.78rem;
+  }
 }
 @media screen and (min-width: 768px){
   #redbar_height_fix{
