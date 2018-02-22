@@ -13,68 +13,71 @@ window.addEventListener("load", function() {
   //Ecouter les clics sur les menus de gauche
   $(document.body).on("click", "#admin_menu a", function(evt) {
 
-    //Retire la classe "active" du dernier menu actif
-    $("#admin_menu").find("a.active").removeClass("active");
+    //S'assure qu'on clique sur un menu inactif (evite les requetes inutiles si menu deja charge)
+    if($("#admin_menu").find("a.active").attr("id") != $(this).attr("id")) {
 
-    //Mets le menu actif en bleu
-    $(this).addClass("active");
+      //Retire la classe "active" du dernier menu actif
+      $("#admin_menu").find("a.active").removeClass("active");
 
-    switch($(this).attr("id")) {
-      case "usagers" :
-        $.ajax({
-          url: "usagers",
-          method: "POST",
-          success: function(reponse) {
-            $("#content_panel").empty();
-            $("#content_panel").append(reponse);
-            console.log(reponse);
-          }
-        });
-      break;
+      //Mets le menu actif en bleu
+      $(this).addClass("active");
 
-      case "annonces" :
-        $.ajax({
-          url: "annonces",
-          method: "POST",
-          success: function(reponse) {
-            $("#content_panel").empty();
-            console.log(reponse);
-          }
-        });
-      break;
+      switch($(this).attr("id")) {
+        case "usagers" :
+          $.ajax({
+            url: "usagers",
+            method: "POST",
+            success: function(reponse) {
+              $("#content_panel").empty();
+              $("#content_panel").append(reponse);
+            }
+          });
+        break;
 
-      case "statistiques" :
-        $.ajax({
-          url: "statistiques",
-          method: "POST",
-          success: function(reponse) {
-            $("#content_panel").empty();
-            console.log(reponse);
-          }
-        });
-      break;
+        case "annonces" :
+          $.ajax({
+            url: "annonces",
+            method: "POST",
+            success: function(reponse) {
+              $("#content_panel").empty();
+              console.log(reponse);
+            }
+          });
+        break;
 
-      case "arrondissements" :
-        $.ajax({
-          url: "arrondissements",
-          method: "POST",
-          success: function(reponse) {
-            $("#content_panel").empty();
-            console.log(reponse);
-          }
-        });
-      break;
+        case "statistiques" :
+          $.ajax({
+            url: "statistiques",
+            method: "POST",
+            success: function(reponse) {
+              $("#content_panel").empty();
+              console.log(reponse);
+            }
+          });
+        break;
 
-      case "moyensDePaiements" :
-        $.ajax({
-          url: "moyensDePaiements",
-          method: "POST",
-          success: function(reponse) {
-            $("#content_panel").empty();
-            console.log(reponse);
-          }
-        });
-      break;
-    }
+        case "arrondissements" :
+          $.ajax({
+            url: "arrondissements",
+            method: "POST",
+            success: function(reponse) {
+              $("#content_panel").empty();
+              console.log(reponse);
+            }
+          });
+        break;
+
+        case "moyensDePaiements" :
+          $.ajax({
+            url: "moyensDePaiements",
+            method: "POST",
+            success: function(reponse) {
+              $("#content_panel").empty();
+              console.log(reponse);
+            }
+          });
+        break;
+      }
+    } //Fin de la condition du clic sur menu inactif
   });
 });

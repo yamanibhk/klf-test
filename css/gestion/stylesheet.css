@@ -21,7 +21,7 @@
     height: calc(100vh - 5.4rem);
   }
 }
-@media screen and (max-width: 768px){
+@media screen and (max-width: 576px){
   #admin_menu{
     position: relative;
     height: auto;
@@ -38,7 +38,7 @@
     margin-left: 16.666667%;
   }
 }
-@media screen and (max-width: 768px){
+@media screen and (max-width: 576px){
   #content_panel {
     margin: auto;
   }
