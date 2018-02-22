@@ -27,7 +27,7 @@ class Usagers_model extends CI_Model {
    *
    * @return     tableau  d'usager.
    */
-  public function obtenir_usager($username){
+  public function obtenir_usager($username) {
     $query = $this->db->get_where("usager", array("nomUsager" => $username));
     return $query->row_array();
   }
@@ -237,45 +237,18 @@ class Usagers_model extends CI_Model {
    * @return     array  toutes les données de tous les utilisateurs
    */
   public function obtenir_usagers() {
-    $this->db->select('u.*, count(a.idAppart) as NbreAppart, count(l.idLocation) as NbreLocat');
-    $this->db->from('Usager u');
-    $this->db->join('Mode_paiement', 'u.typePaiem = Mode_paiement.typePaiem');
-    $this->db->join('Role', 'u.idRole = Role.idRole');
-    $this->db->join('Moyen_contact', 'u.nomUsager = Moyen_contact.nomUsager', 'left');
-    $this->db->join('Location l', 'u.nomUsager = l.Locataire', 'left');
-    $this->db->join('Appartement a', 'u.nomUsager = a.Proprietaire', 'left');
-    $this->db->group_by("u.nomUsager");
-    $this->db->order_by('u.dateCreationCompte', 'ASC');
-
-    $query = $this->db->get();
+    $query = $this->db->query("select * from (select Usager.*, moyen_contact.Details, moyen_contact.estMoyenPrefere from Usager
+                    join Role on Usager.idRole = Role.idRole
+                    right join Moyen_contact on Usager.nomUsager = Moyen_contact.nomUsager) as table1
+                    left join (select count(idAppart) as 'NbreAppart',Proprietaire from Appartement group by Proprietaire) as table2 on table1.nomUsager=table2.Proprietaire
+                    left join (select count(idLocation) as 'NbreLocat', Locataire from location group by Locataire) as table3 on table1.nomUsager=table3.Locataire
+                    group by table1.nomUsager
+                    order by table1.nomUsager DESC");
     $usagers = array();
-
     foreach ($query->result() as $usager) {
       $usagers[] = $usager;
     }
     return $usagers;
-  }
-
-  /**
-   * affichage de toute les informations d'un usager précis
-   *
-   * @param      string  $nomUsager  nom usager
-   *
-   * @return     array  toutes les données de l'utilisateur précisé
-   */
-  public function obtenir_usagerParNomUsager($nomUsager){
-    $this->db->select('*');
-    $this->db->from('Usager');
-    $this->db->join('Mode_paiement', 'Usager.typePaiem = Mode_paiement.typePaiem');
-    $this->db->join('Role', 'Usager.idRole = Role.idRole');
-    $this->db->join('Moyen_contact', 'Usager.nomUsager = Moyen_contact.nomUsager', 'right');
-    $this->db->join('Location', 'Usager.nomUsager = Location.Locataire', 'right');
-    $this->db->join('Appartement', 'Usager.nomUsager = Appartement.Proprietaire', 'right');
-    $this->db->where('nomUsager', $nomUsager);
-
-    $query = $this->db->get();
-    //tableau de resultats
-    return $query->result_array();
   }
 
 }//Fin de la classe
