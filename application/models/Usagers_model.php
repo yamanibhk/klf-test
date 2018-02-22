@@ -1,22 +1,23 @@
 <?php
 /**
  * @file      Usagers_model.php
- * @author    Yamani & Mathieu
+ * @author    Yamani & Mathieu 
  * @version   1.0
  * @date      13 février 2018
  * @brief     accées et vérification et CRUD sur les données des utilisateurs
  *
- * @details   Cette classe nous permet de vérifier l'existence des utilisateurs,
- *            accès aux données des utilisateurs selon des parametres choisis,
- *            opérations CRUD sur table utilisateur.
+ * @details    Cette classe nous permet de vérifier l'existence des utilisateurs, accès aux données des utilisateurs selon des parametres choisis, opérations CRUD sur table utilisateur
  */
+
 class Usagers_model extends CI_Model {
+
   /**
   * contructeur
   */
   public function __construct() {
     $this->load->database();
   }
+
   /**
    * Retourne un usager.
    *
@@ -28,6 +29,9 @@ class Usagers_model extends CI_Model {
     $query = $this->db->get_where("usager", array("nomUsager" => $username));
     return $query->row_array();
   }
+
+  
+
   /**
    * inscrire un nouveau utilisateur dans la base de donnée
    *
@@ -63,6 +67,7 @@ class Usagers_model extends CI_Model {
       return true;
     }
   }
+
   /**
    * vérifier si l'utilisateur est deja inscrit dans la base de donnée
    *
@@ -89,6 +94,7 @@ class Usagers_model extends CI_Model {
     }
     return $reponse;
   }
+  
   /**
    * modification données de l'utilisateur dans la base de donnée
    *
@@ -99,156 +105,172 @@ class Usagers_model extends CI_Model {
    * @param      string  $Adresse     l'adresse
    * @param      string  $typePaiem   le type de paiement
    */
-  public function modifier_usager($nomUsager, $Nom, $Prenom, $motDePasse, $Adresse, $typePaiem) {
-    //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
+  public function modifier_usager($nomUsager, $Nom, $Prenom, $motDePasse, $Adresse, $typePaiem){ 
+      //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
     $data = array (
       "Nom" => $Nom,
       "Prenom" => $Prenom,
       "motDePasse" =>  password_hash($motDePasse, PASSWORD_DEFAULT),
       "Adresse" => $Adresse,
-      "typePaiem" => $typePaiem,
+      "typePaiem" => $typePaiem,            
     );
     $this->db->where('nomUsager', $nomUsager);
     $this->db->update('Usager', $data);
+    
   }
-  /**
-   * suppression d'un utilisateur
-   *
-   * @param     string  $nomUsager  le nom usager
-   */
-  public function supprimer_usager($nomUsager) {
+
+    /**
+     * suppression d'un utilisateur
+     *
+     * @param     string  $nomUsager  le nom usager
+     */
+    public function supprimer_usager($nomUsager){
     $this->db->where('nomUsager', $nomUsager);
     $this->db->delete('Usager');
   }
-  /**
-   * changer le status d'un utilisateur de valide a invalide et le contraire
-   *
-   * @param      string  $nomUsager  le nom usager
-   * @param      boolean  $estValide  si a true valide si a false invalide
-   */
-  public function changeStatusValide_usager($nomUsager, $estValide) {
-    //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
-    $data = array (
-      "estValide" => $estValide,
-    );
-    $this->db->where('nomUsager', $nomUsager);
-    $this->db->update('Usager', $data);
-  }
-  /**
-   * bannir un usager ou ne pas le bannir
-   *
-   * @param      string  $nomUsager  le nom usager
-   * @param      boolean  $estBanni   si a true utilisateur banni si a false il est pas banni
-   */
-  public function BannirInbannir_usager($nomUsager, $estBanni) {
-    //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
-    $data = array (
-      "estBanni" => $estBanni,
-    );
-    $this->db->where('nomUsager', $nomUsager);
-    $this->db->update('Usager', $data);
-  }
-  /**
-   * affichage des utilisateur ayant un roe précis
-   *
-   * @param      string  $Role   le role choisis
-   *
-   * @return     array  les données des utilisateurs ayant le role choisi
-   */
-  public function obtenir_usagersParRole($Role) {
-    $this->db->select('*');
-    $this->db->from('Usager');
-    $this->db->join('Role', 'Usager.idRole = Role.idRole');
-    $this->db->where('Role', $Role);
-    $this->db->order_by('nomUsager', 'DESC');//trie par le nomUsager
-    $query = $this->db->get();
-    //tableau de resultats
-    return $query->result_array();
-  }
-  /**
-   * affichage de tout les usagers banni ou pas banni
-   *
-   * @param      boolean  $estBanni  si a true utilisateur banni si a false il est pas banni
-   *
-   * @return     array  les données des utilisateurs bannis ou pas bannis selon le choix
-   */
-  public function obtenir_usagersParBanniInbanni($estBanni) {
-    $query = $this->db->get_where("Usager", array("estBanni" => $estBanni));
-    return $query->result_array();
-  }
-  /**
-   * affichage de tout les usagers valides ou pas valides
-   *
-   * @param      boolean  $estValide  si a true utilisateur valide si a false il est pas valide
-   *
-   * @return     array  les données des utilisateurs valides ou pas valides selon le choix
-   */
-  public function obtenir_usagersParValideInvalide($estValide) {
-    $query = $this->db->get_where("Usager", array("estValide" => $estValide));
-    return $query->result_array();
-  }
-  /**
-   * affichage de tous les utilisateurs ayant un mode de paiement choisi
-   *
-   * @param      string  $typePaiem  le type de paiement
-   *
-   * @return     array  les données des utilisateurs
-   */
-  public function obtenir_usagersParTypePaiement($typePaiem) {
-    $query = $this->db->get_where("Usager", array("typePaiem" => $typePaiem));
-    return $query->result_array();
-  }
-  /**
-   * affichage de tout les usagers ayant été validés par un administrateur précis
-   *
-   * @param      string  $Validateur  l'administrateur validateur
-   *
-   * @return     array  les données des utilisateurs
-   */
-  public function obtenir_usagersParValidateur($Validateur) {
-    $query = $this->db->get_where("Usager", array("Validateur" => $Validateur));
-    return $query->result_array();
-  }
-  /**
-   * affichage de toutes les données des utilisateurs pour l'administrateur, ordre par defaut sur la clé primaire nomUsager
-   *
-   * @return     array  toutes les données de tous les utilisateurs
-   */
-  public function obtenir_usagers() {
-    $this->db->select('u.*, count(a.idAppart) as NbreAppart, count(l.idLocation) as NbreLocat');
-    $this->db->from('Usager u');
-    $this->db->join('Mode_paiement', 'u.typePaiem = Mode_paiement.typePaiem');
-    $this->db->join('Role', 'u.idRole = Role.idRole');
-    $this->db->join('Moyen_contact', 'u.nomUsager = Moyen_contact.nomUsager', 'left');
-    $this->db->join('Location l', 'u.nomUsager = l.Locataire', 'left');
-    $this->db->join('Appartement a', 'u.nomUsager = a.Proprietaire', 'left');
-    $this->db->group_by("u.nomUsager");
-    $this->db->order_by('u.dateCreationCompte', 'ASC');
-    $query = $this->db->get();
-    $usagers = array();
-    foreach ($query->result() as $usager) {
-      $usagers[] = $usager;
+
+    /**
+     * changer le status d'un utilisateur de valide a invalide et le contraire
+     *
+     * @param      string  $nomUsager  le nom usager
+     * @param      boolean  $estValide  si a true valide si a false invalide
+     */
+    public function changeStatusValide_usager($nomUsager, $estValide){
+      //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
+      $data = array (
+        "estValide" => $estValide,          
+      );
+      $this->db->where('nomUsager', $nomUsager);
+      $this->db->update('Usager', $data);
+
     }
-    return $usagers;
-  }
-  /**
-   * affichage de toute les informations d'un usager précis
-   *
-   * @param      string  $nomUsager  nom usager
-   *
-   * @return     array  toutes les données de l'utilisateur précisé
-   */
-  public function obtenir_usagerParNomUsager($nomUsager){
-    $this->db->select('*');
-    $this->db->from('Usager');
-    $this->db->join('Mode_paiement', 'Usager.typePaiem = Mode_paiement.typePaiem');
-    $this->db->join('Role', 'Usager.idRole = Role.idRole');
-    $this->db->join('Moyen_contact', 'Usager.nomUsager = Moyen_contact.nomUsager', 'right');
-    $this->db->join('Location', 'Usager.nomUsager = Location.Locataire', 'right');
-    $this->db->join('Appartement', 'Usager.nomUsager = Appartement.Proprietaire', 'right');
-    $this->db->where('nomUsager', $nomUsager);
-    $query = $this->db->get();
+    
+    /**
+     * bannir un usager ou ne pas le bannir
+     *
+     * @param      string  $nomUsager  le nom usager
+     * @param      boolean  $estBanni   si a true utilisateur banni si a false il est pas banni
+     */
+    public function BannirInbannir_usager($nomUsager, $estBanni){
+      //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
+      $data = array (
+        "estBanni" => $estBanni,          
+      );
+      $this->db->where('nomUsager', $nomUsager);
+      $this->db->update('Usager', $data);
+
+    }
+    
+    /**
+     * affichage des utilisateur ayant un roe précis
+     *
+     * @param      string  $Role   le role choisis
+     *
+     * @return     array  les données des utilisateurs ayant le role choisi
+     */
+    public function obtenir_usagersParRole($Role){
+      $this->db->select('*');
+      $this->db->from('Usager');
+      $this->db->join('Role', 'Usager.idRole = Role.idRole');
+      $this->db->where('Role', $Role);
+      $this->db->order_by('nomUsager', 'DESC');//trie par le nomUsager
+
+      $query = $this->db->get();
+      
+      //tableau de resultats
+      return $query->result_array();
+    }
+    
+    /**
+     * affichage de tout les usagers banni ou pas banni
+     *
+     * @param      boolean  $estBanni  si a true utilisateur banni si a false il est pas banni
+     *
+     * @return     array  les données des utilisateurs bannis ou pas bannis selon le choix
+     */
+    public function obtenir_usagersParBanniInbanni($estBanni){
+      $query = $this->db->get_where("Usager", array("estBanni" => $estBanni));
+      
+      
+      return $query->result_array();
+    }
+    
+    
+    /**
+     * affichage de tout les usagers valides ou pas valides
+     *
+     * @param      boolean  $estValide  si a true utilisateur valide si a false il est pas valide
+     *
+     * @return     array  les données des utilisateurs valides ou pas valides selon le choix
+     */
+    public function obtenir_usagersParValideInvalide($estValide){
+      $query = $this->db->get_where("Usager", array("estValide" => $estValide));
+      
+      
+      return $query->result_array();
+    }
+    
+    /**
+     * affichage de tous les utilisateurs ayant un mode de paiement choisi
+     *
+     * @param      string  $typePaiem  le type de paiement
+     *
+     * @return     array  les données des utilisateurs
+     */
+    public function obtenir_usagersParTypePaiement($typePaiem){
+      $query = $this->db->get_where("Usager", array("typePaiem" => $typePaiem));
+      
+      
+      return $query->result_array();
+    }
+    
+    /**
+     * affichage de tout les usagers ayant été validés par un administrateur précis
+     * 
+     * @param      string  $Validateur  l'administrateur validateur
+     *
+     * @return     array  les données des utilisateurs
+     */
+    public function obtenir_usagersParValidateur($Validateur){
+      $query = $this->db->get_where("Usager", array("Validateur" => $Validateur));
+      
+           return $query->result_array();
+    }
+
+    /**
+     * affichage de toutes les données des utilisateurs pour l'administrateur ,ordre par defaut sur la clé primaire nomUsager 
+     *
+     * @return     array  toutes les données de tous les utilisateurs
+     */
+    public function obtenir_usagers(){
+    $query = $this->db->query("select * from (select Usager.nomUsager,Usager.Nom,Usager.Prenom,Usager.Adresse, Usager.estBanni, Usager.estValide, role.Role, Usager.typePaiem, Usager.Validateur, Usager.dateCreationCompte,moyen_contact.Details,moyen_contact.estMoyenPrefere from Usager
+    join Role on Usager.idRole = Role.idRole
+    right join Moyen_contact on Usager.nomUsager = Moyen_contact.nomUsager) as table1
+    left join (select count(idAppart) as 'Nombre appartement',Proprietaire from Appartement group by Proprietaire) as table2 on table1.nomUsager=table2.Proprietaire
+    left join (select count(idLocation) as 'Nombre location', Locataire from location group by Locataire) as table3 on table1.nomUsager=table3.Locataire
+    order by table1.nomUsager DESC");
+    //tableau de resultats
+    return $query->result_array();
+    }
+
+
+    /**
+     * affichage de toute les informations d'un usager précis
+     *
+     * @param      string  $nomUsager  nom usager
+     *
+     * @return     array  toutes les données de l'utilisateur précisé
+     */
+    public function obtenir_usagerParNomUsager($nomUsager){
+     $query = $this->db->query("select * from (select Usager.nomUsager,Usager.Nom,Usager.Prenom,Usager.Adresse, Usager.estBanni, Usager.estValide, role.Role, Usager.typePaiem, Usager.Validateur, Usager.dateCreationCompte,moyen_contact.Details,moyen_contact.estMoyenPrefere from Usager
+    join Role on Usager.idRole = Role.idRole
+    right join Moyen_contact on Usager.nomUsager = Moyen_contact.nomUsager) as table1
+    left join (select count(idAppart) as 'Nombre appartement',Proprietaire from Appartement group by Proprietaire) as table2 on table1.nomUsager=table2.Proprietaire
+    left join (select count(idLocation) as 'Nombre location', Locataire from location group by Locataire) as table3 on table1.nomUsager=table3.Locataire
+    where table1.nomUsager='$nomUsager'
+    order by table1.nomUsager DESC");
     //tableau de resultats
     return $query->result_array();
   }
+
 }//Fin de la classe
