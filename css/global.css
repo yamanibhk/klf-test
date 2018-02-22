@@ -35,3 +35,6 @@ p, span, a, button, div, section {
   top:20%;
   left:1rem;
 }
+.disabled {
+  cursor: not-allowed;
+}

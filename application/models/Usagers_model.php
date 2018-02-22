@@ -243,7 +243,7 @@ class Usagers_model extends CI_Model {
                     left join (select count(idAppart) as 'NbreAppart',Proprietaire from Appartement group by Proprietaire) as table2 on table1.nomUsager=table2.Proprietaire
                     left join (select count(idLocation) as 'NbreLocat', Locataire from location group by Locataire) as table3 on table1.nomUsager=table3.Locataire
                     group by table1.nomUsager
-                    order by table1.nomUsager DESC");
+                    order by table1.idRole ASC");
     $usagers = array();
     foreach ($query->result() as $usager) {
       $usagers[] = $usager;

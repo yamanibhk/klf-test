@@ -27,20 +27,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               ?>
             </small>
             <h5 class="card-title mb-1"><?=$usager->nomUsager?><small class="blockquote-footer d-inline ml-2"><?=$usager->Prenom." ".$usager->Nom?></small></h5>
-            <small class="text-muted">
+            <span class="text-muted">
               <?php
               //Type d'usager, admin, superadmin ou usager
               if($usager->idRole > 1) {
-                echo "Membre";
+                echo "<span>Membre</span>";
               } else {
-                if($usager->idRole == 1){
-                  echo "Administrateur";
+                if($usager->idRole == 1) {
+                  echo "<span class='badge badge-pill badge-success'>Administrateur</span>";
                 } else {
-                  echo "Super-administrateur";
+                  echo "<span class='badge badge-pill badge-success'>Super-administrateur</span>";
                 }
               }
               ?>
-            </small>
+            </span>
             <hr class='my-2'>
             <section class="p-2">
               <div class="d-flex flex-wrap justify-content-start mb-2">
@@ -59,9 +59,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </section>
             <div class="btn-group dropright">
               <?php
+              //Si l'usager et le l'utilisateur actif, son bouton sera grisee
               if($usager->nomUsager == $utilisateur['nomUsager']){
                 ?>
-                <button type="button" class="btn btn-outline-secondary dropdown-toggle" disabled="disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle disabled" disabled data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Actions
                 </button>
                 <?php
@@ -76,21 +77,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <div class="dropdown-menu p-0" data-usager="<?=$usager->nomUsager?>">
                 <?php
                 if($usager->estBanni == true) {
-                  echo "<a id='btn_gracier' class='dropdown-item py-2' href='#' onclick='return false'>Gracier</a>";
+                  echo "<a id='btn_gracier' class='dropdown-item text-primary py-2' href='#' onclick='return false'>Faire grâce</a>";
                 } else {
                   //Si l'usager est valide, on pourra le bannir
                   if($usager->estValide == true) {
                     //Si l'usager actif est super admin il pourra toujours bannir
-                    ?>
-                    <a id='btn_bannir' class='dropdown-item py-2 <?php echo ($utilisateur['idRole'] == 0 ? "" : $usager->idRole < 2 ? "disabled" : "")?>' href='#' onclick='return false'>Bannir</a>
-                    <?php
+                    if($utilisateur['idRole'] < 1) {
+                      echo "<a id='btn_bannir' class='dropdown-item text-danger py-2' href='#' onclick='return false'>Bannir</a>";
+                    } else {
+                      //Si l'usager qu'on veut bannir est un autre admin, il ne sera pas possible de le faire
+                      if($usager->idRole < 2) {
+                        echo "<a id='btn_bannir' class='dropdown-item disabled py-2' href='#' onclick='return false' disabled='disabled'>Bannir</a>";
+                      } else {
+                        echo "<a id='btn_bannir' class='dropdown-item text-danger py-2' href='#' onclick='return false'>Bannir</a>";
+                      }
+                    }
                   } else {
-                    echo "<a id='btn_valider' class='dropdown-item py-2' href='#' onclick='return false'>Valider</a>";
+                    echo "<a id='btn_valider' class='dropdown-item text-success py-2' href='#' onclick='return false'>Valider</a>";
                   }
                 }
                 //Si l'utilisateur avec la session active est super-admin il pourra faire de nouveaux admin
                 if($utilisateur['idRole'] < 1 && $usager->idRole > 1) {
-                  echo "<a id='btn_nouv_admin' class='dropdown-item py-2' href='#' onclick='return false'>Nouvel administrateur</a>";
+                  echo "<a id='btn_nouv_admin' class='dropdown-item py-2' href='#' onclick='return false'>Faire un administrateur</a>";
                 }
                 ?>
               </div>

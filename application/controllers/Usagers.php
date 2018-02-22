@@ -153,4 +153,52 @@ class Usagers extends CI_Controller {
     }
     $this->load->view("atterrissage/inscription-confirmation.php", $data);
   }
+
+  /**
+   * Sert a bannir un usager du site web
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function bannir() {
+    // $nomUsager = $this->input->post('nomUsager');
+    $usagerABannir = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerABannir) {
+      $peutBannir = true;
+      //Si l'usager dans la session ne serait pas admin
+      if($this->session->userdata("idRole") > 1) {
+        $peutBannir = false;
+        //Si l'usager dans la session est un admin et que la personne a supprimer est aussi un admin
+      } else if ($this->session->userdata("idRole") == 1 && $usagerABannir["idRole"] == 1) {
+        $peutBannir = false;
+      }
+      if($peutBannir) {
+        $this->Usagers_model->BannirInbannir_usager($usagerABannir['nomUsager'], 1);
+      }
+    }
+  }
+
+  /**
+   * Sert a bannir un usager du site web
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function gracier() {
+    // $nomUsager = $this->input->post('nomUsager');
+    $usagerAGracier = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAGracier) {
+      $peutGracier = true;
+      //Si l'usager dans la session ne serait pas admin
+      if($this->session->userdata("idRole") > 1) {
+        $peutGracier = false;
+        //Si l'usager dans la session est un admin et que la personne a supprimer est aussi un admin
+      } else if ($this->session->userdata("idRole") == 2 && $usagerAGracier["idRole"] == 2) {
+        $peutGracier = false;
+      }
+      if($peutGracier) {
+        $this->Usagers_model->BannirInbannir_usager($usagerAGracier['nomUsager'], 0);
+      }
+    }
+  }
 }//Fin de la classe
