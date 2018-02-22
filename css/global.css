@@ -35,33 +35,3 @@ p, span, a, button, div, section {
   top:20%;
   left:1rem;
 }
-.position, .formulaireAjout{
-	margin-top:100px;
-	position: relative;
-}
-.formulaireAjout h2{
-	color: blue;
-}
-.correct {
-	border-color: rgba(68, 191, 68, 0.75);
-}
-
-.correct:focus {
-	border-color: rgba(68, 191, 68, 0.75);
-	box-shadow: 0 0 8px rgba(68, 191, 68, 0.5);
-}
-
-.incorrect {
-	border-color: rgba(191, 68, 68, 0.75);
-}
-
-.incorrect:focus {
-	border-color: rgba(191, 68, 68, 0.75);
-	box-shadow: 0 0 8px rgba(191, 68, 68, 0.5);
-}
-.echec{
-	color:rgba(191, 68, 68, 0.75);
-}
-.succes{
-	color:rgba(68, 191, 68, 0.75);;
-}
