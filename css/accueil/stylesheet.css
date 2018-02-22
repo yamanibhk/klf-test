@@ -1,0 +1,35 @@
+
+.formulaireRecherche h4{
+	color: rgb(234,239,240);
+    text-align: center;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 1.5rem;
+    
+}
+
+.formulaireRecherche {
+    
+    border-radius: 0px 20px 20px 0px;
+}
+.chercher {
+    
+    border-radius: 8px 8px 8px 8px;
+}
+.chercher:hover{
+    cursor: pointer;
+}
+
+h5{
+	color: rgb(234,239,240);
+}
+
+h5:hover{
+    cursor: pointer;
+}
+
+
+
+

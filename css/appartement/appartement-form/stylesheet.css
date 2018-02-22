@@ -24,3 +24,13 @@
 	border-color: rgba(191, 68, 68, 0.75);
 	box-shadow: 0 0 8px rgba(191, 68, 68, 0.5);
 }
+
+
+}
+
+.echec{
+	color:rgba(191, 68, 68, 0.75);
+}
+.succes{
+	color:rgba(68, 191, 68, 0.75);;
+}
