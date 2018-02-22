@@ -36,7 +36,8 @@ class Gestion extends CI_Controller {
 
   public function usagers() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
-      echo "controlleur - 'charger liste des usagers'";
+      $data['usagers'] = $this->Usagers_model->obtenir_usagers();
+      $this->load->view("gestion/liste-usagers.php", $data);
     } else {
       header("Location: ".base_url());
     }

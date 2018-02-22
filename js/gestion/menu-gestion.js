@@ -1,4 +1,16 @@
 window.addEventListener("load", function() {
+
+  // Rempli par defaut avec la liste des usagers
+  $.ajax({
+    url: "usagers",
+    method: "POST",
+    success: function(reponse) {
+      $("#content_panel").empty();
+      $("#content_panel").append(reponse);
+    }
+  });
+
+  //Ecouter les clics sur les menus de gauche
   $(document.body).on("click", "#admin_menu a", function(evt) {
 
     //Retire la classe "active" du dernier menu actif
@@ -13,6 +25,8 @@ window.addEventListener("load", function() {
           url: "usagers",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
+            $("#content_panel").append(reponse);
             console.log(reponse);
           }
         });
@@ -23,6 +37,7 @@ window.addEventListener("load", function() {
           url: "annonces",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
@@ -33,6 +48,7 @@ window.addEventListener("load", function() {
           url: "statistiques",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
@@ -43,6 +59,7 @@ window.addEventListener("load", function() {
           url: "arrondissements",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
@@ -53,6 +70,7 @@ window.addEventListener("load", function() {
           url: "moyensDePaiements",
           method: "POST",
           success: function(reponse) {
+            $("#content_panel").empty();
             console.log(reponse);
           }
         });
