@@ -66,19 +66,14 @@ class Appartements_model extends CI_Model {
      * @return     array  toutes les données des appartements trouvées
      */
     public function obtenir_appartementsVedette(){
-    $this->db->select('*');
-    $this->db->from('appartement');
-    $this->db->join('noter', 'appartement.idAppart = noter.idAppart');
-    $this->db->join('arrondissement', 'appartement.idArrondissement = arrondissement.idArrondissement');
-    $this->db->join('disponibilite', 'appartement.idAppart = disponibilite.idAppart');
-    $this->db->join('photo', 'appartement.idAppart = photo.idAppart');
-    
-    $this->db->where('Note >=', 4);
-    $this->db->where('disponibilite.dateFinDispo >=', NOW());
+    $query=$this->db->query('SELECT * FROM appartement JOIN noter ON appartement.idAppart = noter.idAppart
+    JOIN arrondissement ON appartement.idArrondissement = arrondissement.idArrondissement
+    JOIN disponibilite ON appartement.idAppart = disponibilite.idAppart
+    JOIN photo ON appartement.idAppart = photo.idAppart
+    WHERE Note >=4
+    AND disponibilite.dateFinDispo >= NOW( ) ');
 
-    $query = $this->db->get();
-
-      //tableau de resultats
+    //tableau de resultats
     return $query->result_array();
   }
   /**

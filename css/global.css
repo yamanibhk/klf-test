@@ -60,3 +60,15 @@ p, span, a, button, div, section {
 .succes{
 	color:rgba(68, 191, 68, 0.75);;
 }
+
+.formulaireRecherche h4{
+	color: rgb(234,239,240);
+    text-align: center;
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+/**/

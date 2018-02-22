@@ -23,7 +23,8 @@ class Accueil extends CI_Controller {
         $data['utilisateur'] = $this->session->get_userdata();
         //Charge les menus
         $data['menus'] = $this->modalmenus->chargeMenus();
-
+        $data['appartementsVedettes'] = $this->Appartements_model->obtenir_appartementsVedette();
+        $data['arrondissement'] = $this->Arrondissements_model->obtenir_arrondissement();
         $data["titre"] = "ACCUEIL";//Le titre de la page
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);
