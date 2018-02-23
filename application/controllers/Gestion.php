@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Gestion extends CI_Controller {
 
+  /**
+   * Constructeur de la classe
+   */
   public function __construct() {
     parent::__construct();
     $this->load->model("Usagers_model");
@@ -12,6 +15,10 @@ class Gestion extends CI_Controller {
     $this->load->library('modalmenus');
   }
 
+
+  /**
+   * Foncfion par defaut du controlleur, redirige vers le panneau d'administration
+   */
   public function index() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2){
       if ( !file_exists(APPPATH.'views/gestion/index.php')) {
@@ -31,4 +38,69 @@ class Gestion extends CI_Controller {
       header("Location: ".base_url());
     }
   }
-}
+
+
+  /**
+   * Retournera la liste des usagers sous forme de vue partielle
+   */
+  public function usagers() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      //Usager actif (session)
+      $data['utilisateur'] = $this->session->get_userdata();
+      //Liste des usagers
+      $data['usagers'] = $this->Usagers_model->obtenir_usagers();
+      $this->load->view("gestion/liste-usagers.php", $data);
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  /**
+   * Affiche la liste des annonces sous forme de vue partielle
+   */
+  public function annonces() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger liste des annonces'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  /**
+   * Affiche des statistique sur le site sous forme de vue partielle
+   */
+  public function statistiques() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger statistiques'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  /**
+   * Affiche les arrondissement de la BD sous forme de vue partielle
+   */
+  public function arrondissements() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger liste des arrondissements'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+
+  /**
+   * Affiche les moyens de paiement de la bd sous forme de vue partielle
+   */
+  public function moyensDePaiements() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      echo "controlleur - 'charger liste des moyensDePaiements'";
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+}//Fin de la classe gestion

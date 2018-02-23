@@ -20,3 +20,4 @@ if($this->session->userdata("nomUsager")){
   }
   ?>
 </div>
+<div id="redbar_height_fix"></div>
