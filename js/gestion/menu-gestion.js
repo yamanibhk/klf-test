@@ -110,11 +110,42 @@ window.addEventListener("load", function() {
       break
 
       case "btn_valider" :
-        console.log(usagerConcerne, "sera valider");
+        $.ajax({
+          url: "../usagers/valider",
+          method: "POST",
+          data : {
+            "nomUsager" : usagerConcerne
+          },
+          success: function() {
+            rafraichirUsagers();
+          }
+        });
       break
 
       case "btn_nouv_admin" :
-        console.log(usagerConcerne, "sera un admin");
+        $.ajax({
+          url: "../usagers/faire_admin",
+          method: "POST",
+          data : {
+            "nomUsager" : usagerConcerne
+          },
+          success: function() {
+            rafraichirUsagers();
+          }
+        });
+      break
+
+      case "btn_retirer_admin" :
+        $.ajax({
+          url: "../usagers/retirer_admin",
+          method: "POST",
+          data : {
+            "nomUsager" : usagerConcerne
+          },
+          success: function() {
+            rafraichirUsagers();
+          }
+        });
       break
     }
   });

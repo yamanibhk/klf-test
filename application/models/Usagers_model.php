@@ -147,6 +147,20 @@ class Usagers_model extends CI_Model {
   }
 
   /**
+   * changer le role d'un utilisateur
+   *
+   * @param      string  $nomUsager  le nom usager
+   * @param      integer  $idRole     L'ID du nouveau role
+   */
+  public function changeIdRole($nomUsager, $idRole) {
+    $data = array (
+      "idRole" => $idRole,
+    );
+    $this->db->where('nomUsager', $nomUsager);
+    $this->db->update('Usager', $data);
+  }
+
+  /**
    * bannir un usager ou ne pas le bannir
    *
    * @param      string  $nomUsager  le nom usager
