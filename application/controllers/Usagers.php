@@ -8,9 +8,6 @@ class Usagers extends CI_Controller {
     $this->load->model("Moyen_contact_model");
     $this->load->helper("url_helper");
     $this->load->library('session');
-    //chargement de la librairie pour la validation du formulaire
-    $this->load->library('form_validation');
-    $this->load->helper('form');
     $this->load->helper('date');
   }
 
@@ -83,7 +80,7 @@ class Usagers extends CI_Controller {
             $utilisateur = $this->Usagers_model->obtenir_usager($nomUsager);
             //Cree la session avec un username
             $this->session->set_userdata($utilisateur);
-            $reponse = ["statut" => "valide"];
+            $reponse = ["statut" => "valide", "idRole" => $utilisateur["idRole"]];
           }
           //S'il existe, mais qu'il est bani, on retourne false en indiquant pourquoi
         } else {
@@ -115,20 +112,19 @@ class Usagers extends CI_Controller {
    */
   public function deconnexion () {
     $this->session->sess_destroy();
-    header("Location: ".base_url());
+    redirect();
   }
-
   /*
    * insertion d'un nouveau utilisateur dans la base de donnée
   */
   public function inscription() {
-    $nomUsager = $this->input->post("nomUsager");
-    $motDePasse = $this->input->post("motDePasse");
-    $courriel = $this->input->post("courriel");
     $succes = true;
+    $nomUsager = $this->input->post('nomUsager');
+    $motDePasse = $this->input->post('motDePasse');
+    $courriel = $this->input->post('courriel');
 
     //S'il y a des donnees ne sont pas recues
-    if(!isset($nomUsager) || !isset($motDePasse) || !isset($courriel))  {
+    if(!isset($nomUsager) || !isset($motDePasse) || !isset($courriel)) {
       $succes = false;
     } else {
       //S'il y a des donnees qui sont vides
@@ -142,7 +138,6 @@ class Usagers extends CI_Controller {
         }
       }
     }
-
     if($succes) {
       $data["erreur"] = false;
       /*
@@ -159,4 +154,101 @@ class Usagers extends CI_Controller {
     $this->load->view("atterrissage/inscription-confirmation.php", $data);
   }
 
+  /**
+   * Sert a bannir un usager du site web
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function bannir() {
+    $usagerABannir = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerABannir) {
+      $peutBannir = true;
+      //Si l'usager dans la session ne serait pas admin
+      if($this->session->userdata("idRole") > 1) {
+        $peutBannir = false;
+        //Si l'usager dans la session est un admin et que la personne a bannir est aussi un admin
+      } else if ($this->session->userdata("idRole") == 1 && $usagerABannir["idRole"] == 1) {
+        $peutBannir = false;
+      }
+      if($peutBannir) {
+        $this->Usagers_model->BannirInbannir_usager($usagerABannir['nomUsager'], 1);
+      }
+    }
+  }
+
+  /**
+   * Sert a bannir un usager du site web
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function gracier() {
+    $usagerAGracier = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAGracier) {
+      $peutGracier = true;
+      //Si l'usager dans la session ne serait pas admin
+      if($this->session->userdata("idRole") > 1) {
+        $peutGracier = false;
+        //Si l'usager dans la session est un admin et que la personne a gracier est aussi un admin
+      } else if ($this->session->userdata("idRole") == 2 && $usagerAGracier["idRole"] == 2) {
+        $peutGracier = false;
+      }
+      if($peutGracier) {
+        $this->Usagers_model->BannirInbannir_usager($usagerAGracier['nomUsager'], 0);
+      }
+    }
+  }
+
+  /**
+   * Sert a valider un usager du site web
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function valider() {
+    $usagerAValider = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAValider) {
+      $peutValider = true;
+      //Si l'usager dans la session ne serait pas admin
+      if($this->session->userdata("idRole") > 1) {
+        $peutValider = false;
+      }
+      if($peutValider) {
+        $this->Usagers_model->changeStatusValide_usager($usagerAValider['nomUsager'], 1);
+      }
+    }
+  }
+
+  /**
+   * Sert a rendre un usager administrateur
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function faire_admin() {
+    $usagerAFaireAdmin = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAFaireAdmin) {
+      //Si l'usager dans la session est super-admin
+      if($this->session->userdata("idRole") == 0) {
+        $this->Usagers_model->changeIdRole($usagerAFaireAdmin['nomUsager'], 1);
+      }
+    }
+  }
+
+   /**
+   * Sert a retirer le role d'administrateur d'un usager
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function retirer_admin() {
+    $usagerAFaireAdmin = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAFaireAdmin) {
+      //Si l'usager dans la session est super-admin
+      if($this->session->userdata("idRole") == 0) {
+        $this->Usagers_model->changeIdRole($usagerAFaireAdmin['nomUsager'], 2);
+      }
+    }
+  }
 }//Fin de la classe

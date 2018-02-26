@@ -12,15 +12,29 @@ p, span, a, button, div, section {
   background-color: #E74C3C;
   text-align: center;
   padding: 1.2rem 0;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
   width: 100%;
   z-index: 1000;
+}
+#redbar_height_fix {
+  height: 7.15rem;
+}
+@media screen and (min-width: 321px){
+  #redbar_height_fix{
+    height: 4.78rem;
+  }
+}
+@media screen and (min-width: 768px){
+  #redbar_height_fix{
+    height: 5.4rem;
+  }
 }
 .logo {
   width: 3rem;
   position: absolute;
   top:20%;
   left:1rem;
+}
+.disabled {
+  cursor: not-allowed;
 }
