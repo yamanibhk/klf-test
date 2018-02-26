@@ -34,17 +34,6 @@ window.addEventListener("load", function() {
           });
         break;
 
-        case "annonces" :
-          $.ajax({
-            url: "annonces",
-            method: "POST",
-            success: function(reponse) {
-              $("#content_panel").empty();
-              console.log(reponse);
-            }
-          });
-        break;
-
         case "statistiques" :
           $.ajax({
             url: "statistiques",
@@ -62,7 +51,7 @@ window.addEventListener("load", function() {
             method: "POST",
             success: function(reponse) {
               $("#content_panel").empty();
-              console.log(reponse);
+              $("#content_panel").append(reponse);
             }
           });
         break;

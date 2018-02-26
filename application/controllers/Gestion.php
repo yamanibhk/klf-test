@@ -9,6 +9,7 @@ class Gestion extends CI_Controller {
   public function __construct() {
     parent::__construct();
     $this->load->model("Usagers_model");
+    $this->load->model("Arrondissements_model");
     $this->load->helper("url_helper");
     $this->load->library('session');
     $this->load->helper('date');
@@ -57,18 +58,6 @@ class Gestion extends CI_Controller {
 
 
   /**
-   * Affiche la liste des annonces sous forme de vue partielle
-   */
-  public function annonces() {
-    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
-      echo "controlleur - 'charger liste des annonces'";
-    } else {
-      header("Location: ".base_url());
-    }
-  }
-
-
-  /**
    * Affiche des statistique sur le site sous forme de vue partielle
    */
   public function statistiques() {
@@ -85,7 +74,8 @@ class Gestion extends CI_Controller {
    */
   public function arrondissements() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
-      echo "controlleur - 'charger liste des arrondissements'";
+      $data['arrondissements'] = $this->Arrondissements_model->obtenir_arrondissement();
+      $this->load->view("gestion/liste-arrondissements.php", $data);
     } else {
       header("Location: ".base_url());
     }
