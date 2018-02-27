@@ -160,7 +160,6 @@ class Usagers extends CI_Controller {
    * @param      string  $nomUsager  Le nom de l'usager
    */
   public function bannir() {
-    // $nomUsager = $this->input->post('nomUsager');
     $usagerABannir = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
     //Si l'usager existe dans la BD
     if($usagerABannir) {
@@ -168,7 +167,7 @@ class Usagers extends CI_Controller {
       //Si l'usager dans la session ne serait pas admin
       if($this->session->userdata("idRole") > 1) {
         $peutBannir = false;
-        //Si l'usager dans la session est un admin et que la personne a supprimer est aussi un admin
+        //Si l'usager dans la session est un admin et que la personne a bannir est aussi un admin
       } else if ($this->session->userdata("idRole") == 1 && $usagerABannir["idRole"] == 1) {
         $peutBannir = false;
       }
@@ -184,7 +183,6 @@ class Usagers extends CI_Controller {
    * @param      string  $nomUsager  Le nom de l'usager
    */
   public function gracier() {
-    // $nomUsager = $this->input->post('nomUsager');
     $usagerAGracier = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
     //Si l'usager existe dans la BD
     if($usagerAGracier) {
@@ -192,12 +190,64 @@ class Usagers extends CI_Controller {
       //Si l'usager dans la session ne serait pas admin
       if($this->session->userdata("idRole") > 1) {
         $peutGracier = false;
-        //Si l'usager dans la session est un admin et que la personne a supprimer est aussi un admin
+        //Si l'usager dans la session est un admin et que la personne a gracier est aussi un admin
       } else if ($this->session->userdata("idRole") == 2 && $usagerAGracier["idRole"] == 2) {
         $peutGracier = false;
       }
       if($peutGracier) {
         $this->Usagers_model->BannirInbannir_usager($usagerAGracier['nomUsager'], 0);
+      }
+    }
+  }
+
+  /**
+   * Sert a valider un usager du site web
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function valider() {
+    $usagerAValider = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAValider) {
+      $peutValider = true;
+      //Si l'usager dans la session ne serait pas admin
+      if($this->session->userdata("idRole") > 1) {
+        $peutValider = false;
+      }
+      if($peutValider) {
+        $this->Usagers_model->changeStatusValide_usager($usagerAValider['nomUsager'], 1);
+      }
+    }
+  }
+
+  /**
+   * Sert a rendre un usager administrateur
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function faire_admin() {
+    $usagerAFaireAdmin = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAFaireAdmin) {
+      //Si l'usager dans la session est super-admin
+      if($this->session->userdata("idRole") == 0) {
+        $this->Usagers_model->changeIdRole($usagerAFaireAdmin['nomUsager'], 1);
+      }
+    }
+  }
+
+   /**
+   * Sert a retirer le role d'administrateur d'un usager
+   *
+   * @param      string  $nomUsager  Le nom de l'usager
+   */
+  public function retirer_admin() {
+    $usagerAFaireAdmin = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
+    //Si l'usager existe dans la BD
+    if($usagerAFaireAdmin) {
+      //Si l'usager dans la session est super-admin
+      if($this->session->userdata("idRole") == 0) {
+        $this->Usagers_model->changeIdRole($usagerAFaireAdmin['nomUsager'], 2);
       }
     }
   }

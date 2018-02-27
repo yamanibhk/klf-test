@@ -5,9 +5,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="row">
     <?php
     foreach ($usagers as $usager) {
-      // echo "<pre>";
-      // var_dump($usager);
-      // echo "</pre>";
       ?>
       <div class="col-lg-6 col-xl-4 p-2">
         <div class="card">
@@ -97,8 +94,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   }
                 }
                 //Si l'utilisateur avec la session active est super-admin il pourra faire de nouveaux admin
-                if($utilisateur['idRole'] < 1 && $usager->idRole > 1) {
+                if($utilisateur['idRole'] == 0 &&
+                   $usager->idRole > 1 &&
+                   $usager->estBanni == false &&
+                   $usager->estValide == true) {
                   echo "<a id='btn_nouv_admin' class='dropdown-item py-2' href='#' onclick='return false'>Faire un administrateur</a>";
+                }
+
+                //Si l'utilisateur avec la session active est super-admin il pourra retirer le role d'admin
+                if($utilisateur['idRole'] == 0 &&
+                   $usager->idRole == 1 &&
+                   $usager->estBanni == false &&
+                   $usager->estValide == true) {
+                  echo "<a id='btn_retirer_admin' class='dropdown-item py-2' href='#' onclick='return false'>Retirer l'administrateur</a>";
                 }
                 ?>
               </div>

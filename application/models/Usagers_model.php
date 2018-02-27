@@ -118,7 +118,6 @@ class Usagers_model extends CI_Model {
     );
     $this->db->where('nomUsager', $nomUsager);
     $this->db->update('Usager', $data);
-
   }
 
   /**
@@ -141,6 +140,20 @@ class Usagers_model extends CI_Model {
     //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
     $data = array (
       "estValide" => $estValide,
+    );
+    $this->db->where('nomUsager', $nomUsager);
+    $this->db->update('Usager', $data);
+  }
+
+  /**
+   * changer le role d'un utilisateur
+   *
+   * @param      string  $nomUsager  le nom usager
+   * @param      integer  $idRole     L'ID du nouveau role
+   */
+  public function changeIdRole($nomUsager, $idRole) {
+    $data = array (
+      "idRole" => $idRole,
     );
     $this->db->where('nomUsager', $nomUsager);
     $this->db->update('Usager', $data);
