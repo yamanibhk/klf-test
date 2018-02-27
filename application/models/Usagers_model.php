@@ -118,7 +118,6 @@ class Usagers_model extends CI_Model {
     );
     $this->db->where('nomUsager', $nomUsager);
     $this->db->update('Usager', $data);
-
   }
 
   /**

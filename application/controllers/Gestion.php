@@ -72,10 +72,44 @@ class Gestion extends CI_Controller {
   /**
    * Affiche les arrondissement de la BD sous forme de vue partielle
    */
-  public function arrondissements() {
+  public function voir_arrondissements() {
     if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
-      $data['arrondissements'] = $this->Arrondissements_model->obtenir_arrondissement();
+      $data['arrondissements'] = $this->Arrondissements_model->obtenir_arrondissements();
       $this->load->view("gestion/liste-arrondissements.php", $data);
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+  /**
+   * Modifie un arrondissement de la BD
+   */
+  public function modifier_arrondissement($id) {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      if($this->Arrondissements_model->obtenir_arrondissement($id)){
+        $this->Arrondissements_model->modifier_arrondissement($id, $this->input->post("valeur"));
+      }
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+  /**
+   * Modifie un arrondissement de la BD
+   */
+  public function supprimer_arrondissement($id) {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      if($this->Arrondissements_model->obtenir_arrondissement($id)){
+        $this->Arrondissements_model->supprimer_arrondissement($id);
+      }
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+  /**
+   * Modifie un arrondissement de la BD
+   */
+  public function ajouter_arrondissement() {
+    if($this->session->userdata("nomUsager") && $this->session->userdata("idRole") < 2) {
+      $this->Arrondissements_model->ajouter_arrondissement($this->input->post("valeur"));
     } else {
       header("Location: ".base_url());
     }
