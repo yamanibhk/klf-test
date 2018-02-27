@@ -29,8 +29,8 @@ class appartement extends CI_Controller {
         $data['appartement'] = $this->Appartements_model->obtenir_appartement($data['utilisateur']['nomUsager']);
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);
-        $this->load->view("appartement/index.php", $data);
         $this->load->view("accueil/modal.php", $data);
+        $this->load->view("appartement/index.php",$data);
         $this->load->view("templates/footer.php", $data);
       }
     } else {
@@ -48,8 +48,8 @@ class appartement extends CI_Controller {
   }
 
   /**
-   * enregistrer les données saisies dans le formulaire d'ajout d'une nouvelle annonce
-   */
+  * enregistrer les données saisies dans le formulaire d'ajout d'une nouvelle annonce
+  */
   public function enregistrer() {
     $succes = true;
     $arrondissement = $this->input->post("arrondissement");
@@ -67,6 +67,7 @@ class appartement extends CI_Controller {
     $laveVaisselle = $this->input->post("laveVaisselle");
     $stationnement = $this->input->post("stationnement");
     $description = $this->input->post("description");
+    $titre = $this->input->post("titre");
     $image = $this->input->post("image");
     $detail = $this->input->post("detail");
     $proprietaire = $this->session->get_userdata();
@@ -85,6 +86,7 @@ class appartement extends CI_Controller {
        !isset($laveuseSecheuse) ||
        !isset($laveVaisselle) ||
        !isset($stationnement) ||
+       !isset($titre) ||
        !isset($description) ||
        !isset($image) ||
        !isset($detail) ||
@@ -106,6 +108,7 @@ class appartement extends CI_Controller {
          $laveuseSecheuse == "" ||
          $laveVaisselle == "" ||
          $stationnement == "" ||
+         $titre == "" ||
          $description == "" ||
          $image == "" ||
          $detail == "" ||
@@ -115,6 +118,7 @@ class appartement extends CI_Controller {
         // ajout d'un appartement dans la base de donnée
         $resultat = $this->Appartements_model->enregistrer_appartement($arrondissement,
                                                                        $adresse,
+                                                                       $titre,
                                                                        $codePostal,
                                                                        $type,
                                                                        $piece,
@@ -137,12 +141,99 @@ class appartement extends CI_Controller {
       }
       if($succes) {
         $data["erreur"] = false;
-
+        //$this->load->view("appartement/message_insertion.php", $data);
+        //$this->load->view("appartement/index");
+        //redirect("index.php/appartement/index");
       } else {
         $data["erreur"] = true;
+        $this->load->view("appartement/message_insertion.php", $data);
+				//header("Location: index.php/appartement/index");
+				//redirect("index.php/appartement/index");
       }
-      $this->load->view("appartement/message_insertion.php", $data);
+			
     }
   }
-} //fin du controleur
+  /**
+  * Mettre un logement en location (donner le prix et les dates de disponibilités)
+  */
+  public function louerLogement(){
+    $succes = true;
+    $id = $this->input->post("id");
+    $dateDebut = $this->input->post("dateDebut");
+    $dateFin = $this->input->post("dateFin");
+    $prix = $this->input->post("prix");
+    $interval = $this->input->post("interval");
+    if(!isset($id) || !isset($dateDebut) ||  !isset($dateFin) || !isset($prix) || !isset($interval)){
+      $succes = false;
+    }
+    else{
+      if($id=="" || $dateDebut=="" ||  $dateFin=="" || $prix=="" || $interval==""){
+        $succes = false;
+      }
+      else{
+        $resultat = $this->Appartements_model->verifierDateDispo($id,$dateDebut,$dateFin);
+        if($resultat){
+            $data["existe"] = true;
+        }
+        else{
+            $reponse = $this->Appartements_model->louer_monLogement($id,$dateDebut,$dateFin,$prix,$interval);
+            if(!$reponse) {
+                $succes = false;
+            }
+        }
+        if($succes) {
+            $data["erreur"] = false;
+        } else {
+            $data["erreur"] = true;
+        }
+        $this->load->view("appartement/message_insertion.php", $data);
+    } 
+    }
+  }
+	
+  /**
+  * afficher les dates disponibilités ajoutées a un appartement
+  */
+  public function dateDispo(){
+      $id = $this->input->post("idAppart");
+      var_dump($id);
+      $reponse = $this->Appartements_model->dateDispo($id);
+      //if($reponse!=[]){
+          return json_encode($reponse);
+      var_dump($reponse);
+      /*}else{
+          echo "aucun resultat";
+      }*/
+  }
 
+  /**
+  * Afficher la liste des locations de l'usager
+  */
+  public function demandeLocationEnCours(){
+      $proprietaire = $this->session->get_userdata();
+      $data["locations"] = $this->Appartements_model->obtenir_location($proprietaire['nomUsager']);
+      $this->load->view("appartement/obtenir_location.php", $data);
+  }
+  
+  /**
+  * Afficher la liste des locations de l'usager
+  */
+  public function validerLocation(){
+      $id = $this->input->post("idAppart");
+      $reponse = $this->Appartements_model->valider_location($id);
+      if($reponse){
+        redirect("index.php/appartement/demandeLocationEnCours");
+      }
+      
+  }
+  
+  /**
+  * Afficher les photos d'un appartement
+  */
+  public function afficherPhoto(){
+      $id = $this->input->post("idAppart");
+      $photos = $this->Appartements_model->afficherPhoto($id);
+      return json_encode($photos);
+  }
+  
+} //fin du controleur
