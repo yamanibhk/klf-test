@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
-<link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/stylesheet.css">
+<!--<link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/stylesheet.css">-->
 <link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/font/flaticon.css">
-<script type='text/javascript' src="<?=base_url();?>js/accueil/script.js"></script>
+<!--<script type='text/javascript' src="<?=base_url();?>js/accueil/script.js"></script>-->
 <!--source https://bootsnipp.com/snippets/aMnXx-->
 <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
 <!--<script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script>-->
@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 <?php } ?>				
 </div>
-<!-- fin du menu de recherche -->
+<!-- debut du menu de recherche -->
 <div class="container-fluid col-12 ml-0 mr-0 pl-0 pr-0">
   <div class="row col-12 ml-0 mr-0 pl-0 pr-0 bg-light">
 		<!-- ceci est le menu de recherche-->

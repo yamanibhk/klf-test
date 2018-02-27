@@ -98,7 +98,7 @@ class Appartements_model extends CI_Model {
     if (!empty($idArrondissement)) $this->db->where('appartement.idArrondissement', $idArrondissement);
     if (!empty($codePostal)) $this->db->where('codePostal', substr($codePostal,0,2));
     if (!empty($typeLogement)) $this->db->where('typeLogement', $typeLogement);
-    if (!empty($nbrePiece) and $data['nbrePiece']!=0) $this->db->where('nbrePiece', $nbrePiece);
+    if (!empty($nbrePiece) and ($nbrePiece!=0) $this->db->where('nbrePiece', $nbrePiece);
     if (!empty($numEtage)) $this->db->where('numEtage <=', $numEtage);
     if (!empty($Internet)) $this->db->where('Internet', $Internet);
     if (!empty($Television)) $this->db->where('Television', $Television);
