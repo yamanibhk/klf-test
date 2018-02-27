@@ -45,7 +45,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               if($arrondissement->nbreAppart == NULL) {
                 echo "<a id='btn_supprimer' href='#' onclick='return false' class='card-link' data-toggle='tooltip' data-placement='top' title='Supprimer'><i class='far fa-trash-alt'></i></a>";
               } else {
-                echo "<a class='card-link' data-toggle='tooltip' data-placement='top' title='Suppression impossible'><i class='far fa-trash-alt text-muted'></i></a>";
+                echo "<a class='card-link' data-toggle='tooltip' data-placement='top' title='Suppression impossible, appartements liés'><i class='far fa-trash-alt text-muted'></i></a>";
               }
               ?>
             </div>

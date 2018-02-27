@@ -58,7 +58,6 @@ window.addEventListener("load", function() {
               $('#nouvel_arrondissement').on('hidden.bs.modal', function (e) {
                 rafraichirArrondissement()
               });
-              // window.setTimeout(function(){rafraichirArrondissement()}, 500);
             }
           });
         }
