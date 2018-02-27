@@ -5,9 +5,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="row">
     <?php
     foreach ($usagers as $usager) {
-      // echo "<pre>";
-      // var_dump($usager);
-      // echo "</pre>";
       ?>
       <div class="col-lg-6 col-xl-4 p-2">
         <div class="card">
