@@ -24,7 +24,33 @@ class Accueil extends CI_Controller {
         //Charge les menus
         $data['menus'] = $this->modalmenus->chargeMenus();
         $data['appartementsVedettes'] = $this->Appartements_model->obtenir_appartementsVedette();
+					
+				$succes = true;
+				$arrondissement = $this->input->post("arrondissement");	
+				$dateDebut=$this->input->post("dateDebut");
+				$dateFin=$this->input->post("dateFin");
+				$nbrPiece=$this->input->post("nbrAdulte")+$this->input->post("nbrEnfant");
+				$codePostal=$this->input->post("codePostal");
+				$numEtage=$this->input->post("numEtage");
+				$typeLogement=$this->input->post("typeLogement");
+				$nbreStatio=$this->input->post("nbreStatio");
+				$internet=$this->input->post("internet");
+				$television=$this->input->post("television");
+				$climatiseur=$this->input->post("climatiseur");
+				$adapte=$this->input->post("adapte");
+				$meuble=$this->input->post("meuble");
+				$lavSech=$this->input->post("lavSech");
+				$lavVaiss=$this->input->post("lavVaiss");
+				$intervAcc=$this->input->post("intervAcc");
+				$prixMin=$this->input->post("prixMin");
+				$prixMax=$this->input->post("prixMax");				
+				
         $data['arrondissement'] = $this->Arrondissements_model->obtenir_arrondissement();
+				$data['codePosteaux'] = $this->Arrondissements_model->obtenir_codePostal();
+				$data['appartements'] = $this->Appartements_model->obtenir_appartements(
+				$arrondissement,$dateDebut, $dateFin,$nbrPiece,$codePostal,   
+				$numEtage,$typeLogement, $nbreStatio,$internet,$television,$climatiseur,$adapte,$meuble,
+				$lavSech,$lavVaiss,$intervAcc,$prixMin,$prixMax);
         $data["titre"] = "ACCUEIL";//Le titre de la page
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);

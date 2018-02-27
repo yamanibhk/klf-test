@@ -70,8 +70,9 @@ class Appartements_model extends CI_Model {
     JOIN arrondissement ON appartement.idArrondissement = arrondissement.idArrondissement
     JOIN disponibilite ON appartement.idAppart = disponibilite.idAppart
     JOIN photo ON appartement.idAppart = photo.idAppart
-    WHERE Note >=4
-    AND disponibilite.dateFinDispo >= NOW( ) ');
+    WHERE noter.Note >=4
+    AND disponibilite.dateFinDispo >= NOW()
+    group by appartement.idAppart');
 
     //tableau de resultats
     return $query->result_array();
@@ -83,43 +84,53 @@ class Appartements_model extends CI_Model {
      *
      * @return     array  toutes les données de l'utilisateur précisé
      */
-    public function obtenir_appartements($data){
+		
+    public function obtenir_appartements($arrondissement="", $dateDebut="01/01/1900", $dateFin="01/01/3000",$nbrPiece=0,$codePostal="",   
+				$numEtage="",$typeLogement="", $nbreStatio="",$internet=0,$television=0,$climatiseur=0,$adapte=0,$meuble=0,
+				$lavSech=0,$lavVaiss=0,$intervAcc=0,$prixMin="",$prixMax=""){	
+						
     $this->db->select('*');
     $this->db->from('appartement');
     $this->db->join('noter', 'appartement.idAppart = noter.idAppart');
     $this->db->join('arrondissement', 'appartement.idArrondissement = arrondissement.idArrondissement');
     $this->db->join('disponibilite', 'appartement.idAppart = disponibilite.idAppart');
     $this->db->join('photo', 'appartement.idAppart = photo.idAppart');
-    if (!empty($data['idArrondissement'])) $this->db->where('appartement.idArrondissement', $data['idArrondissement']);
-    if (!empty($data['codePostal'])) $this->db->where('codePostal', $data['codePostal']);
-    if (!empty($data['typeLogement'])) $this->db->where('typeLogement', $data['typeLogement']);
-    if (!empty($data['nbrePiece'])) $this->db->where('nbrePiece', $data['nbrePiece']);
-    if (!empty($data['numEtage'])) {
-      $signe=$data['numEtage'];
-      if ($signe[0]=='>') $this->db->where('numEtage >=', $data['numEtage']);
-      else  $this->db->where('numEtage <', $data['numEtage']);
-    }
-    if (!empty($data['Internet'])) $this->db->where('Internet', $data['Internet']);
-    if (!empty($data['Television'])) $this->db->where('Television', $data['Television']);
-    if (!empty($data['Climatiseur'])) $this->db->where('Climatiseur', $data['Climatiseur']);
-    if (!empty($data['Adapte'])) $this->db->where('Adapte', $data['Adapte']);
-    if (!empty($data['nbreStationnement'])) $this->db->where('nbreStationnement', $data['nbreStationnement']);
-    if (!empty($data['Meuble'])) $this->db->where('Meuble', $data['Meuble']);
-    if (!empty($data['LaveuseSecheuse'])) $this->db->where('LaveuseSecheuse', $data['LaveuseSecheuse']);
-    if (!empty($data['LaveVaisselle'])) $this->db->where('LaveVaisselle', $data['LaveVaisselle']);
-    if (!empty($data['Note'])) $this->db->where('Note', $data['Note']);
-    /*if (!empty($data['IntervallesAcceptee'])) {
-      $this->db->where('IntervallesAcceptee', $data['IntervallesAcceptee']);
-      if (!empty($data['IntervallesAcceptee']))
-
-    }
-    */
-
-
-    $query = $this->db->get();
+    if (!empty($idArrondissement)) $this->db->where('appartement.idArrondissement', $idArrondissement);
+    if (!empty($codePostal)) $this->db->where('codePostal', substr($codePostal,0,2));
+    if (!empty($typeLogement)) $this->db->where('typeLogement', $typeLogement);
+    if (!empty($nbrePiece) and $data['nbrePiece']!=0) $this->db->where('nbrePiece', $nbrePiece);
+    if (!empty($numEtage)) $this->db->where('numEtage <=', $numEtage);
+    if (!empty($Internet)) $this->db->where('Internet', $Internet);
+    if (!empty($Television)) $this->db->where('Television', $Television);
+    if (!empty($Climatiseur)) $this->db->where('Climatiseur', $Climatiseur);
+    if (!empty($Adapte)) $this->db->where('Adapte', $Adapte);
+    if (!empty($nbreStationnement)) $this->db->where('nbreStationnement', $nbreStationnement);
+    if (!empty($Meuble)) $this->db->where('Meuble', $Meuble);
+    if (!empty($LaveuseSecheuse)) $this->db->where('LaveuseSecheuse', $LaveuseSecheuse);
+    if (!empty($LaveVaisselle)) $this->db->where('LaveVaisselle', $LaveVaisselle);
+    if (!empty($prixMin)) $this->db->where('MontantJournalier >=', $prixMin);
+    if (!empty($prixMax)) $this->db->where('MontantJournalier <=', $prixMax);
+		if (!empty($IntervallesAcceptee)) 
+			{
+					$this->db->where('IntervallesAcceptee', $IntervallesAcceptee);
+					if ($IntervallesAcceptee==1) {
+						if (!empty($dateDebut)) $this->db->where('dateDebutDispo <=', $dateDebut);
+    				if (!empty($dateFin)) $this->db->where('dateFinDispo >=', $dateFin);
+					}	
+					else  {
+							if (!empty($dateDebut)) $this->db->where('dateDebutDispo', $dateDebut);
+    					if (!empty($dateFin)) $this->db->where('dateFinDispo', $dateFin);
+					}
+			}
+		else {
+						if (!empty($dateDebut)) $this->db->where('dateDebutDispo', $dateDebut);
+    				if (!empty($dateFin)) $this->db->where('dateFinDispo', $dateFin);
+					}
+   	$query = $this->db->get();
 
       //tableau de resultats
     return $query->result_array();
-  }
-	
+    }
+		
+		
 }//Fin de la classe

@@ -16,4 +16,11 @@ class Arrondissements_model extends CI_Model {
 		$query = $this->db->get("arrondissement");
 		return $query->result_array();
   }
+  /**
+   * @return Retourne la liste des code posteaux.
+   */
+  public function obtenir_codePostal(){
+		$query = $this->db->get("codePosteaux");
+		return $query->result_array();
+  }
 }//Fin de la classe
