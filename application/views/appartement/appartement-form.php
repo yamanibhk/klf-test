@@ -127,15 +127,17 @@
 		<div class="echec"></div>
   </div>
   <div class="row">
-    <div class="col-6">
+    <div class="col-8">
        <label for="icone">Icône du fichier (JPG, PNG ou GIF | max. 15 Ko) :</label><br />
        <input type="text" class="champ" name="detail" placeholder="Titre du fichier" id="detail" />
        <input type="file" class="champ" name="icone" id="icone" /><br />
 			 <div class="echec"></div>
     </div>
-    <div class="d-flex flex-wrap justify-content-end col-6">
+    <div class="col-4">
+      <button id="retourAppart" class="btn btn-secondary">Annuler</button>      
       <button id="enregistrerAppartement" class="btn btn-primary">Enregistrer</button>      
     </div>
+    
   </div>
 </section>
 </div>

@@ -11,11 +11,23 @@ window.addEventListener("load", function() {
     });
   });
 	
-	//soumettre les informations d'ajout d'appartement au controlleur
-		$(document).on("click",'button#enregistrerAppartement',function() {
-			validerFormulaireAjout($(this).parents("#inscrireAppartement-form"));
-		});
-  
+  //soumettre les informations d'ajout d'appartement au controlleur
+  $(document).on("click",'button#enregistrerAppartement',function() {
+      validerFormulaireAjout($(this).parents("#inscrireAppartement-form"));
+  });
+
+  //soumettre les informations d'ajout d'appartement au controlleur
+  $(document).on("click",'button#retourAppart',function() {
+    $.ajax({
+      url: "contenu_index",
+      type: "POST",
+      success: function(reponse) {
+        $("#contentAppartement").empty();
+        $("#contentAppartement").append(reponse);
+      }
+    });
+  });
+
 	
 	//clique sur le lien pour ajouter une disponibilité et un prix de location a un appartement
   $(document).on("click", "button#idAppart", function(evt) {
@@ -31,7 +43,7 @@ window.addEventListener("load", function() {
         $("#dateDispo").text(data.dateDebutDispo+data.dateFinDispo+data.prix);
       }
     });
-		//clique sur le bouton pour enregistrer une disponibilité avec le prix de location
+  //clique sur le bouton pour enregistrer une disponibilité avec le prix de location
   $(document).on("click", "button#mettreEnLocation", function(evt) {
       validerlogementAlouer($(this).parents(".formulaireAlouer"),id);
     });

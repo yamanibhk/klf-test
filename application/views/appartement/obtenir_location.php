@@ -16,3 +16,6 @@
     <?php } ?>
   </div>
 <?php } ?>
+<div class="">
+  <button id="retourAppart" class="btn btn-secondary">Retour à l'accueil</button>      
+</div>

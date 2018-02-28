@@ -41,7 +41,7 @@ class appartement extends CI_Controller {
   /**
    * afficher les appartements dans le contenu de la page mes logements
    */
-    public function contenu_index() {
+  public function contenu_index() {
       $usager = $this->session->get_userdata();
       //obtenir la liste des logements d'un usager
       $data['appartement'] = $this->Appartements_model->obtenir_appartement($usager['nomUsager']);
