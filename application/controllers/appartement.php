@@ -29,8 +29,8 @@ class appartement extends CI_Controller {
         $data['appartement'] = $this->Appartements_model->obtenir_appartement($data['utilisateur']['nomUsager']);
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);
-        $this->load->view("accueil/modal.php", $data);
-        $this->load->view("appartement/index.php",$data);
+        $this->load->view("appartement/index.php", $data);
+        $this->load->view("templates/modalmenus.php", $data);
         $this->load->view("templates/footer.php", $data);
       }
     } else {
