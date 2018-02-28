@@ -9,7 +9,7 @@
  * @details    Cette classe nous permet de vérifier l'existence des email, opérations CRUD sur table moyens contacts
  */
 class Moyen_contact_model extends CI_Model{
-  
+
   public function __construct(){
     $this->load->database();
   }
@@ -20,7 +20,7 @@ class Moyen_contact_model extends CI_Model{
    * @param      string  $nomUsager  le nom usager
    * @param      string  $email      l'email de l'usager a verifier son existence
    *
-   * @return     array  tableau de resultat contenant le moyen de contact 
+   * @return     array  tableau de resultat contenant le moyen de contact
    */
   public function obtenir_MoyenContactParEmail($nomUsager, $email)
   {
@@ -83,7 +83,7 @@ class Moyen_contact_model extends CI_Model{
    * @param      string  $Details          le details
    * @param      boolean $estMoyenPrefere  si il'est moyen préféré
    *
-   * @return     true si insertion moyen de contact reussie 
+   * @return     true si insertion moyen de contact reussie
    */
   public function ajouter_MoyenContact($nomUsager, $moyenContact, $Details, $estMoyenPrefere){
     //ce tableau contient toutes les données récupérées du formulaire d'insertion
@@ -92,13 +92,13 @@ class Moyen_contact_model extends CI_Model{
       "moyenContact" => $moyenContact,
       "Details" => $Details,
       "estMoyenPrefere" => $estMoyenPrefere,
-          
+
     );
-    
+
      $query = $this->db->insert("Moyen_contact", $data);
      if ($query) return true;
   }
-  
+
 
 
   /**
@@ -110,7 +110,7 @@ class Moyen_contact_model extends CI_Model{
     $this->db->where('idMoyen', $id);
     $this->db->delete('Moyen_contact');
   }
-  
+
 
 
   /**

@@ -6,6 +6,7 @@ class Usagers extends CI_Controller {
     parent::__construct();
     $this->load->model("Usagers_model");
     $this->load->model("Moyen_contact_model");
+    $this->load->model("Mode_paiement_model");
     $this->load->library('modalmenus');
     $this->load->helper("url_helper");
     $this->load->library('session');
@@ -17,20 +18,46 @@ class Usagers extends CI_Controller {
    */
   public function index() {
     if($this->session->userdata("nomUsager")){
-      if ( !file_exists(APPPATH.'views/accueil/index.php')) {
+      if ( !file_exists(APPPATH.'views/usagers/index.php')) {
         show_404 ();
       } else {
         //Mets les infos de l'usager dans une variable
-        $data['utilisateur'] = $this->session->get_userdata();
+        $data['utilisateur'] = $this->Usagers_model->obtenir_usager($this->session->userdata("nomUsager"));
+        $data['mode_paiements'] = $this->Mode_paiement_model->obtenir_tous();
         //Charge les menus
         $data['menus'] = $this->modalmenus->chargeMenus();
-
         $data["titre"] = "MON COMPTE";//Le titre de la page
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);
         $this->load->view("usagers/index.php", $data);
         $this->load->view("templates/modalmenus.php", $data);
         $this->load->view("templates/footer.php", $data);
+      }
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+  public function modifier_infos() {
+    if($this->session->userdata("nomUsager")){
+      $valide = true;
+
+      $nomUsager = strtolower($this->input->post("nomUsager"));
+      $prenom = strtolower($this->input->post("prenom"));
+      $nom = strtolower($this->input->post("nom"));
+      $adresse = strtolower($this->input->post("adresse"));
+      $mode_paiement = strtolower($this->input->post("mode_paiement"));
+      $cheminPhoto = strtolower($this->input->post("cheminPhoto"));
+
+      //Si l'usager qu'on tente de modifier n'est pas l'utilisateur actif
+      if($nomUsager != strtolower($this->session->userdata("nomUsager"))) {
+        $valide = false;
+      } else {
+        if($this->Usagers_model->modifier_usager($nomUsager, $nom, $prenom, $adresse, $mode_paiement, $cheminPhoto)){
+          echo true;
+        } else {
+          echo false;
+        }
       }
     } else {
       header("Location: ".base_url());
