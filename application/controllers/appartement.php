@@ -16,7 +16,7 @@ class appartement extends CI_Controller {
   /**
    * afficher les appartements de l'usager connecté
    */
-    public function index() {
+  public function index() {
     if($this->session->userdata("nomUsager")) {
       if ( !file_exists(APPPATH.'views/accueil/index.php')) {
         show_404 ();
@@ -42,10 +42,10 @@ class appartement extends CI_Controller {
    * afficher les appartements dans le contenu de la page mes logements
    */
   public function contenu_index() {
-      $usager = $this->session->get_userdata();
-      //obtenir la liste des logements d'un usager
-      $data['appartement'] = $this->Appartements_model->obtenir_appartement($usager['nomUsager']);
-      $this->load->view("appartement/index.php",$data);
+    $usager = $this->session->get_userdata();
+    //obtenir la liste des logements d'un usager
+    $data['appartement'] = $this->Appartements_model->obtenir_appartement($usager['nomUsager']);
+    $this->load->view("appartement/index.php",$data);
   }
 
   /**
@@ -152,16 +152,11 @@ class appartement extends CI_Controller {
       if($succes) {
         $data["erreur"] = false;
         echo false;
-        //$this->load->view("appartement/message_insertion.php", $data);
-        //$this->load->view("appartement/index");
-        //redirect("index.php/appartement/index");
       } else {
         $data["erreur"] = true;
         $this->load->view("appartement/message_insertion.php", $data);
-				//header("Location: index.php/appartement/index");
-				//redirect("index.php/appartement/index");
       }
-			
+      
     }
   }
   /**
@@ -183,8 +178,9 @@ class appartement extends CI_Controller {
       }
       else{
         $resultat = $this->Appartements_model->verifierDateDispo($id,$dateDebut,$dateFin);
-        if($resultat){
-            $data["existe"] = true;
+        if($resultat>0){
+            $data["erreur"] = true;
+            $succes = false;
         }
         else{
             $reponse = $this->Appartements_model->louer_monLogement($id,$dateDebut,$dateFin,$prix,$interval);
@@ -197,55 +193,54 @@ class appartement extends CI_Controller {
         } else {
             $data["erreur"] = true;
         }
-        $this->load->view("appartement/message_insertion.php", $data);
-    } 
+      } 
+      $this->load->view("appartement/message_insertion.php", $data);
     }
   }
-	
+  
   /**
   * afficher les dates disponibilités ajoutées a un appartement
   */
   public function dateDispo(){
     
-      $id = $this->input->post("idAppart");
-      var_dump($id);
-      $reponse = $this->Appartements_model->dateDispo($id);
-      //if($reponse!=[]){
-          return json_encode($reponse);
-      var_dump(json_encode($reponse));
-      /*}else{
-          echo "aucun resultat";
-      }*/
+    $id = $this->input->post("idAppart");
+    var_dump($id);
+    $reponse = $this->Appartements_model->dateDispo($id);
+    //if($reponse!=[]){
+        return json_encode($reponse);
+    var_dump($reponse);
+    /*}else{
+        echo "aucun resultat";
+    }*/
   }
 
   /**
   * Afficher la liste des locations de l'usager
   */
   public function demandeLocationEnCours(){
-      $proprietaire = $this->session->get_userdata();
-      $data["locations"] = $this->Appartements_model->obtenir_location($proprietaire['nomUsager']);
-      $this->load->view("appartement/obtenir_location.php", $data);
+    $proprietaire = $this->session->get_userdata();
+    $data["locations"] = $this->Appartements_model->obtenir_location($proprietaire['nomUsager']);
+    $this->load->view("appartement/obtenir_location.php", $data);
   }
   
   /**
   * Afficher la liste des locations de l'usager
   */
   public function validerLocation(){
-      $id = $this->input->post("idAppart");
-      $reponse = $this->Appartements_model->valider_location($id);
-      if($reponse){
-        redirect("index.php/appartement/demandeLocationEnCours");
-      }
-      
+    $id = $this->input->post("idAppart");
+    $reponse = $this->Appartements_model->valider_location($id);
+    if($reponse){
+      redirect("index.php/appartement/demandeLocationEnCours");
+    }
   }
   
   /**
   * Afficher les photos d'un appartement
   */
   public function afficherPhoto(){
-      $id = $this->input->post("idAppart");
-      $photos = $this->Appartements_model->afficherPhoto($id);
-      return json_encode($photos);
+    $id = $this->input->post("idAppart");
+    $photos = $this->Appartements_model->afficherPhoto($id);
+    return json_encode($photos);
   }
   
 } //fin du controleur

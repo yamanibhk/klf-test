@@ -69,8 +69,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="form-group row">
             <label class="col-4">Interval accepté</label>
             <div class="col-6">
-              <input type="radio" name="interval" id="interval-0" class="interval" checked="checked" ><label for="interval-0">Oui</label>
-              <input type="radio" name="interval" id="interval-1" class="interval"><label for="interval-1">Non</label>
+              <input type="radio" name="interval" id="interval-0" class="interval" checked="checked" value="1"><label for="interval-0">Oui</label>
+              <input type="radio" name="interval" id="interval-1" class="interval"><label for="interval-1" value="0">Non</label>
               <div class="echec"></div>
             </div>
           </div>

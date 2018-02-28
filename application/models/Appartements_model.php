@@ -64,7 +64,7 @@ class Appartements_model extends CI_Model {
    * @return la liste des dates déja ajoutées
    */
 	public function dateDispo($id){
-		$query = $this->db->query("select * from disponibilite where idAppart=" . $id . " and dateFinDispo>'" . CURDATE() . "'");
+		$query = $this->db->get_where("disponibilite", array("idAppart" => $id));
     return $query->result_array();
 	}
 	
@@ -73,16 +73,10 @@ class Appartements_model extends CI_Model {
    * @return vrai ou faux si l'appartement est loué a cette date
    */
 	public function verifierDateDispo($idAppart,$dateDebut,$dateFin){
-		$query = $this->db->select("select * from location where idAppart=" . $idAppart . " and dateDebutLocation<=" . $dateDebut ." or dateFinLocation>=" . $dateFin);
-		/*$query = $this->db->from("location");
-		$query = $this->db->where("idAppart",$idAppart);
-		$query = $this->db->where("dateDebutLocation<=",$dateDebut);
-		$query = $this->db->where("dateFinLocation>=",$dateFin);*/
-    if($query){
-			return false;
-		}else{
-			return true;
-		}
+		$query = $this->db->query("select * from location where idAppart ='" . $idAppart . "' and ((dateDebutLocation <='" . $dateDebut ."' and dateFinLocation >='" . $dateDebut . "')
+    or (dateFinLocation >='" . $dateFin . "' and dateDebutLocation <='" . $dateFin . "'))");
+    return $query->num_rows();
+			 
 	}
 
   /**

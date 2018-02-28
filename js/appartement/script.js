@@ -10,7 +10,7 @@ window.addEventListener("load", function() {
       }
     });
   });
-	
+  
   //soumettre les informations d'ajout d'appartement au controlleur
   $(document).on("click",'button#enregistrerAppartement',function() {
       validerFormulaireAjout($(this).parents("#inscrireAppartement-form"));
@@ -28,10 +28,11 @@ window.addEventListener("load", function() {
     });
   });
 
-	
-	//clique sur le lien pour ajouter une disponibilité et un prix de location a un appartement
+  
+  //clique sur le lien pour ajouter une disponibilité et un prix de location a un appartement
   $(document).on("click", "button#idAppart", function(evt) {
     var id = $(this).attr('value');
+    console.log(id);
     $.ajax({
       url: "dateDispo",
       type: "POST",
@@ -40,14 +41,17 @@ window.addEventListener("load", function() {
       },
         dataType: 'json',
       success: function(data) {
-        $("#dateDispo").text(data.dateDebutDispo+data.dateFinDispo+data.prix);
+        alert(id);
+        for(dispo in data){
+          $("#dateDispo").append(dispo[dateDebutDispo]+dispo[dateFinDispo]+dispo[prix]);
+        }
       }
     });
   //clique sur le bouton pour enregistrer une disponibilité avec le prix de location
   $(document).on("click", "button#mettreEnLocation", function(evt) {
       validerlogementAlouer($(this).parents(".formulaireAlouer"),id);
     });
-		
+    
   });
     
   //bouton pour afficher les demande de location en cours
@@ -83,7 +87,7 @@ window.addEventListener("load", function() {
 //fonction de validation formulaire pour mettre un appartement disponibilte 
 function validerlogementAlouer(formulaire,id){
   var valideAlouer = true;
-	console.log(id);
+  console.log(id);
   formulaire.children("div").each(function() {
     var valeur = $(this).find(".champ");
     if (valeur.val() == "") {
@@ -94,7 +98,7 @@ function validerlogementAlouer(formulaire,id){
   });
 
   if (valideAlouer){
-		console.log(id);
+    console.log(id);
     $.ajax({
       url: "louerLogement",
       type: "POST",
@@ -103,7 +107,7 @@ function validerlogementAlouer(formulaire,id){
         "dateFin":$('#dFin').val(),
         "prix":$('#prix').val(),
         "id": id,
-        "interval": $('.interval').val()
+        "interval": $('input[name=interval]:checked').val()
       },
       success: function(data) {
         $("#contentAppartement").empty();
@@ -160,13 +164,13 @@ function validerFormulaireAjout(formulaire){
         "type": $("#type").val(),
         "piece": $("#piece").val(),
         "etage": $("#etage").val(),
-        "internet": $(".internet").val(),
-        "tele": $(".tele").val(),
-        "climatiseur": $(".climatiseur").val(),
-        "meuble": $(".meuble").val(),
-        "adapte": $(".adapte").val(),
-        "laveuseSecheuse": $(".laveuseSecheuse").val(),
-        "laveVaisselle": $(".laveVaisselle").val(),
+        "internet": $('input[name=internet]:checked').val(),
+        "tele": $('input[name=tele]:checked').val(),
+        "climatiseur": $('input[name=climatiseur]:checked').val(),
+        "meuble": $('input[name=meuble]:checked').val(),
+        "adapte": $('input[name=adapte]:checked').val(),
+        "laveuseSecheuse": $('input[name=laveuseSecheuse]:checked').val(),
+        "laveVaisselle": $('input[name=laveVaisselle]:checked').val(),
         "stationnement": $("#stationnement").val(),
         "description": $("#description").val(),
         "image": $("#icone").val(),
@@ -177,19 +181,12 @@ function validerFormulaireAjout(formulaire){
           $.ajax({
             url: "contenu_index",
             type: "POST",
-            
             success: function(reponse) {
-              
               $("#contentAppartement").empty();
               $("#contentAppartement").append(reponse);
-
             }
           });
         }
-          
-				//$("#contentAppartement").empty();
-        //$("#contentAppartement").append(reponse);
-
       }
     });
   }
