@@ -64,7 +64,7 @@ class Appartements_model extends CI_Model {
    * @return la liste des dates déja ajoutées
    */
 	public function dateDispo($id){
-		$query = $this->db->query("select * from disponibilite where idAppart=" . $id . "dateFinDispo<" . NOW());
+		$query = $this->db->query("select * from disponibilite where idAppart=" . $id . " and dateFinDispo>'" . CURDATE() . "'");
     return $query->result_array();
 	}
 	

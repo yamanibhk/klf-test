@@ -7,9 +7,9 @@
     <label for="arrondissement">Arrondissement</label>
     <select id="arrondissement" class="form-control champ">
 			<option></option>
-			<?php foreach($arrondissement as $arrond){?>
+			<?php foreach($arrondissements as $arrond){?>
 
-			<option value="<?php echo $arrond["idArrondissement"];?>"><?php echo $arrond["nomArrondissement"];?></option>
+			<option value="<?php echo $arrond->idArrondissement;?>"><?php echo $arrond->nomArrondissement;?></option>
 
 			<?php } ?>
 		</select>

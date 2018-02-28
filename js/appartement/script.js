@@ -28,7 +28,6 @@ window.addEventListener("load", function() {
       },
         dataType: 'json',
       success: function(data) {
-          alert(id);
         $("#dateDispo").text(data.dateDebutDispo+data.dateFinDispo+data.prix);
       }
     });
@@ -162,9 +161,9 @@ function validerFormulaireAjout(formulaire){
         "detail": $("#detail").val()
       },
       success: function(data) {
-        if(data.erreur==false){
+        if(data==false){
           $.ajax({
-            url: "index",
+            url: "contenu_index",
             type: "POST",
             
             success: function(reponse) {

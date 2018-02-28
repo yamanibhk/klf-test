@@ -18,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <p><?php echo $appart["description"];?></p>
       <div id="imageAfficher"></div>
         <script>
+          window.addEventListener("load", function() {
           var id = <?php echo $appart['idAppart'];?>;
           $.ajax({
             url: "afficherPhoto",
@@ -30,6 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               }
             }
             });
+          });
         </script>
         
       <div class="row">
@@ -72,7 +74,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <div class="echec"></div>
             </div>
           </div>
-					<div class="form-group row">
+          <div class="form-group row">
             <label class="col-4">Disponibilités</label>
             <div class="col-6" id='dateDispo'></div>
           </div>

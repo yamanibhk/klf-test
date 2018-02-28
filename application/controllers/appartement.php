@@ -14,7 +14,7 @@ class appartement extends CI_Controller {
   }
 
   /**
-   * afficher les appartement d'un usager
+   * afficher les appartements de l'usager connecté
    */
     public function index() {
     if($this->session->userdata("nomUsager")) {
@@ -37,13 +37,23 @@ class appartement extends CI_Controller {
       header("Location: index.php/atterrissage/index");
     }
   }
+  
+  /**
+   * afficher les appartements dans le contenu de la page mes logements
+   */
+    public function contenu_index() {
+      $usager = $this->session->get_userdata();
+      //obtenir la liste des logements d'un usager
+      $data['appartement'] = $this->Appartements_model->obtenir_appartement($usager['nomUsager']);
+      $this->load->view("appartement/index.php",$data);
+  }
 
   /**
    * charge le formulaire de création d'annonce dans la <div id='contentFormulaire>
    */
   public function ajouter() {
     //obtenir les arrondissements
-    $data['arrondissement'] = $this->Arrondissements_model->obtenir_arrondissement();
+    $data['arrondissements'] = $this->Arrondissements_model->obtenir_arrondissements();
     $this->load->view("appartement/appartement-form.php",$data);
   }
 
@@ -141,6 +151,7 @@ class appartement extends CI_Controller {
       }
       if($succes) {
         $data["erreur"] = false;
+        echo false;
         //$this->load->view("appartement/message_insertion.php", $data);
         //$this->load->view("appartement/index");
         //redirect("index.php/appartement/index");
@@ -195,12 +206,13 @@ class appartement extends CI_Controller {
   * afficher les dates disponibilités ajoutées a un appartement
   */
   public function dateDispo(){
+    
       $id = $this->input->post("idAppart");
       var_dump($id);
       $reponse = $this->Appartements_model->dateDispo($id);
       //if($reponse!=[]){
           return json_encode($reponse);
-      var_dump($reponse);
+      var_dump(json_encode($reponse));
       /*}else{
           echo "aucun resultat";
       }*/
