@@ -39,6 +39,26 @@ class Usagers extends CI_Controller {
     }
   }
 
+  /**
+   * Retourne le contenu interieur de la page d'un profil usager
+   */
+  public function indexContent() {
+    if($this->session->userdata("nomUsager")){
+      if ( !file_exists(APPPATH.'views/usagers/index-content.php')) {
+        show_404 ();
+      } else {
+        $data['utilisateur'] = $this->Usagers_model->obtenir_usager($this->session->userdata("nomUsager"));
+        $data['mode_paiements'] = $this->Mode_paiement_model->obtenir_tous();
+        $this->load->view("usagers/index-content.php", $data);
+      }
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+  /**
+   * Permet de modifier les infos sur un usager
+   */
   public function modifier_infos() {
     if($this->session->userdata("nomUsager")){
 

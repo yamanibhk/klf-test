@@ -5,16 +5,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- script menu -->
 <script type="text/javascript" async="true" src="<?=base_url();?>js/usagers/script.js"></script>
 <div>
-  <div id="content" class="container">
+  <section id="content" class="container">
     <div class="row justify-content-center">
       <div class="col-10 col-md-6 col-xl-4">
         <div class="py-3">
           <?php
           // photo du profil
           if($utilisateur['cheminPhoto'] != NULL) {
-            echo '<img id="profile_image" class="card-img-top" src="'.base_url().'/images/usagers/'.$utilisateur['cheminPhoto'].'"/>';
+            echo '<img id="profile_image" class="card-img-top" src="'.base_url().'/images/usagers/'.$utilisateur['cheminPhoto'].'?timestamp='.date(DATE_RFC2822).'"/>';
           } else {
-            echo '<img id="profile_image" class="card-img-top" src="'.base_url().'/images/usagers/user.svg"/>';
+            echo '<img id="profile_image" class="card-img-top" src="'.base_url().'/images/usagers/user.svg?timestamp='.date(DATE_RFC2822).'"/>';
           }
           ?>
           <!-- nom et prenom -->

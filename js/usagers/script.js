@@ -14,9 +14,9 @@ window.addEventListener("load", function() {
     $("#btn_sauvegarder_changements").show("slow");
   });
 
-  $('#change_form').on('submit', function(e) {
+  //Lorsqu'on clique pour sauvegarder les changements
+  $(document.body).on("submit", "#change_form", function(e) {
     e.preventDefault();
-    // var fd = new FormData(document.querySelector("#change_form"));
     $.ajax({
       url:"../usagers/modifier_infos",
       method:"POST",
@@ -25,15 +25,19 @@ window.addEventListener("load", function() {
       cache: false,
       processData:false,
       success:function(reponse) {
-        console.log(reponse);
         if(reponse == true) {
-          window.location.href = "index";
+          $.ajax({
+            url: "indexContent",
+            method:"POST",
+            success:function(reponse) {
+              $("#content").empty();
+              $("#content").append(reponse);
+            }
+          });
         }
       }
     });
   });
-
-
   function readURL(input) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -43,7 +47,8 @@ window.addEventListener("load", function() {
       reader.readAsDataURL(input.files[0]);
     }
   }
-  $("#input_nouvelle_image").change(function() {
+  //lorsqu'un nouveau fichier est ajoute comme image
+  $(document.body).on("change", "#input_nouvelle_image", function() {
     readURL(this);
     //Fait disparaitre les controles lorsqu'une nouvelle image est ajoutee
     $("#controles_changer_image").fadeOut("fast");
