@@ -29,7 +29,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <a class="text-secondary p-2" href="<?=base_url().'index.php/usagers/deconnexion'?>">Déconnexion</a>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button>
       </div>
     </div>
   </div>
