@@ -5,6 +5,7 @@
 .formulaireAjout h2{
 	color: #2980B9;
 	text-align: center;
+	margin:40px;
 }
 .correct {
 	border-color: rgba(68, 191, 68, 0.75);
@@ -53,4 +54,11 @@
 }
 #retourAppart{
   margin:10px;
+}
+.dispo button, .louer button{
+	margin-bottom:20px;
+}
+
+@media screen and (min-width: 425px) {
+  
 }

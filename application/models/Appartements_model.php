@@ -14,7 +14,8 @@ class Appartements_model extends CI_Model {
    * @return Retourne la liste d'appartement..
    */
   public function obtenir_appartement($username){
-    $query = $this->db->get_where("appartement", array("Proprietaire" => $username));
+    $query = $this->db->query("select * from appartement where appartement.Proprietaire='" . $username . "'");
+    //$query = $this->db->get_where("appartement", array("Proprietaire" => $username));
     return $query->result_array();
   }
   /**
@@ -61,13 +62,22 @@ class Appartements_model extends CI_Model {
   
 	/**
    * @param idAppart
-   * @return la liste des dates déja ajoutées
+   * @return la liste des dates disponibilités déja ajoutées
    */
 	public function dateDispo($id){
 		$query = $this->db->get_where("disponibilite", array("idAppart" => $id));
     return $query->result_array();
 	}
 	
+  /**
+   * @param idAppart
+   * @return la liste des dates locations déja ajoutées
+   */
+  public function dateLocation($id){
+    $query = $this->db->get_where("location", array("idAppart" => $id));
+    return $query->result_array();
+  }
+
 	/**
    * @param idAppart,$dateDebut,$dateFin
    * @return vrai ou faux si l'appartement est loué a cette date
@@ -84,8 +94,8 @@ class Appartements_model extends CI_Model {
    * @return retourne les appartements qui ont des dates de disponibilités
    */
   public function obtenir_appartement_disponible($usager){
-    $query = $this->db->query("select * from disponibilite join appartement on appartement.idAppart=disponibilite.idAppart where appartement.Proprietaire='" . $usager . "' group by disponibilite.idAppart ");
-    //$query = $this->db->query("disponibilite", array("idAppart" => $id));
+    //$query = $this->db->query("select * from disponibilite join appartement on appartement.idAppart=disponibilite.idAppart where appartement.Proprietaire='" . $usager . "' group by disponibilite.idAppart ");
+    $query = $this->db->query("disponibilite", array("idAppart" => $id));
     return $query->result_array();
   }
   
@@ -111,8 +121,8 @@ public function valider_location($idAppart){
 * @param idAppart
 * @return les photos liées a l'appartement
 */
-public function afficherPhoto($idAppart){
- $query = $this->db->get_where("photo", array("idAppart" => $idAppart));
+public function afficherPhoto(){
+ $query = $this->db->query("select * from photo");
  if($query)
    return $query->result_array();
 } 

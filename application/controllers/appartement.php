@@ -27,6 +27,7 @@ class appartement extends CI_Controller {
         $data['utilisateur'] = $this->session->get_userdata();
         //obtenir la liste des logements d'un usager
         $data['appartement'] = $this->Appartements_model->obtenir_appartement($data['utilisateur']['nomUsager']);
+        $data['photos'] = $this->Appartements_model->afficherPhoto();
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);
         $this->load->view("appartement/index.php", $data);
@@ -45,6 +46,7 @@ class appartement extends CI_Controller {
     $usager = $this->session->get_userdata();
     //obtenir la liste des logements d'un usager
     $data['appartement'] = $this->Appartements_model->obtenir_appartement($usager['nomUsager']);
+    $data['photos'] = $this->Appartements_model->afficherPhoto();
     $this->load->view("appartement/index.php",$data);
   }
 
@@ -204,14 +206,18 @@ class appartement extends CI_Controller {
   public function dateDispo(){
     
     $id = $this->input->post("idAppart");
-    var_dump($id);
-    $reponse = $this->Appartements_model->dateDispo($id);
-    //if($reponse!=[]){
-        return json_encode($reponse);
-    var_dump($reponse);
-    /*}else{
-        echo "aucun resultat";
-    }*/
+    $donnees = $this->Appartements_model->dateDispo($id);
+    echo json_encode($donnees);
+  }
+
+  /**
+  * afficher les dates de locations ajoutées a un appartement
+  */
+  public function mesLocationEnregistres(){
+    
+    $id = $this->input->post("idAppart");
+    $location = $this->Appartements_model->dateLocation($id);
+    echo json_encode($location);
   }
 
   /**
@@ -238,9 +244,8 @@ class appartement extends CI_Controller {
   * Afficher les photos d'un appartement
   */
   public function afficherPhoto(){
-    $id = $this->input->post("idAppart");
-    $photos = $this->Appartements_model->afficherPhoto($id);
-    return json_encode($photos);
+    $photos = $this->Appartements_model->afficherPhoto();
+    return $photos;
   }
   
 } //fin du controleur

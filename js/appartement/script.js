@@ -29,7 +29,7 @@ window.addEventListener("load", function() {
   });
 
   
-  //clique sur le lien pour ajouter une disponibilité et un prix de location a un appartement
+  //affichage des disponibilités pour un appartement choisi
   $(document).on("click", "button#idAppart", function(evt) {
     var id = $(this).attr('value');
     console.log(id);
@@ -39,20 +39,55 @@ window.addEventListener("load", function() {
       data :{
         "idAppart":$(this).attr('value')
       },
-        dataType: 'json',
-      success: function(data) {
-        alert(id);
-        for(dispo in data){
-          $("#dateDispo").append(dispo[dateDebutDispo]+dispo[dateFinDispo]+dispo[prix]);
+      dateType:'json',
+      success: function (data) {
+        $("#dateDispo").empty();
+        if(JSON.parse(data)==""){
+          $("#dateDispo").html("<p class='echec'>Aucune disponibilitée ajoutée pour cet appartement</p>");
+        } else {
+          $.each(JSON.parse(data), function(i, obj) {
+          $("#dateDispo").append(obj.dateDebutDispo + obj.dateFinDispo+"</br>");
+          });
         }
+        
+       
       }
     });
+  });
+
+  //Affichage des location pour un appartement choisi
+  $(document).on("click", "button#idAppart", function(evt) {
+    var id = $(this).attr('value');
+    console.log(id);
+    $.ajax({
+      url: "mesLocationEnregistres",
+      type: "POST",
+      data :{
+        "idAppart":$(this).attr('value')
+      },
+      dateType:'json',
+      success: function (data) {
+        $("#demo").empty();
+        if(JSON.parse(data)==""){
+          $("#demo").html("<p class='echec'>Aucune location ajoutée pour cet appartement</p>");
+        } else {
+          $.each(JSON.parse(data), function(i, obj) {
+          $("#demo").append(obj.DateDebutLocation + obj.DateFinLocation+"</br>");
+          });
+        }
+        
+       
+      }
+    });
+  });
+
+
   //clique sur le bouton pour enregistrer une disponibilité avec le prix de location
   $(document).on("click", "button#mettreEnLocation", function(evt) {
-      validerlogementAlouer($(this).parents(".formulaireAlouer"),id);
-    });
-    
+    validerlogementAlouer($(this).parents(".formulaireAlouer"),id);
   });
+    
+  
     
   //bouton pour afficher les demande de location en cours
   $(document).on("click",'button#validerLocation',function() {
@@ -153,6 +188,10 @@ function validerFormulaireAjout(formulaire){
   });
 
   if(valide){
+    //remplacer fakepath par le vrai chemin pour l'image
+    var img = $("#icone").val();
+    var rep = img.replace('C:\\','');
+    var nouvChn = rep.replace(/fakepath/i, 'images\\appartement');
     $.ajax({
       url: "enregistrer",
       type: "POST",
@@ -173,7 +212,7 @@ function validerFormulaireAjout(formulaire){
         "laveVaisselle": $('input[name=laveVaisselle]:checked').val(),
         "stationnement": $("#stationnement").val(),
         "description": $("#description").val(),
-        "image": $("#icone").val(),
+        "image": nouvChn,
         "detail": $("#detail").val()
       },
       success: function(data) {

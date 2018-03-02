@@ -17,23 +17,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <?php echo $appart["codePostal"];?>
       <p><?php echo $appart["description"];?></p>
       <div id="imageAfficher"></div>
-        <script>
-          window.addEventListener("load", function() {
-          var id = <?php echo $appart['idAppart'];?>;
-          $.ajax({
-            url: "afficherPhoto",
-            type: "POST",
-            data :{"idAppart": +id},
-            dataType:'json',
-            success: function(photos) {
-              for(photo in photos) {
-                $("#imageAfficher").append("<img src='photo[\"Chemin\"]' height='42' width='42'> photo[\"detailPhoto\"]");
-              }
-            }
-            });
-          });
-        </script>
-        
+
+
+        <?php foreach($photos as $photo){?>
+        <?php if($photo["idAppart"]==$appart["idAppart"]){?>
+
+          <?php $chemin=$photo["Chemin"];?>
+          
+          <img src='<?=base_url() . $chemin?>' alt="image" height='200' width='200'>
+          <?=$photo["detailPhoto"];?>
+
+        <?php } ?>
+      <?php } ?>
+
+
       <div class="row">
     <!--      <p><a href="#" value="<?php //echo $appart['idAppart'];?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Mettre en location</a></p><br>-->
           <button class="btn btn-success" value="<?php echo $appart['idAppart'];?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Disponibilités</button>
@@ -41,6 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
     </div>
     <?php } ?>
+  
   </div>
 <!--  modal ajout disponibilite-->
   <div class="formulaireAlouer modal fade" id="myModal2" role="dialog">
@@ -74,13 +72,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <div class="echec"></div>
             </div>
           </div>
-          <div class="form-group row">
-            <label class="col-4">Disponibilités</label>
-            <div class="col-6" id='dateDispo'></div>
+          <div class="col-12 dispo">
+            <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#dateDispo">Toutes les disponibilités</button>
+            <div id="dateDispo" class="collapse">
+            </div>
+          </div>
+          <div class="col-12 louer">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Toutes les locations </button>
+            <div id="demo" class="collapse">
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-            <button type="button" class="btn btn-info" data-dismiss="modal" id="mettreEnLocation">Mettre en location</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="mettreEnLocation">Mettre en location</button>
           </div>
         </form>
       </div>      
