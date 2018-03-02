@@ -1,18 +1,6 @@
 window.addEventListener("load", function() {
-  //L'input pour changer l'image du profil
-  $(document.body).on("change", "#input_nouvelle_image", function(evt) {
-    var input = $(this);
-    var path = $(this).val();
-    var filename = path.replace(/^.*\\/, "");
-    if(filename != "") {
-      input.next().text(filename);
-    } else {
-      input.next().text("Choisissez une image");
-    }
-  });
-
   //Retire le readonly des input lorsqu'on clique dessus
-  $(document.body).on("focus", "input[id^='input_']", function(evt) {
+  $(document.body).on("focus", "input", function(evt) {
     var input = $(this);
     input.attr("readonly", false);
     input.on("focusout", function(){
@@ -20,31 +8,56 @@ window.addEventListener("load", function() {
     });
   });
 
+  //Affiche le bouton de sauvegarde des changemens lorsqu'ils ont lieux
   $(document.body).on("change", "input, select", function(evt) {
     var input = $(this);
     $("#btn_sauvegarder_changements").show("slow");
   });
 
-  $(document.body).on("click", "#btn_sauvegarder_changements", function(evt) {
-    var input = $(this);
+  $('#change_form').on('submit', function(e) {
+    e.preventDefault();
+    // var fd = new FormData(document.querySelector("#change_form"));
     $.ajax({
-      url: "../usagers/modifier_infos",
-      method: "POST",
-      data : {
-        "nomUsager" : $("#input_nomUsager").val(),
-        "prenom" : $("#input_prenom").val(),
-        "nom" : $("#input_nom").val(),
-        "adresse" : $("#input_adresse").val(),
-        "mode_paiement" : $("#input_mode_paiement").val(),
-        "cheminPhoto" : $("#input_nouvelle_image").val().replace(/^.*\\/, "")
-      },
-      success: function(reponse) {
+      url:"../usagers/modifier_infos",
+      method:"POST",
+      data: new FormData(document.querySelector("#change_form")),
+      contentType: false,
+      cache: false,
+      processData:false,
+      success:function(reponse) {
+        console.log(reponse);
         if(reponse == true) {
           window.location.href = "index";
-        } else {
-          // window.location.href = "http://stackoverflow.com";
         }
       }
     });
+  });
+
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $('#profile_image').attr('src', e.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  $("#input_nouvelle_image").change(function() {
+    readURL(this);
+    //Fait disparaitre les controles lorsqu'une nouvelle image est ajoutee
+    $("#controles_changer_image").fadeOut("fast");
+    window.setTimeout(function(){
+      var image = $('#profile_image');
+      var cropper = image.cropper({
+        aspectRatio: 1 / 1,
+        crop: function(e) {
+          $("input[name=posX]").val(e.x);
+          $("input[name=posY]").val(e.y);
+          $("input[name=width]").val(e.width);
+          $("input[name=height]").val(e.height);
+        }
+      });
+    }, 100);
   });
 });
