@@ -1,4 +1,7 @@
-<h4 class="titreLocation">Liste des locations</h4>
+<h2 class="titreLocation">Liste des locations</h2>
+<?php if(!$locations){?>
+  <p class="aucuneLocation">Vous n'avez aucune location pour cet appartement</p>
+<?php } else {?>
 <?php foreach($locations as $location){?>
   <div class="detailAppart">
     <h5>Locataire : <?php echo $location["Locataire"];?></h5>
@@ -15,7 +18,7 @@
     </div>
     <?php } ?>
   </div>
-<?php } ?>
+<?php } }?>
 <div class="">
-  <button id="retourAppart" class="btn btn-secondary">Retour à l'accueil</button>      
+  <button id="retourAppart" class="btn btn-secondary">Retour à mes appartements</button>      
 </div>

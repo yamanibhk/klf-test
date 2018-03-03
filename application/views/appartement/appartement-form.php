@@ -135,7 +135,7 @@
 			 <div class="echec"></div>
     </div>
     <div class="col-sm-4">
-      <button id="retourAppart" class="btn btn-secondary">Annuler</button>      
+      <button id="retourAppart" class="btn btn-secondary">Retrour à mes appartements</button>      
       <button id="enregistrerAppartement" class="btn btn-primary">Enregistrer</button>      
     </div>
     

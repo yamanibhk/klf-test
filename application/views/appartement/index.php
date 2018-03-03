@@ -10,31 +10,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <button class="btn btn-primary" id="ajouter">Ajouter</button>
       <button class="btn btn-info" id="validerLocation">Mes locations</button>
     </div>
-    <?php foreach($appartement as $appart){?>
     <div class="detailAppart">
-      <h5><?php echo $appart["titre"];?></h5>
-      <?php echo $appart["Adresse"];?>
-      <?php echo $appart["codePostal"];?>
-      <p><?php echo $appart["description"];?></p>
-      <div id="imageAfficher"></div>
-
-
-        <?php foreach($photos as $photo){?>
-        <?php if($photo["idAppart"]==$appart["idAppart"]){?>
-
-          <?php $chemin=$photo["Chemin"];?>
+      <?php foreach($appartement as $appart){?>
+      <div class="detailLog">
+        <div class="descriptionAppart">
+          <h5 class="titre"><?php echo $appart["titre"];?></h5>
+          <p class="adresse"><?php echo $appart["Adresse"];?> <?php echo $appart["codePostal"];?></p>
           
-          <img src='<?=base_url() . $chemin?>' alt="image" height='200' width='200'>
-          <?=$photo["detailPhoto"];?>
+          <p><?php echo $appart["description"];?></p>
+        </div>
+        <div id="slider">
+          <figure>
+          <?php foreach($photos as $photo){?>
+            <?php if($photo["idAppart"]==$appart["idAppart"]){?>
 
-        <?php } ?>
-      <?php } ?>
+              <?php $chemin=$photo["Chemin"];?>
+              
+              <img src='<?=base_url() . $chemin?>' alt>
+              <div class="detaiPhoto" ><?php echo $photo["detailPhoto"];?></div>
 
-
+            <?php } ?>
+          <?php } ?>
+          </figure>
+        </div>
+      </div>
       <div class="row">
-    <!--      <p><a href="#" value="<?php //echo $appart['idAppart'];?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Mettre en location</a></p><br>-->
-          <button class="btn btn-success" value="<?php echo $appart['idAppart'];?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Disponibilités</button>
-          
+        <button class="btn btn-success afficheDispo" value="<?php echo $appart['idAppart'];?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Disponibilités</button>
       </div>
     </div>
     <?php } ?>

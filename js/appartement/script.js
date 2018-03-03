@@ -89,7 +89,7 @@ window.addEventListener("load", function() {
     
   
     
-  //bouton pour afficher les demande de location en cours
+  //afficher les demande de location en cours
   $(document).on("click",'button#validerLocation',function() {
     $.ajax({
       url: "demandeLocationEnCours",
@@ -101,6 +101,7 @@ window.addEventListener("load", function() {
     });
   });
 
+  //Valider une demande de location
  $(document).on("click", "button#validerDemandeLocation", function(evt) {
    var id = $(this).attr('value');
    console.log(id);
