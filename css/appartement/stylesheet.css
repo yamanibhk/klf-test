@@ -106,5 +106,28 @@ div#slider { width: 30%; max-width: 1000px; overflow: hidden }
 	font-weight: bold;
 }
 .etoile{
-	margin:20px;
+	margin:20px 0 20px 0;
+}
+#inscrireAppartement-form label{
+	font-weight: bold;
+}
+.descNotation{
+	display:flex;
+	flex-direction:column;
+}
+/*responsive pour les petits écrans*/
+@media screen and (max-width: 425px) {
+  .detailLog{
+  	display:flex;
+  	flex-direction:column-reverse;
+  	margin:0 auto;
+  }
+div#slider { width: 60%; max-width: 1000px; overflow: hidden;margin:0 auto;}
+	.descriptionAppart .titre{
+		text-align: center;
+		margin:10px 0 10px 0;
+	}
+	#inscrireAppartement-form select#stationnement{
+		margin-left: 15px;
+	}
 }

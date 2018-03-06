@@ -14,11 +14,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <?php foreach($appartement as $appart){?>
       <div class="detailAppart">
         <div class="detailLog">
-          <div class="descriptionAppart">
-            <h5 class="titre"><?php echo $appart->titre;?></h5>
-            <p class="adresse"><?php echo $appart->Adresse;?> <?php echo $appart->codePostal;?></p>
-            
-            <p><?php echo $appart->description;?></p>
+          <div class="descNotation">
+            <div class="descriptionAppart">
+              <h5 class="titre"><?php echo $appart->titre;?></h5>
+              <p class="adresse"><?php echo $appart->Adresse;?> <?php echo $appart->codePostal;?></p>
+              
+              <p><?php echo $appart->description;?></p>
+            </div>
+            <div>
+              <?php $i = 0; $sommeNote=0; ?>
+              <?php foreach($notes as $note){?>
+                <?php if($note->idAppart==$appart->idAppart){?>
+                  <?php $sommeNote = $sommeNote + $note->Note;?>
+                  <?php $i = $i + 1; ?>
+                <?php } ?>
+              <?php } ?>
+              <?php if($i==0){ $i=1; }?>
+              <?php $noteFinale = $sommeNote/$i;?>
+              <div class="etoile">  
+                <?php for ($j=1;$j<=$noteFinale;$j++){?>
+                  <i class="fas fa-star" style="color:yellow"></i>
+                <?php }?>
+              </div>
+            </div>
           </div>
           <div id="slider">
             <figure>
@@ -35,20 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </figure>
           </div>
         </div>
-          <?php $i = 0; $sommeNote=0; ?>
-          <?php foreach($notes as $note){?>
-            <?php if($note->idAppart==$appart->idAppart){?>
-              <?php $sommeNote = $sommeNote + $note->Note;?>
-              <?php $i = $i + 1; ?>
-            <?php } ?>
-          <?php } ?>
-          <?php if($i==0){ $i=1; }?>
-          <?php $noteFinale = $sommeNote/$i;?>
-          <div class="etoile">  
-            <?php for ($j=1;$j<=$noteFinale;$j++){?>
-              <i class="fas fa-star" style="color:yellow"></i>
-            <?php }?>
-          </div>
+          
 
         <div class="row afficheDispo">
           <button class="btn btn-success " value="<?php echo $appart->idAppart;?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Disponibilités</button>

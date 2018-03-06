@@ -29,7 +29,7 @@
       </div>
     </div>
     <?php if($location->estValide==1){?>
-      <p class="locationValide"><i class="fas fa-check"></i> Validée</p>
+      <p class="locationValide">Validé <i class="fa fa-check-circle" style="color:green"></i></p>
     <?php } else {?>
     <div class="row btnValider">
       <p class="locationNonValide"><i class="fas fa-times"></i> Non validée</p>
