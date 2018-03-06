@@ -2,10 +2,14 @@
 #contentAppartement{
 	padding:20px 0 20px 0;
 }
-.formulaireAjout h2, .titreLocation{
+.formulaireAjout h2, .titreLocation, .modificationForm h2{
 	color: #2980B9;
 	text-align: center;
 	margin:40px;
+}
+.modal-title{
+	color: #2980B9;
+	text-align: center;
 }
 .correct {
 	border-color: rgba(68, 191, 68, 0.75);
@@ -27,10 +31,12 @@
 .echec, .ajoutEchec, .locationNonValide{
 	color: rgba(191, 68, 68, 0.75);
 }
-.ajoutSucces, .locationValide{
+.ajoutSucces, .locationValide, .donneeExist{
 	color: rgba(68, 191, 68, 0.75);
 }
-
+.donneeExist{
+	text-align: center;
+}
 .detailAppart{
     margin-bottom: 50px;
     border: 2px solid #2C3E50;
@@ -51,7 +57,7 @@
 #retourAppart{
   margin:10px;
 }
-.dispo button, .louer button{
+.dispo, .louer{
 	margin-bottom:20px;
 }
 
@@ -85,8 +91,8 @@ div#slider { width: 30%; max-width: 1000px; overflow: hidden }
 	display:flex;
 	justify-content:space-between;
 }
-.afficheDispo{
-	margin:0 auto;
+.afficheDispo button{
+	margin-left:10px;
 }
 .descriptionAppart .titre{
 	color: #2980B9;
@@ -96,4 +102,9 @@ div#slider { width: 30%; max-width: 1000px; overflow: hidden }
 	font-weight: bold;
 	font-size:1.2em;
 }
-
+.modificationForm label{
+	font-weight: bold;
+}
+.etoile{
+	margin:20px;
+}

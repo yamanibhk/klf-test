@@ -1,3 +1,7 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
+
 <div class='formulaireAjout'>
 <h2>Ajouter une annonce</h2>
 
@@ -128,13 +132,13 @@
 		<div class="echec"></div>
   </div>
   <div class="row">
-    <div class="col-sm-8">
+    <div class="col-sm-6">
        <label for="icone">Icône du fichier (JPG, PNG ou GIF | max. 15 Ko) :</label><br />
        <input type="text" class="champ" name="detail" placeholder="Titre du fichier" id="detail" />
        <input type="file" class="champ" name="icone" id="icone" /><br />
 			 <div class="echec"></div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-6">
       <button id="retourAppart" class="btn btn-secondary">Retrour à mes appartements</button>      
       <button id="enregistrerAppartement" class="btn btn-primary">Enregistrer</button>      
     </div>

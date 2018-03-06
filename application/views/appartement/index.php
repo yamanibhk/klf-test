@@ -10,36 +10,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <button class="btn btn-primary" id="ajouter">Ajouter</button>
       <button class="btn btn-info" id="validerLocation">Mes locations</button>
     </div>
-    <div class="detailAppart">
+    
       <?php foreach($appartement as $appart){?>
-      <div class="detailLog">
-        <div class="descriptionAppart">
-          <h5 class="titre"><?php echo $appart["titre"];?></h5>
-          <p class="adresse"><?php echo $appart["Adresse"];?> <?php echo $appart["codePostal"];?></p>
-          
-          <p><?php echo $appart["description"];?></p>
+      <div class="detailAppart">
+        <div class="detailLog">
+          <div class="descriptionAppart">
+            <h5 class="titre"><?php echo $appart->titre;?></h5>
+            <p class="adresse"><?php echo $appart->Adresse;?> <?php echo $appart->codePostal;?></p>
+            
+            <p><?php echo $appart->description;?></p>
+          </div>
+          <div id="slider">
+            <figure>
+            <?php foreach($photos as $photo){?>
+              <?php if($photo->idAppart==$appart->idAppart){?>
+
+                <?php $chemin=$photo->Chemin;?>
+                
+                <img src='<?=base_url() . $chemin?>' alt>
+                <div class="detaiPhoto" ><?php echo $photo->detailPhoto;?></div>
+
+              <?php } ?>
+            <?php } ?>
+            </figure>
+          </div>
         </div>
-        <div id="slider">
-          <figure>
-          <?php foreach($photos as $photo){?>
-            <?php if($photo["idAppart"]==$appart["idAppart"]){?>
-
-              <?php $chemin=$photo["Chemin"];?>
-              
-              <img src='<?=base_url() . $chemin?>' alt>
-              <div class="detaiPhoto" ><?php echo $photo["detailPhoto"];?></div>
-
+          <?php $i = 0; $sommeNote=0; ?>
+          <?php foreach($notes as $note){?>
+            <?php if($note->idAppart==$appart->idAppart){?>
+              <?php $sommeNote = $sommeNote + $note->Note;?>
+              <?php $i = $i + 1; ?>
             <?php } ?>
           <?php } ?>
-          </figure>
+          <?php if($i==0){ $i=1; }?>
+          <?php $noteFinale = $sommeNote/$i;?>
+          <div class="etoile">  
+            <?php for ($j=1;$j<=$noteFinale;$j++){?>
+              <i class="fas fa-star" style="color:yellow"></i>
+            <?php }?>
+          </div>
+
+        <div class="row afficheDispo">
+          <button class="btn btn-success " value="<?php echo $appart->idAppart;?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Disponibilités</button>
+          <button class="btn btn-warning" value="<?php echo $appart->idAppart;?>" id="modifierAppart">Modifier</button>
         </div>
       </div>
-      <div class="row">
-        <button class="btn btn-success afficheDispo" value="<?php echo $appart['idAppart'];?>" id="idAppart" data-toggle="modal" data-target="#myModal2">Disponibilités</button>
-      </div>
-    </div>
-    <?php } ?>
-  
+    <?php } ?>  
   </div>
 <!--  modal ajout disponibilite-->
   <div class="formulaireAlouer modal fade" id="myModal2" role="dialog">
@@ -73,13 +89,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <div class="echec"></div>
             </div>
           </div>
-          <div class="col-12 dispo">
-            <button type="button" class="btn btn-warning" data-toggle="collapse" data-target="#dateDispo">Toutes les disponibilités</button>
+          <div class="col-12">
+            <button type="button" class="btn btn-warning dispo" data-toggle="collapse" data-target="#dateDispo">Disponibilités affichées</button>
             <div id="dateDispo" class="collapse">
             </div>
           </div>
-          <div class="col-12 louer">
-            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Toutes les locations </button>
+          <div class="col-12">
+            <button type="button" class="btn btn-info louer" data-toggle="collapse" data-target="#demo">Toutes les locations </button>
             <div id="demo" class="collapse">
             </div>
           </div>

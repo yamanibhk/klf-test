@@ -1,4 +1,5 @@
 window.addEventListener("load", function() {
+  
   //Ceci va charger le formulaire d'ajout d'appartement
   $(document).on("click", "button#ajouter", function(evt) {
     $.ajax({
@@ -10,7 +11,110 @@ window.addEventListener("load", function() {
       }
     });
   });
+
+  //Ceci va charger le formulaire de modification d'appartement
+  $(document).on("click", "button#modifierAppart", function(evt) {
+    $.ajax({
+      url: "modifier",
+      type: "POST",
+      data : {"idAppart":$(this).attr('value')},
+      dataType:'json',
+      success: function(result) {
+        $.each(result, function(i, data) {
+        var arron = data.nomArrondissement;
+        var adresse = data.Adresse;
+        var titre = data.titre;
+        var cp = data.codePostal;
+        var typeLog = data.typeLogement;
+        var piece = data.nbrePiece;
+        var etage = data.numEtage;
+        if(data.Internet==1){
+          var internet = "Oui";
+        } else {
+          var internet = "Non";
+        }
+        if(data.Television==1){
+          var tele = "Oui";
+        } else {
+          var tele = "Non";
+        }
+        if(data.Climatiseur==1){
+          var clim = "Oui";
+        } else {
+          var clim = "Non";
+        }
+        if(data.Meuble==1){
+          var meuble = "Oui";
+        } else {
+          var meuble = "Non";
+        }
+        if(data.Adapte==1){
+          var adapte = "Oui";
+        } else {
+          var adapte = "Non";
+        }
+        if(data.LaveuseSecheuse==1){
+          var lavSech = "Oui";
+        } else {
+          var lavSech = "Non";
+        }
+        if(data.LaveVaisselle==1){
+          var lavVaiss = "Oui";
+        } else {
+          var lavVaiss = "Non";
+        }
+        var statnmt = data.nbreStationnement;
+        var desc = data.description;
+
+        $.ajax({
+          
+          url: "modifierAppartement",
+          type: "POST",
+          
+          success: function(data) {
+          $("#contentAppartement").empty();
+          $("#contentAppartement").append(data);
+          $('#arrond').val(arron),
+          $('#adresse').val(adresse),
+          $('#titre').val(titre),
+          $('#cp').val(cp),
+          $('#typeLog').val(typeLog),
+          $('#piece').val(piece),
+          $('#etage').val(etage),
+          $('#internet').val(internet),
+          $('#tele').val(tele),
+          $('#clim').val(clim),
+          $('#meuble').val(meuble),
+          $('#adapte').val(adapte),
+          $('#lavSech').val(lavSech),
+          $('#lavVaiss').val(lavVaiss),
+          $('#statnmt').val(statnmt),
+          $('#desc').val(desc)
+          }
+        });
+      });
+      }
+    });
+  });
   
+  //modifier les champs du formulaire
+  $(document).on("click", ".lien", function(evt) {
+
+    var input = $(this).parent().prev();
+    var ancienne_valeur = input.val();
+    input.removeAttr("readonly");
+    input.removeClass("form-control-plaintext");
+    input.addClass("form-control");
+    input.focus();
+    //Lorsque le focus est retire
+    input.focusout(function(){
+      input.attr("readonly", "readonly");
+      input.removeClass("form-control");
+      input.addClass("form-control-plaintext");
+    });
+  });
+
+
   //soumettre les informations d'ajout d'appartement au controlleur
   $(document).on("click",'button#enregistrerAppartement',function() {
       validerFormulaireAjout($(this).parents("#inscrireAppartement-form"));
@@ -46,7 +150,7 @@ window.addEventListener("load", function() {
           $("#dateDispo").html("<p class='echec'>Aucune disponibilitée ajoutée pour cet appartement</p>");
         } else {
           $.each(JSON.parse(data), function(i, obj) {
-          $("#dateDispo").append(obj.dateDebutDispo + obj.dateFinDispo+"</br>");
+          $("#dateDispo").append("<p class='donneeExist'>" + obj.dateDebutDispo + " au " + obj.dateFinDispo+"</p>");
           });
         }
         
@@ -72,7 +176,7 @@ window.addEventListener("load", function() {
           $("#demo").html("<p class='echec'>Aucune location ajoutée pour cet appartement</p>");
         } else {
           $.each(JSON.parse(data), function(i, obj) {
-          $("#demo").append(obj.DateDebutLocation + obj.DateFinLocation+"</br>");
+          $("#demo").append("<p class='donneeExist'>" + obj.DateDebutLocation  + " au " + obj.DateFinLocation+"</p>");
           });
         }
         

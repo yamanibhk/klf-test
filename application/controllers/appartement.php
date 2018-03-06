@@ -28,6 +28,7 @@ class appartement extends CI_Controller {
         //obtenir la liste des logements d'un usager
         $data['appartement'] = $this->Appartements_model->obtenir_appartement($data['utilisateur']['nomUsager']);
         $data['photos'] = $this->Appartements_model->afficherPhoto();
+        $data['notes'] = $this->Appartements_model->obtenir_note();
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);
         $this->load->view("appartement/index.php", $data);
@@ -47,6 +48,7 @@ class appartement extends CI_Controller {
     //obtenir la liste des logements d'un usager
     $data['appartement'] = $this->Appartements_model->obtenir_appartement($usager['nomUsager']);
     $data['photos'] = $this->Appartements_model->afficherPhoto();
+    $data['notes'] = $this->Appartements_model->obtenir_note();
     $this->load->view("appartement/index.php",$data);
   }
 
@@ -59,6 +61,27 @@ class appartement extends CI_Controller {
     $this->load->view("appartement/appartement-form.php",$data);
   }
 
+  /**
+   * recupérer les données appartement a modifier
+   */
+  public function modifier() {
+    $id = $this->input->post("idAppart");
+    if(isset($id)) {
+      if($id!=""){
+        $appartement= $this->Appartements_model->obtenir_appartementParId($id);
+        echo json_encode($appartement);
+      }
+    }   
+  }
+
+  /**
+   * charge le formulaire de modification d'appartement
+   */
+  public function modifierAppartement() {
+    //obtenir les arrondissements
+    //$data['arrondissements'] = $this->Arrondissements_model->obtenir_arrondissements();
+    $this->load->view("appartement/appartement-modif.php");
+  }
   /**
   * enregistrer les données saisies dans le formulaire d'ajout d'une nouvelle annonce
   */
@@ -206,8 +229,13 @@ class appartement extends CI_Controller {
   public function dateDispo(){
     
     $id = $this->input->post("idAppart");
-    $donnees = $this->Appartements_model->dateDispo($id);
-    echo json_encode($donnees);
+    if(isset($id)){
+      if($id!=""){
+        $donnees = $this->Appartements_model->dateDispo($id);
+        echo json_encode($donnees);
+      }
+    }
+    
   }
 
   /**
@@ -216,8 +244,12 @@ class appartement extends CI_Controller {
   public function mesLocationEnregistres(){
     
     $id = $this->input->post("idAppart");
-    $location = $this->Appartements_model->dateLocation($id);
-    echo json_encode($location);
+    if(isset($id)){
+      if($id!=""){
+        $location = $this->Appartements_model->dateLocation($id);
+        echo json_encode($location);
+      }
+    }  
   }
 
   /**
@@ -226,6 +258,7 @@ class appartement extends CI_Controller {
   public function demandeLocationEnCours(){
     $proprietaire = $this->session->get_userdata();
     $data["locations"] = $this->Appartements_model->obtenir_location($proprietaire['nomUsager']);
+    $data['photos'] = $this->Appartements_model->afficherPhoto();
     $this->load->view("appartement/obtenir_location.php", $data);
   }
   
@@ -234,10 +267,14 @@ class appartement extends CI_Controller {
   */
   public function validerLocation(){
     $id = $this->input->post("idAppart");
-    $reponse = $this->Appartements_model->valider_location($id);
-    if($reponse){
-      redirect("index.php/appartement/demandeLocationEnCours");
-    }
+    if(isset($id)){
+      if($id!=""){
+        $reponse = $this->Appartements_model->valider_location($id);
+        if($reponse){
+          redirect("index.php/appartement/demandeLocationEnCours");
+        }
+      }
+    }    
   }
   
   /**
