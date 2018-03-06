@@ -24,7 +24,8 @@ class Appartements_model extends CI_Model {
    * @return confirmation d'inscription
    */
   public function enregistrer_appartement($arrondissement,$adresse,$titre,$codePostal,$type,$piece,$etage,$internet,$tele,
-                  $climatiseur,$meuble,$adapte,$laveuseSecheuse,$laveVaisselle,$stationnement,$description,$proprietaire,$image,$detail){
+                  $climatiseur,$meuble,$adapte,$laveuseSecheuse,$laveVaisselle,$stationnement,$description,$proprietaire,$image,
+                  $image1,$image2,$image3,$image4,$detail,$detail1,$detail2,$detail3,$detail4){
     $data = array (
       "adresse" => $adresse,
       "titre" => $titre,
@@ -48,7 +49,11 @@ class Appartements_model extends CI_Model {
     $id = $this->db->insert_id();
    // $id= $this->db->last_insert_id('appartement');//récuperer le dernier id appartement 
     $query2 = $this->db->insert('photo', array("detailPhoto" => $detail,"Chemin" => $image,"idAppart" => $id));
-    if ($query1 && $query2) return true;
+    $query3 = $this->db->insert('photo', array("detailPhoto" => $detail1,"Chemin" => $image1,"idAppart" => $id));
+    $query4 = $this->db->insert('photo', array("detailPhoto" => $detail2,"Chemin" => $image2,"idAppart" => $id));
+    $query5 = $this->db->insert('photo', array("detailPhoto" => $detail3,"Chemin" => $image3,"idAppart" => $id));
+    $query6 = $this->db->insert('photo', array("detailPhoto" => $detail4,"Chemin" => $image4,"idAppart" => $id));
+    if ($query1 && $query2 && $query3 && $query4 && $query5 && $query6) return true;
   }
 
   /**

@@ -293,10 +293,26 @@ function validerFormulaireAjout(formulaire){
   });
 
   if(valide){
-    //remplacer fakepath par le vrai chemin pour l'image
+    //remplacer fakepath par le vrai chemin pour chaque image
     var img = $("#icone").val();
     var rep = img.replace('C:\\','');
     var nouvChn = rep.replace(/fakepath/i, 'images\\appartement');
+
+    var img1 = $("#icone1").val();
+    var rep1 = img1.replace('C:\\','');
+    var nouvChn1 = rep1.replace(/fakepath/i, 'images\\appartement');
+
+    var img2 = $("#icone2").val();
+    var rep2= img2.replace('C:\\','');
+    var nouvChn2 = rep2.replace(/fakepath/i, 'images\\appartement');
+
+    var img3 = $("#icone3").val();
+    var rep3= img3.replace('C:\\','');
+    var nouvChn3 = rep3.replace(/fakepath/i, 'images\\appartement');
+
+    var img4 = $("#icone4").val();
+    var rep4 = img4.replace('C:\\','');
+    var nouvChn4 = rep4.replace(/fakepath/i, 'images\\appartement');
     $.ajax({
       url: "enregistrer",
       type: "POST",
@@ -318,7 +334,15 @@ function validerFormulaireAjout(formulaire){
         "stationnement": $("#stationnement").val(),
         "description": $("#description").val(),
         "image": nouvChn,
-        "detail": $("#detail").val()
+        "image1": nouvChn1,
+        "image2": nouvChn2,
+        "image3": nouvChn3,
+        "image4": nouvChn4,
+        "detail": $("#detail").val(),
+        "detail1": $("#detail1").val(),
+        "detail2": $("#detail2").val(),
+        "detail3": $("#detail3").val(),
+        "detail4": $("#detail4").val()
       },
       success: function(data) {
         if(data==false){

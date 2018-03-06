@@ -111,7 +111,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="form-group row">      
     <label class="col-md-5" for="stationnement">Nombre de stationnement</label>
     <select class="form-control col-2 champ" id="stationnement">
-      <option></option>
       <option>0</option>
       <option>1</option>
       <option>2</option>
@@ -131,17 +130,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <textarea class="form-control champ" rows="5" id="description"></textarea>
 		<div class="echec"></div>
   </div>
-  <div class="row ">
+  <div >
+  <label for="icone">Icône du fichier (JPG, PNG ou GIF | max. 15 Ko) :</label><br/>
+  <div class="col">
     <div class="col-sm-6">
-       <label for="icone">Icône du fichier (JPG, PNG ou GIF | max. 15 Ko) :</label><br/>
        <input type="text" class="champ" name="detail" placeholder="Titre du fichier" id="detail" />
-       <input type="file" class="champ" name="icone" id="icone" /><br />
+       <input type="file" class="champ" name="icone" id="icone" style="margin-bottom:10px;"/><br />
 			 <div class="echec"></div>
     </div>
-    <div class="col-sm-6 fichier">
-      <button id="retourAppart" class="btn btn-secondary">Retrour à mes appartements</button>      
-      <button id="enregistrerAppartement" class="btn btn-primary">Enregistrer</button>      
+    <div class="col-sm-6">
+       <input type="text" class="champ" name="detail1" placeholder="Titre du fichier" id="detail1" />
+       <input type="file" class="champ" name="icone1" id="icone1" style="margin-bottom:10px;" /><br />
+       <div class="echec"></div>
     </div>
+    <div class="col-sm-6">
+       <input type="text" class="champ" name="detail2" placeholder="Titre du fichier" id="detail2" />
+       <input type="file" class="champ" name="icone2" id="icone2" style="margin-bottom:10px;" /><br />
+       <div class="echec"></div>
+    </div>
+    <div class="col-sm-6">
+       <input type="text" class="champ" name="detail3" placeholder="Titre du fichier" id="detail3" />
+       <input type="file" class="champ" name="icone3" id="icone3" style="margin-bottom:10px;" /><br />
+       <div class="echec"></div>
+    </div>
+    <div class="col-sm-6">
+       <input type="text" class="champ" name="detail4" placeholder="Titre du fichier" id="detail4" />
+       <input type="file" class="champ" name="icone4" id="icone4" style="margin-bottom:10px;" /><br />
+       <div class="echec"></div>
+    </div>
+  </div>
+  <div class="col-sm-6 fichier">
+    <button id="retourAppart" class="btn btn-secondary">Retrour à mes appartements</button>      
+    <button id="enregistrerAppartement" class="btn btn-primary">Enregistrer</button>      
+  </div>
     
   </div>
 </section>

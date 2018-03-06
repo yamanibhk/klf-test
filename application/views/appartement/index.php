@@ -13,8 +13,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
       <?php foreach($appartement as $appart){?>
       <div class="detailAppart">
-        <div class="detailLog">
-          <div class="descNotation">
+        <div class="detailLog row">
+          <div class="descNotation col-md-6">
             <div class="descriptionAppart">
               <h5 class="titre"><?php echo $appart->titre;?></h5>
               <p class="adresse"><?php echo $appart->Adresse;?> <?php echo $appart->codePostal;?></p>

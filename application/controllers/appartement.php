@@ -104,7 +104,15 @@ class appartement extends CI_Controller {
     $description = $this->input->post("description");
     $titre = $this->input->post("titre");
     $image = $this->input->post("image");
+    $image1 = $this->input->post("image1");
+    $image2 = $this->input->post("image2");
+    $image3 = $this->input->post("image3");
+    $image4 = $this->input->post("image4");
     $detail = $this->input->post("detail");
+    $detail1 = $this->input->post("detail1");
+    $detail2 = $this->input->post("detail2");
+    $detail3 = $this->input->post("detail3");
+    $detail4 = $this->input->post("detail4");
     $proprietaire = $this->session->get_userdata();
     //S'il y a des donnees ne sont pas recues
     if(!isset($arrondissement) ||
@@ -124,7 +132,15 @@ class appartement extends CI_Controller {
        !isset($titre) ||
        !isset($description) ||
        !isset($image) ||
+       !isset($image1) ||
+       !isset($image2) ||
+       !isset($image3) ||
+       !isset($image4) ||
        !isset($detail) ||
+       !isset($detail1) ||
+       !isset($detail2) ||
+       !isset($detail3) ||
+       !isset($detail4) ||
        !isset($proprietaire))  {
         $succes = false;
     } else {
@@ -146,7 +162,15 @@ class appartement extends CI_Controller {
          $titre == "" ||
          $description == "" ||
          $image == "" ||
+         $image1 == "" ||
+         $image2 == "" ||
+         $image3 == "" ||
+         $image4 == "" ||
          $detail == "" ||
+         $detail1 == "" ||
+         $detail2 == "" ||
+         $detail3 == "" ||
+         $detail4 == "" ||
          $proprietaire == "") {
          $succes = false;
       } else {
@@ -169,7 +193,15 @@ class appartement extends CI_Controller {
                                                                        $description,
                                                                        $proprietaire['nomUsager'],
                                                                        $image,
-                                                                       $detail);
+                                                                       $image1,
+                                                                       $image2,
+                                                                       $image3,
+                                                                       $image4,
+                                                                       $detail,
+                                                                       $detail1,
+                                                                       $detail2,
+                                                                       $detail3,
+                                                                       $detail4);
         if(!$resultat) {
           $succes = false;
         }
