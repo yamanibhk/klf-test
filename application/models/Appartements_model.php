@@ -139,5 +139,58 @@ class Appartements_model extends CI_Model {
    if($query)
      return $query->result();
   } 
+
+  /**
+  * @param id de l'ppartement
+  * @return supprimer l'appartement en question
+  */
+  public function suppression_appartementParId($id){
+    $query1 = $this->db->where('idAppart', $id);
+    $query2 = $this->db->delete('appartement');
+
+    $query3 = $this->db->where('idAppart', $id);
+    $query4 = $this->db->delete('photo');
+   if($query1 && $query2 && $query3 && $query4)
+     return true;
+   else
+    return false;
+  } 
+
+  /**
+  * @param id de l'ppartement
+  * @return modifier l'appartement en question
+  */
+  public function modifier_appartementP($id,$arrondissement,$adresse,$titre,$codePostal,$type,$piece,$etage,$internet,$tele,$climatiseur,$meuble,
+                                        $adapte,$laveuseSecheuse,$laveVaisselle,$stationnement,$description,$proprietaire){
+                                                            
+    $data = array(
+          "adresse" => $adresse,
+          "titre" => $titre,
+          "description" => $description,
+          "codePostal" => $codePostal,
+          "typeLogement" => $type,
+          "nbrePiece" => $piece,
+          "numEtage" => $etage,
+          "internet" => $internet,
+          "television" => $tele,
+          "climatiseur" => $climatiseur,
+          "adapte" => $adapte,
+          "nbreStationnement" => $stationnement,
+          "meuble" => $meuble,
+          "laveuseSecheuse" => $laveuseSecheuse,
+          "laveVaisselle" => $laveVaisselle,
+          "idArrondissement" => $arrondissement,
+          "proprietaire" => $proprietaire
+        );
+
+    $query1 = $this->db->where('idAppart', $id);
+    $query2 = $this->db->update('appartement', $data); 
+
+   if($query && $query2)
+     return true;
+   else
+    return false;
+  } 
+  
   
 }//Fin de la classe

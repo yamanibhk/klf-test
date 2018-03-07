@@ -74,23 +74,27 @@ window.addEventListener("load", function() {
           success: function(data) {
           $("#contentAppartement").empty();
           $("#contentAppartement").append(data);
-          $('#arrond').val(arron),
-          $('#adresse').val(adresse),
-          $('#titre').val(titre),
-          $('#cp').val(cp),
-          $('#typeLog').val(typeLog),
-          $('#piece').val(piece),
-          $('#etage').val(etage),
-          $('#internet').val(internet),
-          $('#tele').val(tele),
-          $('#clim').val(clim),
-          $('#meuble').val(meuble),
-          $('#adapte').val(adapte),
-          $('#lavSech').val(lavSech),
-          $('#lavVaiss').val(lavVaiss),
-          $('#statnmt').val(statnmt),
-          $('#desc').val(desc)
+          $('#arrond').val(arron);
+          $('#adresse').val(adresse);
+          $('#titre').val(titre);
+          $('#cp').val(cp);
+          $('#typeLog').val(typeLog);
+          $('#piece').val(piece);
+          $('#etage').val(etage);
+          $('#internet').val(internet);
+          $('#tele').val(tele);
+          $('#clim').val(clim);
+          $('#meuble').val(meuble);
+          $('#adapte').val(adapte);
+          $('#lavSech').val(lavSech);
+          $('#lavVaiss').val(lavVaiss);
+          $('#statnmt').val(statnmt);
+          $('#desc').val(desc);
+
+          //appeler la fonction modifier et envoyer en parametre le idAppart
+          modifier($(this).attr('value'));
           }
+          
         });
       });
       }
@@ -113,6 +117,111 @@ window.addEventListener("load", function() {
       input.addClass("form-control-plaintext");
     });
   });
+
+  function modifier(valeur){
+    //soumettre les informations de modification d'appartement au controlleur
+    $(document).on("click",'button#ModifierAppartement',function(valeur) {
+        validerFormulaireModification($(this).parents("#modificationForm"),valeur);
+    });
+  }
+  
+
+  function validerFormulaireModification(formulaire,valeur){
+    var valide = true;
+    //Ajoute le message d'erreur si un champ est vide
+    formulaire.children("div").each(function() {
+      var valeur = $(this).find(".champ");
+      if (valeur.val() == "") {
+        valeur.addClass("incorrect");
+        $(this).find(".echec").text("Ce champ ne peut pas être vide");
+        valide = false;
+      } else {
+        //vérifier le code postal au format H1H 1H1 ;
+        if(valeur.attr('id')=="cp"){
+          var codePostal = $("#cp").val();
+          var Exp=new RegExp(/^[a-zA-Z]{1}[0-9]{1}[a-zA-Z]{1}( ){1}[0-9]{1}[a-zA-Z]{1}[0-9]{1}$/);
+          var cp = Exp.test(codePostal);
+          if(cp==false) {
+            $("#cp").addClass('incorrect');
+            $(this).find(".echec").text("Format code postal n'est pas valide");
+            valide = false;
+          } else {
+            $("#cp").removeClass("incorrect");
+            $("#cp").addClass('correct');
+            $(this).find(".echec").text("");
+          }
+        } else {
+          valeur.removeClass("incorrect");
+          valeur.addClass("correct");
+          $(this).find(".echec").text("");
+        }
+      }
+    });
+    if(valide){
+      $.ajax({
+        url: "valider_modification",
+        type: "POST",
+        data: {
+          "id" : + valeur,
+          "arrondissement": $("#arrond").val(),
+          "adresse": $("#adresse").val(),
+          "titre": $("#titre").val(),
+          "codePostal": $("#cp").val(),
+          "type": $("#typeLog").val(),
+          "piece": $("#piece").val(),
+          "etage": $("#etage").val(),
+          "internet": $('#internet').val(),
+          "tele": $('#tele').val(),
+          "climatiseur": $('#clim').val(),
+          "meuble": $('#meuble').val(),
+          "adapte": $('#adapte').val(),
+          "laveuseSecheuse": $('#lavSech').val(),
+          "laveVaisselle": $('#lavVaiss').val(),
+          "stationnement": $("#statnmt").val(),
+          "description": $("#desc").val()
+        },
+        success: function(data) {
+          if(data==false){
+            $.ajax({
+              url: "contenu_index",
+              type: "POST",
+              success: function(reponse) {
+                $("#contentAppartement").empty();
+                $("#contentAppartement").append(reponse);
+              }
+            });
+          }
+        }
+      });  
+    }
+  };
+  //supprimer un apppartement
+  $(document).on("click", "button#supprimerAppart", function(evt) {
+    var id = $(this).attr('value');
+    $(document).on("click", "button#confirmSuppression", function(evt) {
+      
+      $.ajax({
+        url: "supprimerAppartement",
+        type: "POST",
+        data :{
+          "idAppart": + id
+        },
+        success: function(reponse) {
+          if(reponse==true){
+            $.ajax({
+              url: "contenu_index",
+              type: "POST",
+              success: function(reponse) {
+                $("#contentAppartement").empty();
+                $("#contentAppartement").append(reponse);
+              }
+            });
+          }
+        }
+      });
+    });
+  });
+
 
 
   //soumettre les informations d'ajout d'appartement au controlleur

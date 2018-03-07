@@ -4,8 +4,8 @@
 <?php } else {?>
 <?php foreach($locations as $location){?>
   <div class="detailAppart">
-    <div class="detailLog">
-      <div class="descriptionAppart">
+    <div class="detailLog row">
+      <div class="descriptionAppart col-md-6">
         <h5 class="titre">Locataire : <?php echo $location->Locataire;?></h5>
         <p>Date de la demande : <?php echo $location->DateDemandeLocation;?></p>
         <p>Location du : <?php echo $location->DateDebutLocation;?> au <?php echo $location->DateFinLocation;?></p>
@@ -17,12 +17,9 @@
         <figure>
         <?php foreach($photos as $photo){?>
           <?php if($photo->idAppart==$location->idAppart){?>
-
             <?php $chemin=$photo->Chemin;?>
-            
             <img src='<?=base_url() . $chemin?>' alt>
             <div class="detaiPhoto" ><?php echo $photo->detailPhoto;?></div>
-
           <?php } ?>
         <?php } ?>
         </figure>

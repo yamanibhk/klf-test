@@ -75,13 +75,131 @@ class appartement extends CI_Controller {
   }
 
   /**
+   * Suppression d'un appartement
+   */  
+  public function supprimerAppartement() {
+    $id = $this->input->post("idAppart");
+    if(isset($id)) {
+      if($id!=""){
+        $suppression= $this->Appartements_model->suppression_appartementParId($id);
+        if($suppression){
+          echo true;
+        } else {
+          echo false;
+        }
+      }
+    }  
+  }
+
+  /**
    * charge le formulaire de modification d'appartement
    */
   public function modifierAppartement() {
     //obtenir les arrondissements
-    //$data['arrondissements'] = $this->Arrondissements_model->obtenir_arrondissements();
-    $this->load->view("appartement/appartement-modif.php");
+    $data['arrondissements'] = $this->Arrondissements_model->obtenir_arrondissements();
+    $this->load->view("appartement/appartement-modif.php",$data);
   }
+
+  /**
+   * Valider la modification d'appartement
+   */
+  public function valider_modification() {
+    $succes = true;
+    $id = $this->input->post("id");
+    $arrondissement = $this->input->post("arrondissement");
+    $adresse = $this->input->post("adresse");
+    $codePostal = $this->input->post("codePostal");
+    $type = $this->input->post("type");
+    $piece = $this->input->post("piece");
+    $etage = $this->input->post("etage");
+    $internet = $this->input->post("internet");
+    $tele = $this->input->post("tele");
+    $climatiseur = $this->input->post("climatiseur");
+    $meuble = $this->input->post("meuble");
+    $adapte = $this->input->post("adapte");
+    $laveuseSecheuse = $this->input->post("laveuseSecheuse");
+    $laveVaisselle = $this->input->post("laveVaisselle");
+    $stationnement = $this->input->post("stationnement");
+    $description = $this->input->post("description");
+    $proprietaire = $this->session->get_userdata();
+    //S'il y a des donnees ne sont pas recues
+    if(
+       !isset($id) ||
+       !isset($arrondissement) ||
+       !isset($adresse) ||
+       !isset($codePostal) ||
+       !isset($type) ||
+       !isset($piece) ||
+       !isset($etage) ||
+       !isset($internet) ||
+       !isset($tele) ||
+       !isset($climatiseur) ||
+       !isset($meuble) ||
+       !isset($adapte) ||
+       !isset($laveuseSecheuse) ||
+       !isset($laveVaisselle) ||
+       !isset($stationnement) ||
+       !isset($titre) ||
+       !isset($description)||
+       !isset($proprietaire))  {
+        $succes = false;
+    } else {
+      //S'il y a des donnees qui sont vides
+      if($id == "" || 
+         $arrondissement == "" ||
+         $adresse == "" ||
+         $codePostal == "" ||
+         $type == "" ||
+         $piece == "" ||
+         $etage == "" ||
+         $internet == "" ||
+         $tele == "" ||
+         $climatiseur == "" ||
+         $adapte == "" ||
+         $meuble == "" ||
+         $laveuseSecheuse == "" ||
+         $laveVaisselle == "" ||
+         $stationnement == "" ||
+         $titre == "" ||
+         $description == "" ||
+         $proprietaire == "") {
+         $succes = false;
+      } else {
+        // ajout d'un appartement dans la base de donnée
+        $resultat = $this->Appartements_model->modifier_appartement($id, 
+                                                                       $arrondissement,
+                                                                       $adresse,
+                                                                       $titre,
+                                                                       $codePostal,
+                                                                       $type,
+                                                                       $piece,
+                                                                       $etage,
+                                                                       $internet,
+                                                                       $tele,
+                                                                       $climatiseur,
+                                                                       $meuble,
+                                                                       $adapte,
+                                                                       $laveuseSecheuse,
+                                                                       $laveVaisselle,
+                                                                       $stationnement,
+                                                                       $description,
+                                                                       $proprietaire
+                                                                       );
+        if(!$resultat) {
+          $succes = false;
+        }
+      }
+      if($succes) {
+        $data["erreur"] = false;
+        echo false;
+      } else {
+        $data["erreur"] = true;
+        $this->load->view("appartement/message_insertion.php", $data);
+      }
+      
+    }
+  }
+
   /**
   * enregistrer les données saisies dans le formulaire d'ajout d'une nouvelle annonce
   */
