@@ -18,11 +18,14 @@
               echo "<a href='$href' class='list-group-item list-group-item-action'>$nom</a>";
             }
           }
+          // si l'usager actif est administrtateur
           if($utilisateur['idRole'] < 2) {
+            // si l'usager la page sur laquelle on est est la page de gestion
             if(strtolower($titre) == "gestion du site"){
               echo "<a href='../gestion/index' class='list-group-item list-group-item-action active'>Gestion du site</a>";
+            // Sinon, elle sera affichée avec le texte en bleu
             } else {
-              echo "<a href='../gestion/index' class='list-group-item list-group-item-action list-group-item-secondary'>Gestion du site</a>";
+              echo "<a href='../gestion/index' class='list-group-item list-group-item-action'><span class='text-primary'>Gestion du site</span></a>";
             }
           }
           ?>
