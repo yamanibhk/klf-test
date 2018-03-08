@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 26/02/2018 01:42
+    Creation date: 08/03/2018 07:40
     */
 
     @font-face {
@@ -36,12 +36,14 @@
   font-smoothing: antialiased;
     }
 
-    .flaticon-deadline:before { content: "\f100"; }
-.flaticon-bowl:before { content: "\f101"; }
-.flaticon-washing-machine:before { content: "\f102"; }
-.flaticon-rest:before { content: "\f103"; }
+    .flaticon-mail:before { content: "\f100"; }
+.flaticon-building:before { content: "\f101"; }
+.flaticon-appartments:before { content: "\f102"; }
+.flaticon-chalet:before { content: "\f103"; }
+.flaticon-house:before { content: "\f104"; }
     
-    $font-Flaticon-deadline: "\f100";
-    $font-Flaticon-bowl: "\f101";
-    $font-Flaticon-washing-machine: "\f102";
-    $font-Flaticon-rest: "\f103";
+    $font-Flaticon-mail: "\f100";
+    $font-Flaticon-building: "\f101";
+    $font-Flaticon-appartments: "\f102";
+    $font-Flaticon-chalet: "\f103";
+    $font-Flaticon-house: "\f104";

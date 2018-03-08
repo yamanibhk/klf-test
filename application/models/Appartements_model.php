@@ -70,12 +70,12 @@ class Appartements_model extends CI_Model {
     JOIN arrondissement ON appartement.idArrondissement = arrondissement.idArrondissement
     JOIN disponibilite ON appartement.idAppart = disponibilite.idAppart
     JOIN photo ON appartement.idAppart = photo.idAppart
-    WHERE noter.Note >=4
+    WHERE noter.Note >=4 AND appartement.proprietaire NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1)
     AND disponibilite.dateFinDispo >= NOW()
-    group by appartement.idAppart');
+    group by appartement.idAppart LIMIT 20');
 
     //tableau de resultats
-    return $query->result_array();
+    return $query->result();
   }
   /**
      * affichage des appartements disponibles pour location
@@ -85,51 +85,63 @@ class Appartements_model extends CI_Model {
      * @return     array  toutes les données de l'utilisateur précisé
      */
 		
-    public function obtenir_appartements($arrondissement="", $dateDebut="01/01/1900", $dateFin="01/01/3000",$nbrPiece=0,$codePostal="",   
-				$numEtage="",$typeLogement="", $nbreStatio="",$internet=0,$television=0,$climatiseur=0,$adapte=0,$meuble=0,
-				$lavSech=0,$lavVaiss=0,$intervAcc=0,$prixMin="",$prixMax=""){	
-						
-    $this->db->select('*');
-    $this->db->from('appartement');
-    $this->db->join('noter', 'appartement.idAppart = noter.idAppart');
-    $this->db->join('arrondissement', 'appartement.idArrondissement = arrondissement.idArrondissement');
-    $this->db->join('disponibilite', 'appartement.idAppart = disponibilite.idAppart');
-    $this->db->join('photo', 'appartement.idAppart = photo.idAppart');
-    if (!empty($idArrondissement)) $this->db->where('appartement.idArrondissement', $idArrondissement);
-    if (!empty($codePostal)) $this->db->where('codePostal', substr($codePostal,0,2));
-    if (!empty($typeLogement)) $this->db->where('typeLogement', $typeLogement);
-    if (!empty($nbrePiece) and ($nbrePiece!=0) $this->db->where('nbrePiece', $nbrePiece);
-    if (!empty($numEtage)) $this->db->where('numEtage <=', $numEtage);
-    if (!empty($Internet)) $this->db->where('Internet', $Internet);
-    if (!empty($Television)) $this->db->where('Television', $Television);
-    if (!empty($Climatiseur)) $this->db->where('Climatiseur', $Climatiseur);
-    if (!empty($Adapte)) $this->db->where('Adapte', $Adapte);
-    if (!empty($nbreStationnement)) $this->db->where('nbreStationnement', $nbreStationnement);
-    if (!empty($Meuble)) $this->db->where('Meuble', $Meuble);
-    if (!empty($LaveuseSecheuse)) $this->db->where('LaveuseSecheuse', $LaveuseSecheuse);
-    if (!empty($LaveVaisselle)) $this->db->where('LaveVaisselle', $LaveVaisselle);
-    if (!empty($prixMin)) $this->db->where('MontantJournalier >=', $prixMin);
-    if (!empty($prixMax)) $this->db->where('MontantJournalier <=', $prixMax);
-		if (!empty($IntervallesAcceptee)) 
-			{
-					$this->db->where('IntervallesAcceptee', $IntervallesAcceptee);
-					if ($IntervallesAcceptee==1) {
-						if (!empty($dateDebut)) $this->db->where('dateDebutDispo <=', $dateDebut);
-    				if (!empty($dateFin)) $this->db->where('dateFinDispo >=', $dateFin);
-					}	
-					else  {
-							if (!empty($dateDebut)) $this->db->where('dateDebutDispo', $dateDebut);
-    					if (!empty($dateFin)) $this->db->where('dateFinDispo', $dateFin);
-					}
+	
+    public function obtenir_appartements($idArrondissement="", $dateDebut="", $dateFin="",$nbrPiece='0',$codePostal="",   
+				$numEtage="",$typeLogement="", $nbreStatio="",$internet='0',$television='0',$climatiseur='0',$adapte='0',$meuble='0',
+				$lavSech='0',$lavVaiss='0',$intervAcc='0',$prixMin="",$prixMax=""){	
+		$t=time();
+		/*if 	($dateDebut=="") 	$dateDebut=(date("Y-m-d",$t));
+		if 	($dateFin=="") 	$dateFin=$dateDebut+1;*/
+		$dateAujour=(date("Y-m-d",$t));
+    $sql='SELECT *,avg(note) as "moyenneNotes",avg(MontantJournalier) as "moyenneMontant" FROM appartement 
+		JOIN photo ON appartement.idAppart = photo.idAppart
+		JOIN disponibilite ON appartement.idAppart = disponibilite.idAppart
+		JOIN noter ON appartement.idAppart = noter.idAppart
+		JOIN arrondissement on appartement.idArrondissement = arrondissement.idArrondissement
+		WHERE appartement.proprietaire NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1) AND noter.nomUsager NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1)';
+		if (!empty($idArrondissement)) $sql.=' AND appartement.idArrondissement='.$idArrondissement;
+		if (!empty($codePostal)) $sql.=' AND UPPER(appartement.codePostal) LIKE "'.$codePostal.'%"';
+		if (!empty($typeLogement)) $sql.=' AND appartement.typeLogement="'.$typeLogement.'"';
+		if (!empty($nbrPiece) and ($nbrPiece!='0')) $sql.=' AND appartement.nbrePiece='.$nbrPiece;
+		if ($numEtage!="") $sql.=' AND appartement.numEtage='.$numEtage;
+		if ($internet=='1') $sql.=' AND appartement.Internet='.$internet;
+		if ($television=='1') $sql.=' AND appartement.Television='.$television;
+		if ($climatiseur=='1') $sql.=' AND appartement.Climatiseur='.$climatiseur;
+		if ($adapte=='1') $sql.=' AND appartement.Adapte='.$adapte;
+		if ($meuble=='1') $sql.=' AND appartement.Meuble='.$meuble;
+		if ($lavSech=='1') $sql.=' AND appartement.LaveuseSecheuse='.$lavSech;
+		if ($lavVaiss=='1') $sql.=' AND appartement.LaveVaisselle='.$lavVaiss;
+		 
+		if ($intervAcc!='1') {
+			if (($dateDebut!="") or ($dateFin!="")){
+			$sql.=' AND appartement.idAppart IN (SELECT idAppart FROM disponibilite WHERE ';
+			if ($dateDebut!="") $sql.='disponibilite.dateDebutDispo ="'.$dateDebut.'"';
+			if (($dateDebut!="") and ($dateFin!="")) $sql.=' AND ';
+			if ($dateFin!="") $sql.='disponibilite.dateFinDispo ="'.$dateFin.'"';
+			$sql.=')';
 			}
-		else {
-						if (!empty($dateDebut)) $this->db->where('dateDebutDispo', $dateDebut);
-    				if (!empty($dateFin)) $this->db->where('dateFinDispo', $dateFin);
-					}
-   	$query = $this->db->get();
+			else if (($dateDebut=="") and ($dateFin=="")){$sql.=' AND appartement.idAppart IN (SELECT idAppart FROM disponibilite WHERE  disponibilite.dateFinDispo >"'.$dateAujour.'")';}
+		}
+		else if ($intervAcc=='1')  {
+			$sql.=' AND appartement.idAppart IN (SELECT idAppart FROM disponibilite WHERE IntervallesAcceptee=1';
+			if (($dateDebut!="") or ($dateFin!="")) $sql.=' AND ';
+			if ($dateDebut!="") $sql.='disponibilite.dateDebutDispo <="'.$dateDebut.'"';
+			if (($dateDebut!="") and ($dateFin!="")) $sql.=' AND ';
+			if ($dateFin!="") $sql.='disponibilite.dateFinDispo >="'.$dateFin.'"';
+			if (($dateDebut=="") and ($dateFin=="")) $sql.=' AND disponibilite.dateFinDispo >"'.$dateAujour.'"';
+			$sql.=')';
+		}
+		if ($nbreStatio!="") $sql.=' AND appartement.nbreStationnement='.$nbreStatio;
+		if ($prixMin!="") $sql.=' AND appartement.idAppart IN (SELECT idAppart FROM disponibilite WHERE disponibilite.MontantJournalier >='.$prixMin.')';
+		if ($prixMax!="") $sql.=' AND appartement.idAppart IN (SELECT idAppart FROM disponibilite WHERE disponibilite.MontantJournalier <='.$prixMax.')';
+		$sql.=' GROUP BY appartement.idAppart';	
+		$query=$this->db->query($sql);
+
 
       //tableau de resultats
-    return $query->result_array();
+		
+    return $query->result();
+			
     }
 		
 		

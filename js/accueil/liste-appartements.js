@@ -21,58 +21,61 @@ $(document).on("click", "#RechAv", function(evt) {
 	 }
   });   
             
-   //soumettre les informations d'ajout d'appartement au controlleur
+   //soumettre les informations de recherche d'appartement au controlleur
   $(document).on("click", "button#chercherAppartement", function(evt) {
   validerFormulaireRecherche($(this).parents("#chercherAppartement-form"));
   });
+	
 });
 
 
-//fonction de validation formulaire d'ajout d'une annonce
+//fonction de validation formulaire de recherche d'appartement
 function validerFormulaireRecherche(formulaire){
   var valide = true;
-  console.log("validation");
+  
 
   //Ajoute le message d'erreur si un champ est vide
   formulaire.children("div").each(function() {
     var valeur = $(this).find(".champ");
-     {
+     
       //vérifier le code postal au format H1H 1H1 ;
-      if (valeur.attr('id')=="dateDebut") {
-        var valide = true;
-        var dateDebut = $("#dateDebut").val();
-        var Exp=new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/]\d{4}$/);
-        var dd = Exp.test(dateDebut);
-        if(dd==false) {
-          $("#dateDebut").val('');
-          valide = false;
-        } else {
-					if (ValidDate(dateDebut)) valide = true; else valide=false;
-        }
-      } 
-			if (valeur.attr('id')=="dateFin") {
-        var valide = true;
-        var dateFin = $("#dateFin").val();
-        var Exp=new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/]\d{4}$/);
-        var df = Exp.test(dateFin);
-        if(df==false) {
-          $("#dateFin").val('');
-          valide = false;
-        } else {
-          if (ValidDate(dateFin)) valide = true; else valide=false;
-        }
-      } 
-    }
-  });
-
+    if (valeur.attr('id')=="dateDebut") {
+		if (valeur.val()!="") {
+			var valide = true;
+			var dateDebut = $("#dateDebut").val();
+			var Exp=new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/]\d{4}$/);
+			var dd = Exp.test(dateDebut);
+			if(dd==false) {
+			  $("#dateDebut").val('');
+			  valide = false;
+			} else {
+						if (ValidDate(dateDebut)) valide = true; else valide=false;
+			}
+		}
 	
-	
-  if(valide){
+    } 
+	if (valeur.attr('id')=="dateFin") {
+		if (valeur.val()!=""){
+			var valide = true;
+			var dateFin = $("#dateFin").val();
+			var Exp=new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/]\d{4}$/);
+			var df = Exp.test(dateFin);
+			if(df==false) {
+			  $("#dateFin").val('');
+			  valide = false;
+			} else {
+			  if (ValidDate(dateFin)) valide = true; else valide=false;
+			}
+		}
+    } 
+    
+  })
+if (valide){
     $.ajax({
-      url: "index",
+      url: "listeAppartTrouve",
       type: "POST",
       data: {
-				"arrondissement":$("#arrondissement").val(),
+				"idArrondissement":$("#idArrondissement").val(),
 				"dateDebut":$("#dateDebut").val(),
 				"dateFin":$("#dateFin").val(),
 				"nbrAdulte":$("#nbrAdulte").val(),
@@ -81,24 +84,26 @@ function validerFormulaireRecherche(formulaire){
 				"numEtage":$("#numEtage").val(),
 				"typeLogement":$("#typeLogement").val(),
 				"nbreStatio":$("#nbreStatio").val(),
-				"internet":$("#internet").val(),
-				"television":$("#television").val(),
-				"climatiseur":$("#climatiseur").val(),
-				"adapte":$("#adapte").val(),
-				"meuble":$("#meuble").val(),
-				"lavSech":$("#lavSech").val(),
-				"lavVaiss":$("#lavVaiss").val(),
-				"intervAcc":$("#intervAcc").val(),
-				"prixMin":$("#prixMin").val(),
-				"prixMax":$("#prixMax").val()
-				
-      }
+				"internet":$('input[id="internet"]:checked').val(),
+				"television":$('input[id="television"]:checked').val(),
+				"climatiseur":$('input[id="climatiseur"]:checked').val(),
+				"adapte":$('input[id="adapte"]:checked').val(),
+				"meuble":$('input[id="meuble"]:checked').val(),
+				"lavSech":$('input[id="lavSech"]:checked').val(),
+				"lavVaiss":$('input[id="lavVaiss"]:checked').val(),
+				"intervAcc":$('input[id="intervAcc"]:checked').val(),
+				"prixMin":$('input[id="prixMin"]').val(),
+				"prixMax":$('input[id="prixMax"]').val()
+      },
       success: function(reponse) {
+				
         $("#dataAppartTrouve").empty();
         $("#dataAppartTrouve").append(reponse);
-      }
-    });
-  } 
+		
+		}
+      })
+    }
+  
 }
 function ValidDate(day) {
   var bitsDays = day.split('-');
