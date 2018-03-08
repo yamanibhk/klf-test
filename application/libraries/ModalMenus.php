@@ -6,9 +6,8 @@ class ModalMenus {
   public function chargeMenus(){
     $menus = ["Accueil" => "../accueil/index",
               "Mes logements" => "../appartement/index",
-              "Mes annonces" => "../#",
-              "Mon compte" => "../usagers/monCompte",
-              "Déconnexion" => "../usagers/deconnexion"
+              "Mon compte" => "../usagers/index",
+              "Messagerie" => "../messagerie/index"
             ];
     return $menus;
   }

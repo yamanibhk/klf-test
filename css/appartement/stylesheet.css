@@ -1,36 +1,152 @@
-.position, .formulaireAjout{
-	margin-top:100px;
-	position: relative;
+
+#contentAppartement{
+  padding:20px 0 20px 0;
 }
-.formulaireAjout h2{
-	color: blue;
+.formulaireAjout h2, .titreLocation, .modificationForm h2{
+  color: #2980B9;
+  text-align: center;
+  margin:40px;
+}
+.modal-title{
+  color: #2980B9;
+  text-align: center;
 }
 
 
 .correct {
-	border-color: rgba(68, 191, 68, 0.75);
+  border-color: rgba(68, 191, 68, 0.75);
 }
-	
+  
 .correct:focus {
-	border-color: rgba(68, 191, 68, 0.75);
-	box-shadow: 0 0 8px rgba(68, 191, 68, 0.5);
+  border-color: rgba(68, 191, 68, 0.75);
+  box-shadow: 0 0 8px rgba(68, 191, 68, 0.5);
 }
-	
+  
 .incorrect {
-	border-color: rgba(191, 68, 68, 0.75);
+  border-color: rgba(191, 68, 68, 0.75);
 }
-	
+  
 .incorrect:focus {
+
 	border-color: rgba(191, 68, 68, 0.75);
 	box-shadow: 0 0 8px rgba(191, 68, 68, 0.5);
 }
 
 
+.echec, .ajoutEchec, .locationNonValide{
+  color: rgba(191, 68, 68, 0.75);
+}
+.ajoutSucces, .locationValide, .donneeExist{
+  color: rgba(68, 191, 68, 0.75);
+}
+.donneeExist{
+  text-align: center;
+}
+.detailAppart{
+    margin-bottom: 50px;
+    border: 2px solid #2C3E50;
+    padding: 20px;
+    border-radius: 50px 20px;
+    box-shadow: 5px 5px #2C3E50;   
+}
+.detailAppart .btnValider{
+  display:flex;
+  align-items:center;
+}
+.position button{
+    border-radius: 50px 20px;
+    margin:20px;
 }
 
-.echec{
-	color:rgba(191, 68, 68, 0.75);
+.btnValider button, .btnValider p{
+  margin:10px;
+  text-align:center;
 }
-.succes{
-	color:rgba(68, 191, 68, 0.75);;
+
+#retourAppart{
+  margin:10px;
+}
+.dispo, .louer{
+  margin-bottom:20px;
+}
+
+
+div#slider figure {
+  position: relative; 
+  width: 500%;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  text-align: left;
+  animation: 30s slidy infinite;
+}
+
+div#slider figure img { width: 20%; height: auto; float: left; }
+
+@keyframes slidy {
+  0% { left: 0%; }
+  20% { left: 0%; }
+  25% { left: -100%; }
+  45% { left: -100%; }
+  50% { left: -200%; }
+  70% { left: -200%; }
+  75% { left: -300%; }
+  95% { left: -300%; }
+  100% { left: -400%; }
+}
+div#slider { width: 30%; max-width: 1000px; overflow: hidden }
+
+.detailLog{
+  display:flex;
+  justify-content:space-between;
+}
+.afficheDispo button{
+  margin-left:10px;
+}
+.descriptionAppart .titre{
+  color: #2980B9;
+  font-size:2em;
+}
+.descriptionAppart .adresse, .aucuneLocation{
+  font-weight: bold;
+  font-size:1.2em;
+}
+.modificationForm label{
+  font-weight: bold;
+}
+.etoile{
+  margin:20px 0 20px 0;
+}
+#inscrireAppartement-form label{
+  font-weight: bold;
+}
+.descNotation{
+  display:flex;
+  flex-direction:column;
+}
+/*responsive pour les petits écrans*/
+@media screen and (max-width: 425px) {
+  .detailLog{
+    display:flex;
+    flex-direction:column-reverse;
+    margin:0 auto;
+  }
+div#slider { width: 60%; max-width: 1000px; overflow: hidden;margin:0 auto;}
+  .descriptionAppart .titre{
+    text-align: center;
+    margin:10px 0 10px 0;
+  }
+  #inscrireAppartement-form select#stationnement{
+    margin-left: 15px;
+  }
+  .detailAppart .afficheDispo{
+    display: flex;
+    flex-direction:column;
+    margin: 0 auto;
+    width: 50%;
+
+  }
+  .detailAppart .afficheDispo button{
+    margin-bottom: 10px;
+  }
 }

@@ -95,21 +95,35 @@ class Usagers_model extends CI_Model {
    * @param      string  $nomUsager   le nom usager
    * @param      string  $Nom         le nom
    * @param      string  $Prenom      le prenom
-   * @param      string  $motDePasse  le mot de passe
    * @param      string  $Adresse     l'adresse
    * @param      string  $typePaiem   le type de paiement
    */
-  public function modifier_usager($nomUsager, $Nom, $Prenom, $motDePasse, $Adresse, $typePaiem) {
+  public function modifier_usager($nomUsager, $Nom, $Prenom, $Adresse, $typePaiem) {
     //ce tableau contient toutes les nouvelles données, récupérées du formulaire de modification
     $data = array (
       "Nom" => $Nom,
       "Prenom" => $Prenom,
-      "motDePasse" =>  password_hash($motDePasse, PASSWORD_DEFAULT),
       "Adresse" => $Adresse,
-      "typePaiem" => $typePaiem,
+      "typePaiem" => $typePaiem
     );
     $this->db->where('nomUsager', $nomUsager);
-    $this->db->update('Usager', $data);
+    return $this->db->update('Usager', $data);
+  }
+
+  /**
+   * Modifie la photo d'un usager
+   *
+   * @param      STRING  $nomUsager    Le nom de l'usager
+   * @param      STRING  $cheminPhoto  Le chemin de la photo
+   *
+   * @return     ? True si la requete a fonctionnee
+   */
+  public function modifier_img_profile($nomUsager, $cheminPhoto) {
+    $data = array (
+      "cheminPhoto" => $cheminPhoto
+    );
+    $this->db->where('nomUsager', $nomUsager);
+    return $this->db->update('Usager', $data);
   }
   /**
    * suppression d'un utilisateur

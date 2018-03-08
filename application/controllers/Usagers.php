@@ -6,11 +6,118 @@ class Usagers extends CI_Controller {
     parent::__construct();
     $this->load->model("Usagers_model");
     $this->load->model("Moyen_contact_model");
+    $this->load->model("Mode_paiement_model");
+    $this->load->library('modalmenus');
     $this->load->helper("url_helper");
     $this->load->library('session');
     $this->load->helper('date');
   }
 
+  /**
+   * Charge la page d'un profil d'utilisateur
+   */
+  public function index() {
+    if($this->session->userdata("nomUsager")){
+      if ( !file_exists(APPPATH.'views/usagers/index.php')) {
+        show_404 ();
+      } else {
+        //Mets les infos de l'usager dans une variable
+        $data['utilisateur'] = $this->Usagers_model->obtenir_usager($this->session->userdata("nomUsager"));
+        $data['mode_paiements'] = $this->Mode_paiement_model->obtenir_tous();
+        $data['scripts'] = ["https://cdnjs.cloudflare.com/ajax/libs/cropper/3.1.6/cropper.min.js"];
+        //Charge les menus
+        $data['menus'] = $this->modalmenus->chargeMenus();
+        $data["titre"] = "MON COMPTE";//Le titre de la page
+        $this->load->view("templates/header.php", $data);
+        $this->load->view("templates/barre-rouge.php", $data);
+        $this->load->view("usagers/index.php", $data);
+        $this->load->view("templates/modalmenus.php", $data);
+        $this->load->view("templates/footer.php", $data);
+      }
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+  /**
+   * Retourne le contenu interieur de la page d'un profil usager
+   */
+  public function indexContent() {
+    if($this->session->userdata("nomUsager")){
+      if ( !file_exists(APPPATH.'views/usagers/index-content.php')) {
+        show_404 ();
+      } else {
+        $data['utilisateur'] = $this->Usagers_model->obtenir_usager($this->session->userdata("nomUsager"));
+        $data['mode_paiements'] = $this->Mode_paiement_model->obtenir_tous();
+        $this->load->view("usagers/index-content.php", $data);
+      }
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+
+  /**
+   * Permet de modifier les infos sur un usager
+   */
+  public function modifier_infos() {
+    if($this->session->userdata("nomUsager")){
+
+      $nomUsager      = trim(strtolower($this->input->post("input_nomUsager")));
+      $prenom         = trim(strtolower($this->input->post("input_prenom")));
+      $nom            = trim(strtolower($this->input->post("input_nom")));
+      $adresse        = trim(strtolower($this->input->post("input_adresse")));
+      $mode_paiement  = trim(strtolower($this->input->post("input_mode_paiement")));
+      $cheminPhoto    = trim(strtolower($this->input->post("image")));
+
+
+      // Si l'usager qu'on tente de modifier est l'utilisateur actif
+      if($nomUsager == strtolower($this->session->userdata("nomUsager"))){
+        //S'il y a une nouvelle photo
+        if(isset($_FILES["image"]["name"]) && strlen($_FILES["image"]["name"]) > 0) {
+          //infos sur la photo
+          $posX         = trim(strtolower($this->input->post("posX")));
+          $posY         = trim(strtolower($this->input->post("posY")));
+          $width        = trim(strtolower($this->input->post("width")));
+          $height       = trim(strtolower($this->input->post("height")));
+
+          $config['upload_path']    = "./images/usagers";
+          $config['allowed_types']  = 'jpg|jpeg|png|gif|svg';
+          $config['file_name']      = $this->session->userdata("nomUsager");
+          $config['overwrite']      = true;
+
+          $this->load->library('upload', $config);
+
+
+          if($this->upload->do_upload('image')) {
+            $data = $this->upload->data();
+            $config['image_library']  = 'gd2';
+            $config['source_image'] = './images/usagers/'.$data["file_name"];
+            $config['create_thumb'] = false;
+            $config['maintain_ratio'] = false;
+            $config['x_axis']         = floor($posX);
+            $config['y_axis']         = floor($posY);
+            $config['width']          = floor($width);
+            $config['height']         = floor($height);
+
+            $this->load->library('image_lib', $config);
+            $this->image_lib->crop();
+            if($this->Usagers_model->modifier_img_profile($nomUsager, $data["file_name"]) &&
+              $this->Usagers_model->modifier_usager($nomUsager, $nom, $prenom, $adresse, $mode_paiement)){
+              echo true;
+            } else {
+              echo false;
+            }
+          }
+        } else {
+          if($this->Usagers_model->modifier_usager($nomUsager, $nom, $prenom, $adresse, $mode_paiement)){
+            echo true;
+          } else {
+            echo false;
+          }
+        }
+      }
+  }
+}
 
   /*
    * Obtient un usager dans la base de donnees
@@ -241,7 +348,7 @@ class Usagers extends CI_Controller {
    *
    * @param      string  $nomUsager  Le nom de l'usager
    */
-  public function retirer_admin() {
+   public function retirer_admin() {
     $usagerAFaireAdmin = $this->Usagers_model->obtenir_usager($this->input->post('nomUsager'));
     //Si l'usager existe dans la BD
     if($usagerAFaireAdmin) {
