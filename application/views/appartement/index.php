@@ -62,28 +62,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         
       </div>
+    <?php } ?>  
+  </div>
 
-    <!--  modal confirmation avant suppression-->
-      <div class="formulaireAlouer modal fade" id="modalSupp" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Supprimer appartement</h5>
-          </div>
-          <div class="modal-body">
-            <p>
-              Etes-vous sûr de vouloir supprimer cet élément ?
-            </p>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmSuppression">Supprimer</button>
-            </div>
-          </div>
-          </div>
+
+<!--  modal confirmation avant suppression-->
+  <div class="formulaireAlouer modal fade" id="modalSupp" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Supprimer appartement</h5>
+      </div>
+      <div class="modal-body">
+        <p>
+          Etes-vous sûr de vouloir supprimer cet élément ?
+        </p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmSuppression">Supprimer</button>
         </div>
       </div>
-    <?php } ?>  
-</div>
+      </div>
+    </div>
+  </div>
 
 <!--  modal ajout disponibilite-->
   <div class="formulaireAlouer modal fade" id="myModal2" role="dialog">

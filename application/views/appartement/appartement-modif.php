@@ -9,11 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="form-group row">
   <label class="col-md-3">Arrondissement</label>
 <!--   <input class="col-md-3"  id="arrond" value="" type="text" readonly class="form-control-plaintext lead pt-0 pb-3" >
- -->  <select id="arrond" value="" class="form-control-plaintext champ col-md-3">
-      <option></option>
+ -->  <select class="form-control-plaintext champ col-md-3" readonly>
       <?php foreach($arrondissements as $arrond){?>
 
-      <option value="<?php echo $arrond->idArrondissement;?>"><?php echo $arrond->nomArrondissement;?></option>
+      <option id="arrond" value="<?php echo $arrond->idArrondissement;?>"><?php echo $arrond->nomArrondissement;?></option>
 
       <?php } ?>
     </select>
@@ -44,7 +43,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="form-group row">
   <label class="col-md-3">Type de logement</label>
-  <input class="col-md-3" id="typeLog" value="" type="text" readonly class="form-control-plaintext lead pt-0 pb-3 champ" >
+  <select id="typeLog"  value="" class="form-control col-md-3 champ">
+      <option></option>
+      <option>Condominium</option>
+      <option>Appartement</option>
+      <option>Maison</option>
+      <option>Chalet</option>
+    </select>
   <div class="col-md-3"><a id='modifierTypeLog' href='#' class='card-link lien' data-toggle='tooltip' data-placement='top'><i class='far fa-edit'></i></a></div>
   <div class="echec"></div>
 </div>

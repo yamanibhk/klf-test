@@ -134,4 +134,14 @@ div#slider { width: 60%; max-width: 1000px; overflow: hidden;margin:0 auto;}
   #inscrireAppartement-form select#stationnement{
     margin-left: 15px;
   }
+  .detailAppart .afficheDispo{
+    display: flex;
+    flex-direction:column;
+    margin: 0 auto;
+    width: 50%;
+
+  }
+  .detailAppart .afficheDispo button{
+    margin-bottom: 10px;
+  }
 }

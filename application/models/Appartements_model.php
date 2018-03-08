@@ -160,9 +160,10 @@ class Appartements_model extends CI_Model {
   * @param id de l'ppartement
   * @return modifier l'appartement en question
   */
-  public function modifier_appartementP($id,$arrondissement,$adresse,$titre,$codePostal,$type,$piece,$etage,$internet,$tele,$climatiseur,$meuble,
+  public function modifier_appartement($id,$arrondissement,$adresse,$titre,$codePostal,$type,$piece,$etage,$internet,$tele,$climatiseur,$meuble,
                                         $adapte,$laveuseSecheuse,$laveVaisselle,$stationnement,$description,$proprietaire){
-                                                            
+    
+
     $data = array(
           "adresse" => $adresse,
           "titre" => $titre,
@@ -182,7 +183,7 @@ class Appartements_model extends CI_Model {
           "idArrondissement" => $arrondissement,
           "proprietaire" => $proprietaire
         );
-
+var_dump($data);
     $query1 = $this->db->where('idAppart', $id);
     $query2 = $this->db->update('appartement', $data); 
 

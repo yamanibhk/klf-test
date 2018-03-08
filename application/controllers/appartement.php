@@ -354,21 +354,20 @@ class appartement extends CI_Controller {
       else{
         $resultat = $this->Appartements_model->verifierDateDispo($id,$dateDebut,$dateFin);
         if($resultat>0){
-            $data["erreur"] = true;
-            $succes = false;
-        }
-        else{
-            $reponse = $this->Appartements_model->louer_monLogement($id,$dateDebut,$dateFin,$prix,$interval);
-            if(!$reponse) {
-                $succes = false;
-            }
-        }
-        if($succes) {
-            $data["erreur"] = false;
+          $succes = false;
         } else {
-            $data["erreur"] = true;
+          $reponse = $this->Appartements_model->louer_monLogement($id,$dateDebut,$dateFin,$prix,$interval);
+          if(!$reponse) {
+            $succes = false;
+          }
         }
       } 
+      if($succes) {
+          $data["erreur"] = false;
+      } else {
+          $data["erreur"] = true;
+      }
+      
       $this->load->view("appartement/message_insertion.php", $data);
     }
   }

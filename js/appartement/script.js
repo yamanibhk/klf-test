@@ -12,6 +12,23 @@ window.addEventListener("load", function() {
     });
   });
 
+  //rendre les champs du formulaire de modification appartement modifiable
+  $(document).on("click", ".lien", function(evt) {
+
+    var input = $(this).parent().prev();
+    var ancienne_valeur = input.val();
+    input.removeAttr("readonly");
+    input.removeClass("form-control-plaintext");
+    input.addClass("form-control");
+    input.focus();
+    //Lorsque le focus est retire
+    input.focusout(function(){
+      input.attr("readonly", "readonly");
+      input.removeClass("form-control");
+      input.addClass("form-control-plaintext");
+    });
+  });
+
   //Ceci va charger le formulaire de modification d'appartement
   $(document).on("click", "button#modifierAppart", function(evt) {
     $.ajax({
@@ -65,7 +82,6 @@ window.addEventListener("load", function() {
         }
         var statnmt = data.nbreStationnement;
         var desc = data.description;
-
         $.ajax({
           
           url: "modifierAppartement",
@@ -90,43 +106,23 @@ window.addEventListener("load", function() {
           $('#lavVaiss').val(lavVaiss);
           $('#statnmt').val(statnmt);
           $('#desc').val(desc);
-
-          //appeler la fonction modifier et envoyer en parametre le idAppart
-          modifier($(this).attr('value'));
           }
           
         });
       });
       }
     });
-  });
-  
-  //modifier les champs du formulaire
-  $(document).on("click", ".lien", function(evt) {
-
-    var input = $(this).parent().prev();
-    var ancienne_valeur = input.val();
-    input.removeAttr("readonly");
-    input.removeClass("form-control-plaintext");
-    input.addClass("form-control");
-    input.focus();
-    //Lorsque le focus est retire
-    input.focusout(function(){
-      input.attr("readonly", "readonly");
-      input.removeClass("form-control");
-      input.addClass("form-control-plaintext");
-    });
-  });
-
-  function modifier(valeur){
+    var id = $(this).attr('value');
     //soumettre les informations de modification d'appartement au controlleur
-    $(document).on("click",'button#ModifierAppartement',function(valeur) {
-        validerFormulaireModification($(this).parents("#modificationForm"),valeur);
+    $(document).on("click",'button#ModifierAppartement',function(evt) { 
+      validerFormulaireModification($(this).parents("#modificationForm"),id);
+      console.log(id);
     });
-  }
-  
+  });
 
-  function validerFormulaireModification(formulaire,valeur){
+
+  //valider formulaire de modification appartement
+  function validerFormulaireModification(formulaire,val){
     var valide = true;
     //Ajoute le message d'erreur si un champ est vide
     formulaire.children("div").each(function() {
@@ -158,11 +154,18 @@ window.addEventListener("load", function() {
       }
     });
     if(valide){
+      if($('#internet').val()=="Oui") $internet='1'; else $internet='0';
+      if($('#tele').val()=="Oui") $tele='1'; else $tele='0';
+      if($('#clim').val()=="Oui") $climatiseur='1'; else $climatiseur='0';
+      if($('#meuble').val()=="Oui") $adapte='1'; else $adapte='0';
+      if($('#adapte').val()=="Oui") $meuble='1'; else $meuble='0';
+      if($('#lavSech').val()=="Oui") $laveuseSecheuse='1'; else $laveuseSecheuse='0';
+      if($('#lavVaiss').val()=="Oui") $laveVaisselle='1'; else $laveVaisselle='0';
       $.ajax({
         url: "valider_modification",
         type: "POST",
         data: {
-          "id" : + valeur,
+          "id" : + val,
           "arrondissement": $("#arrond").val(),
           "adresse": $("#adresse").val(),
           "titre": $("#titre").val(),
@@ -170,13 +173,13 @@ window.addEventListener("load", function() {
           "type": $("#typeLog").val(),
           "piece": $("#piece").val(),
           "etage": $("#etage").val(),
-          "internet": $('#internet').val(),
-          "tele": $('#tele').val(),
-          "climatiseur": $('#clim').val(),
-          "meuble": $('#meuble').val(),
-          "adapte": $('#adapte').val(),
-          "laveuseSecheuse": $('#lavSech').val(),
-          "laveVaisselle": $('#lavVaiss').val(),
+          "internet": $internet,
+          "tele": $tele,
+          "climatiseur": $climatiseur,
+          "meuble": $adapte,
+          "adapte": $meuble,
+          "laveuseSecheuse": $laveuseSecheuse,
+          "laveVaisselle": $laveVaisselle,
           "stationnement": $("#statnmt").val(),
           "description": $("#desc").val()
         },
@@ -195,6 +198,8 @@ window.addEventListener("load", function() {
       });  
     }
   };
+
+
   //supprimer un apppartement
   $(document).on("click", "button#supprimerAppart", function(evt) {
     var id = $(this).attr('value');
@@ -262,16 +267,10 @@ window.addEventListener("load", function() {
           $("#dateDispo").append("<p class='donneeExist'>" + obj.dateDebutDispo + " au " + obj.dateFinDispo+"</p>");
           });
         }
-        
-       
       }
     });
-  });
 
-  //Affichage des location pour un appartement choisi
-  $(document).on("click", "button#idAppart", function(evt) {
-    var id = $(this).attr('value');
-    console.log(id);
+    //Affichage des location pour un appartement choisi
     $.ajax({
       url: "mesLocationEnregistres",
       type: "POST",
@@ -288,17 +287,48 @@ window.addEventListener("load", function() {
           $("#demo").append("<p class='donneeExist'>" + obj.DateDebutLocation  + " au " + obj.DateFinLocation+"</p>");
           });
         }
-        
-       
       }
+    });
+
+    //clique sur le bouton pour enregistrer une disponibilité avec le prix de location
+    $(document).on("click", "button#mettreEnLocation", function(evt) {
+      console.log(id);
+      validerlogementAlouer($(this).parents(".formulaireAlouer"),id);
     });
   });
 
-
-  //clique sur le bouton pour enregistrer une disponibilité avec le prix de location
-  $(document).on("click", "button#mettreEnLocation", function(evt) {
-    validerlogementAlouer($(this).parents(".formulaireAlouer"),id);
+  //fonction de validation formulaire pour mettre un appartement disponibilte 
+function validerlogementAlouer(formulaire,id){
+  var valideAlouer = true;
+  formulaire.children("div").each(function() {
+    var valeur = $(this).find(".champ");
+    if (valeur.val() == "") {
+      valeur.addClass("incorrect");
+      $(this).find(".echec").text("Ce champ ne peut pas être vide");
+      valideAlouer = false;
+    } 
   });
+
+  if (valideAlouer){
+    $.ajax({
+      url: "louerLogement",
+      type: "POST",
+      data :{
+        "dateDebut":$('#dDebut').val(),
+        "dateFin":$('#dFin').val(),
+        "prix":$('#prix').val(),
+        "id": id,
+        "interval": $('input[name=interval]:checked').val()
+      },
+      success: function(data) {
+        $("#contentAppartement").empty();
+        $("#contentAppartement").append(data);
+      }
+    });
+  }
+}
+
+
     
   
     
@@ -333,38 +363,7 @@ window.addEventListener("load", function() {
 });
 
 
-//fonction de validation formulaire pour mettre un appartement disponibilte 
-function validerlogementAlouer(formulaire,id){
-  var valideAlouer = true;
-  console.log(id);
-  formulaire.children("div").each(function() {
-    var valeur = $(this).find(".champ");
-    if (valeur.val() == "") {
-      valeur.addClass("incorrect");
-      $(this).find(".echec").text("Ce champ ne peut pas être vide");
-      valideAlouer = false;
-    } 
-  });
 
-  if (valideAlouer){
-    console.log(id);
-    $.ajax({
-      url: "louerLogement",
-      type: "POST",
-      data :{
-        "dateDebut":$('#dDebut').val(),
-        "dateFin":$('#dFin').val(),
-        "prix":$('#prix').val(),
-        "id": id,
-        "interval": $('input[name=interval]:checked').val()
-      },
-      success: function(data) {
-        $("#contentAppartement").empty();
-        $("#contentAppartement").append(data);
-      }
-    });
-  }
-}
 
 
 
@@ -403,25 +402,76 @@ function validerFormulaireAjout(formulaire){
 
   if(valide){
     //remplacer fakepath par le vrai chemin pour chaque image
-    var img = $("#icone").val();
-    var rep = img.replace('C:\\','');
-    var nouvChn = rep.replace(/fakepath/i, 'images\\appartement');
+    if($("#icone").val()==""){
+      var nouvChn="images\\appartement\\home.png"
+    } else {
+      var img = $("#icone").val();
+      var rep = img.replace('C:\\','');
+      var nouvChn = rep.replace(/fakepath/i, 'images\\appartement');
+    }
+    
+    if($("#icone1").val()==""){
+      var nouvChn1="images\\appartement\\home.png"
+    } else {
+      var img1 = $("#icone1").val();
+      var rep1 = img1.replace('C:\\','');
+      var nouvChn1 = rep1.replace(/fakepath/i, 'images\\appartement');
+    }
 
-    var img1 = $("#icone1").val();
-    var rep1 = img1.replace('C:\\','');
-    var nouvChn1 = rep1.replace(/fakepath/i, 'images\\appartement');
+    if($("#icone2").val()==""){
+      var nouvChn2="images\\appartement\\home.png"
+    } else {
+      var img2 = $("#icone2").val();
+      var rep2= img2.replace('C:\\','');
+      var nouvChn2 = rep2.replace(/fakepath/i, 'images\\appartement');
+    }
 
-    var img2 = $("#icone2").val();
-    var rep2= img2.replace('C:\\','');
-    var nouvChn2 = rep2.replace(/fakepath/i, 'images\\appartement');
+    if($("#icone3").val()==""){
+      var nouvChn3="images\\appartement\\home.png"
+    } else {
+      var img3 = $("#icone3").val();
+      var rep3= img3.replace('C:\\','');
+      var nouvChn3 = rep3.replace(/fakepath/i, 'images\\appartement');
+    }
 
-    var img3 = $("#icone3").val();
-    var rep3= img3.replace('C:\\','');
-    var nouvChn3 = rep3.replace(/fakepath/i, 'images\\appartement');
+    if($("#icone4").val()==""){
+      var nouvChn4="images\\appartement\\home.png"
+    } else {
+      var img4 = $("#icone4").val();
+      var rep4 = img4.replace('C:\\','');
+      var nouvChn4 = rep4.replace(/fakepath/i, 'images\\appartement');
+    }
 
-    var img4 = $("#icone4").val();
-    var rep4 = img4.replace('C:\\','');
-    var nouvChn4 = rep4.replace(/fakepath/i, 'images\\appartement');
+    //si aucun champs detail n'est rempli
+    if($("#detail").val()==""){
+      var detail="aucune image";
+    } else {
+      var detail=$("#detail").val();
+    }
+    
+    if($("#detail1").val()==""){
+      var detail1="aucune image";
+    } else {
+      var detail1=$("#detail1").val();
+    }
+
+    if($("#detail2").val()==""){
+      var detail2="aucune image";
+    } else {
+      var detail2=$("#detail2").val();
+    }
+
+    if($("#detail3").val()==""){
+      var detail3="aucune image";
+    } else {
+      var detail3=$("#detail3").val();
+    }
+
+    if($("#detail4").val()==""){
+      var detail4="aucune image";
+    } else {
+      var detail4=$("#detail4").val();
+    }
     $.ajax({
       url: "enregistrer",
       type: "POST",
@@ -447,11 +497,11 @@ function validerFormulaireAjout(formulaire){
         "image2": nouvChn2,
         "image3": nouvChn3,
         "image4": nouvChn4,
-        "detail": $("#detail").val(),
-        "detail1": $("#detail1").val(),
-        "detail2": $("#detail2").val(),
-        "detail3": $("#detail3").val(),
-        "detail4": $("#detail4").val()
+        "detail": detail,
+        "detail1": detail1,
+        "detail2": detail2,
+        "detail3": detail3,
+        "detail4": detail4
       },
       success: function(data) {
         if(data==false){
