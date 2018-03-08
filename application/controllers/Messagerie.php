@@ -1,7 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class messageries extends CI_Controller {
+class Messagerie extends CI_Controller {
 
+  /**
+   * contructeur de la classe
+   */
   public function __construct() {
     parent::__construct();
     $this->load->model("messageries_model");
@@ -24,7 +27,7 @@ class messageries extends CI_Controller {
         //Charge les menus
         $data['menus'] = $this->modalmenus->chargeMenus();
 
-        $data["titre"] = "MA MESSAGERIE";//Le titre de la page
+        $data["titre"] = "MESSAGERIE";//Le titre de la page
         $this->load->view("templates/header.php", $data);
         $this->load->view("templates/barre-rouge.php", $data);
         $this->load->view("messagerie/index.php", $data);
@@ -34,5 +37,5 @@ class messageries extends CI_Controller {
     } else {
       header("Location: ".base_url());
     }
-  } 
+  }
 }//Fin de la classe

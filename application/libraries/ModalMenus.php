@@ -7,7 +7,7 @@ class ModalMenus {
     $menus = ["Accueil" => "../accueil/index",
               "Mes logements" => "../appartement/index",
               "Mon compte" => "../usagers/index",
-              "Messagerie" => "../messageries/index"
+              "Messagerie" => "../messagerie/index"
             ];
     return $menus;
   }
