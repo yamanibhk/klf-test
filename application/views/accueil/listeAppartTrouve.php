@@ -32,16 +32,16 @@
 													<p class="card-text text-left"><i class="flaticon-mail text-primary"></i><?=' '.$appartement->Adresse.', '.$appartement->codePostal?></p>
 													<p class="card-text  d-flex justify-content-around"><?php 
 														switch ($appartement->typeLogement) {
-																case "condominium":
-																		echo'<i class="flaticon-appartments text-primary" data-toggle="tooltip" data-placement="top" title="Condominium"></i>';
+																case "Condominium":
+																		echo'<i class="flaticon-office-block text-primary" data-toggle="tooltip" data-placement="top" title="Condominium"></i>';
 																		break;
-																case "appartement":
+																case "Appartement":
 																		echo'<i class="flaticon-building text-primary" data-toggle="tooltip" data-placement="top" title="Appartement"></i>';
 																		break;
-																case "maison":
+																case "Maison":
 																		echo'<i class="flaticon-house text-primary" data-toggle="tooltip" data-placement="top" title="Maison"></i>';
 																		break;
-																case "chalet":
+																case "Chalet":
 																		echo'<i class="flaticon-chalet text-primary" data-toggle="tooltip" data-placement="top" title="Chalet"></i>';
 																		break;
 																
@@ -77,10 +77,12 @@
 													<span class="text-primary h5"><?=$appartement->moyenneMontant?>$</span>
 													<span class="h6"> moyenne/nuit</span>
 												</div>
-												<div class="h6 mt-1">
+												<div class="mt-1">
 													<?php for ($i=1;$i<=$appartement->moyenneNotes;$i++){?>
-														<i class="fas fa-star" style="color:#ffba00"></i>
-														<?php }?>
+														<i class="fas fa-star mb-1" style="color:#ffba00;font-size:13px;"></i>
+														<?php }
+														if (is_float($appartement->moyenneNotes)) echo"<i class='fas fa-star-half mb-1' style='color:#ffba00;font-size:13px;'></i>";
+													?>
 												</div>
 											</div>
                     </div>

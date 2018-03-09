@@ -64,7 +64,8 @@ class Appartements_model extends CI_Model {
     $query4 = $this->db->insert('photo', array("detailPhoto" => $detail2,"Chemin" => $image2,"idAppart" => $id));
     $query5 = $this->db->insert('photo', array("detailPhoto" => $detail3,"Chemin" => $image3,"idAppart" => $id));
     $query6 = $this->db->insert('photo', array("detailPhoto" => $detail4,"Chemin" => $image4,"idAppart" => $id));
-    if ($query1 && $query2 && $query3 && $query4 && $query5 && $query6) return true;
+    $query7 = $this->db->insert('noter', array("Note" => 0,"nomUsager" => $proprietaire,"idAppart" => $id));
+    if ($query1 && $query2 && $query3 && $query4 && $query5 && $query6 && $query7) return true;
   }
 
   /**
@@ -84,14 +85,8 @@ class Appartements_model extends CI_Model {
      * @return     array  toutes les données des appartements trouvées
      */
     public function obtenir_appartementsVedette(){
-    $query=$this->db->query('SELECT * FROM appartement JOIN noter ON appartement.idAppart = noter.idAppart
-    JOIN arrondissement ON appartement.idArrondissement = arrondissement.idArrondissement
-    JOIN disponibilite ON appartement.idAppart = disponibilite.idAppart
-    JOIN photo ON appartement.idAppart = photo.idAppart
-    WHERE noter.Note >=4 AND appartement.proprietaire NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1)
-    AND disponibilite.dateFinDispo >= NOW()
-    group by appartement.idAppart LIMIT 20');
-
+    $query=$this->db->query('select * from (select appartement.*,photo.Chemin from appartement join photo on appartement.idAppart = photo.idAppart where appartement.proprietaire NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1) group by appartement.idAppart) as table1 join (select noter.idAppart as "idAppar",ROUND(avg(Note),0) as "moyenneNote" from noter group by noter.idAppart having moyenneNote>=3 ) as table2 on table1.idAppart=table2.idAppar LIMIT 20');
+		
     //tableau de resultats
     return $query->result();
   }
@@ -116,7 +111,7 @@ class Appartements_model extends CI_Model {
 		JOIN disponibilite ON appartement.idAppart = disponibilite.idAppart
 		JOIN noter ON appartement.idAppart = noter.idAppart
 		JOIN arrondissement on appartement.idArrondissement = arrondissement.idArrondissement
-		WHERE appartement.proprietaire NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1) AND noter.nomUsager NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1)';
+		WHERE appartement.proprietaire NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1)';
 		if (!empty($idArrondissement)) $sql.=' AND appartement.idArrondissement='.$idArrondissement;
 		if (!empty($codePostal)) $sql.=' AND UPPER(appartement.codePostal) LIKE "'.$codePostal.'%"';
 		if (!empty($typeLogement)) $sql.=' AND appartement.typeLogement="'.$typeLogement.'"';

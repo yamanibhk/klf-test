@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/fonts/font/flaticon.css">
-<link rel="stylesheet" type="text/css" href="<?=base_url();?>css/accueil/fonts/fontTypeLogement/flaticon.css">
 <script type='text/javascript' src="<?=base_url();?>js/accueil/liste-appartements.js"></script>
 
 <!--source https://bootsnipp.com/snippets/aMnXx-->
@@ -84,7 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="form-group row ml-0 mr-0 mt-1 mb-0 d-flex justify-content-around">
 											<div>
 												<input type="checkbox" class="control-input rech champ" id="meuble" value="1"/>
-												<label class="control-label rech" for="meuble"><i class="flaticon-rest" data-toggle="tooltip" data-placement="top" title="meublé"></i></label>
+												<label class="control-label rech" for="meuble"><i class="flaticon-bed" data-toggle="tooltip" data-placement="top" title="meublé"></i></label>
 											</div>
 											<div>
 												<input type="checkbox" class="control-input rech champ" id="lavSech" value="1"/>
@@ -92,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div>
 												<input type="checkbox" class="control-input rech champ" id="lavVaiss" value="1"/>
-												<label class="control-label rech" for="lavVaiss"><i class="flaticon-bowl" data-toggle="tooltip" data-placement="top" title="lave vaisselle"></i></label>											
+												<label class="control-label rech" for="lavVaiss"><i class="flaticon-dish" data-toggle="tooltip" data-placement="top" title="lave vaisselle"></i></label>											
 											</div>
 											<div>
 												<input type="checkbox" class="control-input rech champ" id="intervAcc" value="1"/>
@@ -115,9 +114,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="item tm1 text-center align-middle">
 					<img class="imag" src="<?=base_url().$appartementVedette->Chemin;?>" alt="appartement en vedette">
 					<p ><?=preg_replace('/[^a-zA-ZáàâäãéèêëíìîïóòôöõúùûüýÿÁÀÂÄÃÉÈÊËÍÌÎÏÓÒÔÖÕÚÙÛÜÝ]/', ' ', word_limiter($appartementVedette->titre, 3));?><br>
-					<?php for ($i=1;$i<=$appartementVedette->Note;$i++){?>
+					<span>
+					<?php for ($i=1;$i<=$appartementVedette->moyenneNote;$i++){?>
 					<i class="fas fa-star" style="color:yellow"></i>
-					<?php }?></p>
+					<?php }?></span></p>
 				</div>
 			<?php } ?>				
 			</div>
