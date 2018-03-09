@@ -80,8 +80,8 @@
 												<div class="mt-1">
 													<?php for ($i=1;$i<=$appartement->moyenneNotes;$i++){?>
 														<i class="fas fa-star mb-1" style="color:#ffba00;font-size:13px;"></i>
-														<?php }
-														if (is_float($appartement->moyenneNotes)) echo"<i class='fas fa-star-half mb-1' style='color:#ffba00;font-size:13px;'></i>";
+														<?php } 
+														if (preg_match('/\./',$appartement->moyenneNotes)) echo "<i class='fas fa-star-half mb-1' style='color:#ffba00;font-size:13px;'></i>";
 													?>
 												</div>
 											</div>
