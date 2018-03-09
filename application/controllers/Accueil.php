@@ -39,7 +39,7 @@ class Accueil extends CI_Controller {
 			$this->load->view("accueil/index.php", $data);
 			$this->load->view("templates/footer.php", $data);
 			$this->load->view("accueil/listeAppartTrouve.php", $data);
-			echo"</div></div></div>";
+			echo"</div></div></div></div>";
       }
     } else {
       header("Location: ".base_url());
@@ -75,14 +75,88 @@ class Accueil extends CI_Controller {
 				$numEtage,$typeLogement, $nbreStatio,$internet,$television,$climatiseur,$adapte,$meuble,$lavSech,$lavVaiss,$intervAcc,$prixMin,$prixMax);
 				
 				$this->load->view("accueil/listeAppartTrouve.php", $data);
-				echo"</div></div></div>";
+				echo"</div></div></div></div>";
       }
     } else {
       header("Location: ".base_url());
     }
   }
 	
-}
+	//controlleur de la page d'un appartement
+	public function AppartTrouve() {
+    if($this->session->userdata("nomUsager")){
+      if ( !file_exists(APPPATH.'views/accueil/index.php')) {
+        show_404 ();
+      } else {
+				
+        $succes = true;
+				$idAppart =$this->input->post("idAppart");	
+				$data['DetailsAppartement'] = $this->Appartements_model->obtenir_appartementParId($idAppart);
+				$data['PhotosAppartement'] = $this->Appartements_model->obtenir_PhotosAppartement($idAppart);
+				$data['DisponAppartement'] = $this->Appartements_model->dateDispo($idAppart);
+				$data['prixMoyen'] = $this->Appartements_model->prixMoyen($idAppart);
+				$data["titre"] = "LOCATION";//Le titre de la page
+				
+				$this->load->view("accueil/PageAppartement.php", $data);
+				echo"</div>";
+      }
+    } else {
+      header("Location: ".base_url());
+    }
+  }
+	
+	
+	//controlleur d'ajout de demande de location
+	/**
+  * enregistrer les données récupérées de l'appartement courant et de la session dans la table de demande de location
+  */
+  public function enregistrerDemande() {
+		
+    $succes = true;
+    $estValide = 0;
+    $dateDemandeLocation = date("Y-m-d");
+    $dateDebutLocation = $this->input->post("dateDebutLocation");
+    $dateFinLocation = $this->input->post("dateFinLocation");
+    $locataire =$this->session->get_userdata();
+    $montantPaye = 0;
+    $idAppart = $this->input->post("idAppart");
+		//S'il y a des donnees ne sont pas recues
+    if(!isset($dateDebutLocation) ||
+       !isset($dateFinLocation) ||
+       !isset($locataire) ||
+       !isset($idAppart))  {
+        $succes = false;
+    } else {
+      //S'il y a des donnees qui sont vides
+      if($dateDebutLocation == "" ||
+         $dateFinLocation == "" ||
+         $locataire == "" ||
+         $idAppart == "" ) {
+         $succes = false;
+      } else {
+        // ajout d'une demande de location d'appartement dans la base de donnée
+        $resultat = $this->Appartements_model->ajouter_DemandeLocation($estValide,
+                                                                       $dateDemandeLocation,
+                                                                       $dateDebutLocation,
+                                                                       $dateFinLocation,
+                                                                       $locataire['nomUsager'],
+                                                                       $montantPaye,
+                                                                       $idAppart
+                                                                       );
+				
+          $succes = false;
+        }
+      }
+      if($succes) {
+        $data["erreur"] = false;
+        echo false;
+      } else {
+        $data["erreur"] = true;
+        $this->load->view("accueil/message_insertion.php", $data);
+      }
+
+    }
+  }
 
 
 

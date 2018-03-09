@@ -86,10 +86,10 @@ class Appartements_model extends CI_Model {
      */
     public function obtenir_appartementsVedette(){
     $query=$this->db->query('select * from (select appartement.*,photo.Chemin from appartement join photo on appartement.idAppart = photo.idAppart where appartement.proprietaire NOT IN (SELECT nomUsager FROM usager WHERE usager.estBanni=1) group by appartement.idAppart) as table1 join (select noter.idAppart as "idAppar",ROUND(avg(Note),0) as "moyenneNote" from noter group by noter.idAppart having moyenneNote>=3 ) as table2 on table1.idAppart=table2.idAppar LIMIT 20');
-		
-    //tableau de resultats
+
     return $query->result();
   }
+	
   /**
      * affichage des appartements disponibles pour location
      *
@@ -150,8 +150,6 @@ class Appartements_model extends CI_Model {
 		$sql.=' GROUP BY appartement.idAppart';	
 		$query=$this->db->query($sql);
 
-
-      //tableau de resultats
 		
     return $query->result();
 			
@@ -164,7 +162,16 @@ class Appartements_model extends CI_Model {
    * @return la liste des dates disponibilités déja ajoutées
    */
 	public function dateDispo($id){
-		$query = $this->db->query("select * from disponibilite where idAppart=" . $id . " and dateFinDispo >'" . date('Y-m-d') . "'");
+		$query = $this->db->query("select * from disponibilite where idAppart='".$id."' and dateFinDispo >'".date('Y-m-d')."'");
+    return $query->result();
+	}
+	
+		/** donner le prix moyen de location pour un appartement donné
+   * @param idAppart
+   * @return prix moyen de location
+   */
+	public function prixMoyen($id){
+		$query = $this->db->query("select avg(MontantJournalier) as 'PrixMoyen' from disponibilite where idAppart='".$id."' group by idAppart");
     return $query->result();
 	}
 	
@@ -214,7 +221,17 @@ class Appartements_model extends CI_Model {
    if($query)
      return $query->result();
   } 
-
+	
+	/** affichage des photos d'un appartement
+	* @param idAppart
+	* @return objets de données photo de l'appartement
+	*/
+ public function obtenir_PhotosAppartement($idAppart) {
+	$sql='select * from  photo where idAppart="'.$idAppart.'"';	
+	$query=$this->db->query($sql);
+  return $query->result(); 
+	 
+ }
   /**
   * @return la liste des notes
   */
@@ -229,7 +246,7 @@ class Appartements_model extends CI_Model {
   * @return les détails d'un appartement
   */
   public function obtenir_appartementParId($id){
-   $query = $this->db->query("select * from appartement join arrondissement on appartement.idArrondissement=arrondissement.idArrondissement where idAppart=" . $id);
+   $query = $this->db->query("select * from appartement join arrondissement on appartement.idArrondissement=arrondissement.idArrondissement where idAppart='".$id."'");
    if($query)
      return $query->result();
   } 
@@ -277,7 +294,7 @@ class Appartements_model extends CI_Model {
           "idArrondissement" => $arrondissement,
           "proprietaire" => $proprietaire
         );
-var_dump($data);
+
     $query1 = $this->db->where('idAppart', $id);
     $query2 = $this->db->update('appartement', $data); 
 
@@ -286,5 +303,16 @@ var_dump($data);
    else
     return false;
   } 
+	
+	/**
+   * @param idAppart,$dateDebut,$dateFin,$prix,$interval
+   * @return vrai ou faux slon le succes ou l'echec de la requete d'insertion
+   */
+	
+  public function ajouter_DemandeLocation($estValide,$dateDemandeLocation,$dateDebutLocation,$dateFinLocation,$locataire,$montantPaye,$idAppart){
+    $query = $this->db->insert("location", array("estValide" => $estValide,"dateDemandeLocation" => $dateDemandeLocation,"dateDebutLocation" => $dateDebutLocation,"dateFinLocation" => $dateFinLocation,"locataire" => $locataire,"montantPaye" => $montantPaye,"idAppart" => $idAppart ));
+    if($query) return true; 
+		else return false;
+  }
   
 }//Fin de la classe

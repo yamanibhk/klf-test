@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="mask-icon" type="" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
 <link rel="canonical" href="https://codepen.io/linux/pen/QgMoQa?limit=all&page=5&q=box" />
 
-
+<div class="container-fluid ml-0 mr-0 pl-0 pr-0 " id="detailAppartTrouve">
 <!-- debut du menu de recherche -->
 <div class="container-fluid col-12 ml-0 mr-0 pl-0 pr-0">
   <div class="row col-12 ml-0 mr-0 pl-0 pr-0 ">
@@ -108,9 +108,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 		
 		<!--affichage des appartements en vedette-->
+		
 			<div class="imgcontainer container">
 				<h2 class="deux">Locations en vedette</h2>
 			<?php foreach($appartementsVedettes as $appartementVedette){?>
+				<button id="details" value="<?=$appartementVedette->idAppart?>" class="bg-white border-0">
 				<div class="item tm1 text-center align-middle">
 					<img class="imag" src="<?=base_url().$appartementVedette->Chemin;?>" alt="appartement en vedette">
 					<p ><?=preg_replace('/[^a-zA-ZáàâäãéèêëíìîïóòôöõúùûüýÿÁÀÂÄÃÉÈÊËÍÌÎÏÓÒÔÖÕÚÙÛÜÝ]/', ' ', word_limiter($appartementVedette->titre, 3));?><br>
@@ -119,8 +121,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<i class="fas fa-star" style="color:yellow"></i>
 					<?php }?></span></p>
 				</div>
+				</button>
 			<?php } ?>				
 			</div>
+		
 		<div class=" imgcontainer container mt-4 dataAppartTrouvePos" id="dataAppartTrouve">
 			<!-- début d'affichage des données des appartements -->
     

@@ -102,9 +102,13 @@
   	overflow: hidden;
 }
 
+/*prix dans panneau a la page de l'appartement*/
+.gras {
+	font-weight: 800;
+}
 /*style boutton Détails dans les card  , source https://codepen.io/derekmorash/pen/XddZJY  */
 
-.trois {
+.btnDetail {
   border-color: #3498db;
   color: #fff;
 	margin: auto;
@@ -114,16 +118,44 @@
           box-shadow: 0 0 40px 40px #3498db inset, 0 0 0 0 #3498db;
   -webkit-transition: all 150ms ease-in-out;
   transition: all 150ms ease-in-out;
+	/*border-radius: 10px 10px 10px 10px;*/
 }
-.trois:hover {
+.btnDetail:hover {
   -webkit-box-shadow: 0 0 10px 0 #27c62d inset, 0 0 10px 4px #27c62d;
           box-shadow: 0 0 10px 0 #27c62d inset, 0 0 10px 4px #27c62d;
 	cursor: pointer;
+	color: black;
 }
 
 .map:hover{
 	cursor: pointer;
 }
+
+.carousel-inner > .carousel-item > img,.panneau {
+  
+  height:360px;
+}
+
+.btn-xl {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+1vw = 1% of viewport width
+
+1vh = 4% of viewport height
+
+1vmin = 1vw or 1vh, whichever is smaller
+
+1vmax = 1vw or 1vh, whichever is larger
+
+h1 {
+  font-size: 5.9vw;
+}
+h2 {
+  font-size: 3.0vh;
+}
+
 /*  script pour appartements en vedette, source:https://bootsnipp.com/snippets/aMnXx */
 <style class="cp-pen-styles">
     @import url('https://fonts.googleapis.com/css?family=Amiri|Aref+Ruqaa|Cairo|Changa|El+Messiri|Harmattan|Jomhuria|Lateef|Mirza|Rakkas|Lato|Source+Sans+Pro|Ubuntu');
@@ -180,6 +212,7 @@ body{
 	transform: scale(1.8);
 	z-index:2;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+	cursor: pointer;
 }
 
 .item:hover > p {
@@ -259,6 +292,7 @@ body::-webkit-scrollbar-thumb{
 				padding-top: 0;
 				
 			}
+	
 }
 @media (min-width:240px) and (max-width:796px) {
 
@@ -300,4 +334,14 @@ body::-webkit-scrollbar-thumb{
       left: 0;
       
   		}
+}
+
+/*style pour positionement carousel et panneau*/
+
+
+@media (max-width: 767px){
+    .panneau {
+        height:280px;;
+    }
+	
 }

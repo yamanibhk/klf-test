@@ -69,7 +69,7 @@
 															</div>
 														
 												</p>
-													<a class="trois btn-sm">Détails</a>
+													<button id="details" value="<?=$appartement->idAppart?>" class="btnDetail btn-sm">Détails</button>
 												
 											</div>
 											<div class="card-footer d-flex justify-content-between">
