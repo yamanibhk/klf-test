@@ -1,0 +1,1 @@
+you must respect the directories, put klf-test in your localhost because the config.php and head in view are configured like this
